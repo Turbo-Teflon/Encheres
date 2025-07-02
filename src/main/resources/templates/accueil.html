@@ -19,9 +19,9 @@
    <select id="categorie" name="categorie">
   <option value="" th:selected="${categorie == null}">Toutes</option>
   <option th:each="cat : ${categories}"
-          th:value="${cat.id}"
-          th:text="${cat.nom}"
-          th:selected="${categorie == cat.id}">Catégorie</option>
+          th:value="${cat.idCategorie}"
+          th:text="${cat.libelle}"
+          th:selected="${categorie == cat.idCategorie}">Catégorie</option>
 </select>
 
     <input type="text" placeholder="Le nom de l'article contient" name="nomArticle" />
@@ -30,31 +30,25 @@
   </form>
 </section>
 
-    <section class="articles">
-      <article class="card">
-        <div class="image"></div>
-        <div class="details">
-          <p><strong>PC Gamer pour travailler</strong><br />
-          Prix : 210 points - Classement : 2<br />
-          Fin de l'enchère : 10/08/2018<br />
-          Retrait : 10 allée des Alouettes<br />
-          44800 Saint Herblain<br />
-          Vendeur : jojo44</p>
-        </div>
-      </article>
+<section class="articles">
+  <article class="card" th:each="article : ${articles}">
+    <div class="image"></div>
+    <div class="details">
+      <p>
+        <strong th:text="${article.nomArticle}"></strong>
+        <br />
+        Prix de départ :
+         <span th:text="${article.miseAPrix}"></span>
+        <br />
+        Fin de l'enchère :
+        <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}"></span>
+        
+      </p>
+    </div>
+  </article>
+</section>
 
-      <article class="card">
-        <div class="image"></div>
-        <div class="details">
-          <p><strong>Rocket stove pour riz et pâtes</strong><br />
-          Prix : 185 points<br />
-          Fin de l'enchère : 09/10/2018<br />
-          Retrait : 5 rue des Pinsons<br />
-          44000 Nantes<br />
-          Vendeur : NineJea</p>
-        </div>
-      </article>
-    </section>
+   
     
   </main>
 </body>

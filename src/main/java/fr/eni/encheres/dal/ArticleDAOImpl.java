@@ -26,6 +26,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private static final String SELECT_BY_ID="SELECT * FROM ARTICLES WHERE idArticle = :id";
 	private static final String SELECT_BY_CATEGORIE =  "SELECT * FROM ARTICLES WHERE idCategorie = :idCategorie";
 	private static final String SELECT_BY_UTILISATEUR ="SELECT * FROM ARTICLES WHERE idUtilisateur = :idUtilisateur";
+	private static final String SELECT_ALL = "SELECT * FROM ARTICLES";
 
 	
 	@Autowired
@@ -60,8 +61,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 	@Override
 	public List<Article> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query(SELECT_ALL, new ArticleRowMapper());
 	}
 
 	@Override
@@ -108,6 +108,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 			a.setIdArticle(rs.getInt("idArticle"));
 			a.setNomArticle(rs.getString("nomArticle"));
 			a.setDescription(rs.getString("description"));
+			a.setMiseAPrix(rs.getInt("miseAPrix"));
+			a.setPrixVente(rs.getInt("prixVente"));
+			a.setEtatVente(rs.getString("etatVente"));
 			a.setDateDebutEncheres(rs.getTimestamp("dateDebutEncheres").toLocalDateTime());
 			a.setDateFinEncheres(rs.getTimestamp("dateFinEncheres").toLocalDateTime());
 

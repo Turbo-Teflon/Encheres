@@ -17,8 +17,8 @@ public class CategorieServiceImpl implements CategorieService {
 	
 	@Override
 	public List<Categorie> selectAll() {
-		categorieDAO.selectAll();
-		return null;
+		return categorieDAO.selectAll();
+		
 	}
 
 	@Override
