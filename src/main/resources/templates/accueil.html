@@ -4,6 +4,10 @@
   <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
   <body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'">
 
+  <nav class="top-right-nav">
+    <a href="/test/creer-compte">S'inscrire</a>
+    <a href="/test/connexion">Se connecter</a>
+  </nav>
  <header th:replace="~{fragments/fragment-entete :: entete}"></header>
 
   <main>
@@ -12,10 +16,13 @@
   <h2>Filtres :</h2>
   <form method="get" th:action="@{/encheres/filtrer}">
     <label for="categorie">Catégories</label>
-    <select id="categorie" name="categorie">
-      <option value="">Toutes</option>
-      <!-- Autres catégories -->
-    </select>
+   <select id="categorie" name="categorie">
+  <option value="" th:selected="${categorie == null}">Toutes</option>
+  <option th:each="cat : ${categories}"
+          th:value="${cat.id}"
+          th:text="${cat.nom}"
+          th:selected="${categorie == cat.id}">Catégorie</option>
+</select>
 
     <input type="text" placeholder="Le nom de l'article contient" name="nomArticle" />
 

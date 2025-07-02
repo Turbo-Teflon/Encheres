@@ -5,9 +5,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import fr.eni.encheres.bll.UtilisateurService;
+import fr.eni.encheres.dal.CategorieDAO;
+
 @Controller
 @RequestMapping("/test")
 public class PageTestController {
+	
+	private UtilisateurService utilisateurService;
+	private CategorieDAO categorieDAO;
+	
+	public PageTestController (UtilisateurService utilisateurService, CategorieDAO categorieDAO) {
+		this.utilisateurService = utilisateurService;
+		this.categorieDAO=categorieDAO;
+	}
 
 	@GetMapping("/accueil")
 	public String accueil(Model model) {
