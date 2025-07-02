@@ -21,11 +21,23 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			+ "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :credit, :administrateur)";
 
 	private static final String SELECT_BY_ID = "SELECT * FROM UTILISATEURS WHERE id_utilisateur = :id";
+	private static final String SELECT_ALL = "SELECT * FROM UTILISATEURS";
 	private static final String UPDATE = "UPDATE UTILISATEURS SET pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email, telephone = :telephone, rue = :rue, codePostal = :codePostal, ville = :ville, motDePasse = :motDePasse, credit = :credit, administrateur = :administrateur WHERE idUtilisateur = :id";
 	private static final String DELETE = "DELETE FROM UTILISATEURS WHERE idUtilisateur = :id";
+	private static final String SELECT_BY_PSEUDO = "SELECT * FROM UTILISATEURS WHERE WHERE pseudo = :pseudo";
 
-	@Autowired
+
 	private NamedParameterJdbcTemplate jdbcTemplate;
+	
+	
+
+	/**
+	 * @param jdbcTemplate
+	 */
+	public UtilisateurDAOImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+		super();
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
 	@Override
 	public void insert(Utilisateur utilisateur) {
@@ -59,8 +71,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 	@Override
 	public Utilisateur selectByPseudo(String pseudo) {
-		// TODO Auto-generated method stub
-		return null;
+		MapSqlParameterSource map = new MapSqlParameterSource("pseudo", pseudo);
+		return jdbcTemplate.queryForObject(SELECT_BY_PSEUDO, map, new UtilisateurRowMapper());
 	}
 
 	@Override
@@ -71,8 +83,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	
 	@Override
 	public List<Utilisateur> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return jdbcTemplate.query(SELECT_ALL, new UtilisateurRowMapper());
 	}
 
 
