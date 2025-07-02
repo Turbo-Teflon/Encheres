@@ -136,12 +136,13 @@ public class Utilisateur {
 		this.encheres = encheres;
 	}
 
-	public void setMain(String string) {
-		
-		
-	}
-
-    
+	@Override
+	public String toString() {
+		return String.format(
+				"Utilisateur [idUtilisateur=%s, pseudo=%s, nom=%s, prenom=%s, email=%s, telephone=%s, rue=%s, codePostal=%s, ville=%s, motDePasse=%s, credit=%s, administrateur=%s, articles=%s, encheres=%s, main=%s]",
+				idUtilisateur, pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse, credit,
+				administrateur, articles, encheres, main);
+	}	 
     
 }
 

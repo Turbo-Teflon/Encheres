@@ -1,0 +1,65 @@
+package fr.eni.encheres.bll;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.UtilisateurDAO;
+
+@Service
+public class UtilisateurServiceImpl implements UtilisateurService {
+	private UtilisateurDAO utilisateurDAO;
+	
+	public UtilisateurServiceImpl (UtilisateurDAO utilisateurDAO) {
+		this.utilisateurDAO = utilisateurDAO;
+	}
+	
+	@Override
+	public void insert(Utilisateur utilisateur) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Utilisateur selectById(int id) {
+		return utilisateurDAO.selectById(id);
+	}
+
+	@Override
+	public Utilisateur selectByPseudo(String pseudo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Utilisateur selectByEmail(String email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Utilisateur> selectAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void update(Utilisateur utilisateur) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Utilisateur login(String identifiant, String motDePasse) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
