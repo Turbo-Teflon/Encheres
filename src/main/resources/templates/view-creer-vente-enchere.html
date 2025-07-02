@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
+  <body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'">
+
+  <div class="container">
+    <h1>Vendre un article</h1>
+
+    <form action="/vendre" method="post">
+      <div class="form-group">
+        <label for="article">Nom de l'article :</label>
+        <input type="text" id="article" name="article" required />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description :</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="categorie">Catégorie :</label>
+        <select id="categorie" name="categorie" required>
+          <option value="">-- Choisir une catégorie --</option>
+          <option value="informatique">Informatique</option>
+          <option value="maison">Maison</option>
+          <!-- Autres options -->
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="prix">Mise à prix :</label>
+        <input type="number" id="prix" name="prix" required />
+      </div>
+
+      <div class="form-group">
+        <label for="debut">Début de l'enchère :</label>
+        <input type="date" id="debut" name="debut" required />
+      </div>
+
+      <div class="form-group">
+        <label for="fin">Fin de l'enchère :</label>
+        <input type="date" id="fin" name="fin" required />
+      </div>
+
+      <div class="form-group">
+        <label for="rue">Rue :</label>
+        <input type="text" id="rue" name="rue" required />
+      </div>
+
+      <div class="form-group">
+        <label for="codePostal">Code postal :</label>
+        <input type="text" id="codePostal" name="codePostal" required />
+      </div>
+
+      <div class="form-group">
+        <label for="ville">Ville :</label>
+        <input type="text" id="ville" name="ville" required />
+      </div>
+
+      <div class="buttons">
+        <button type="submit">Créer la vente</button>
+        <button type="reset">Annuler</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

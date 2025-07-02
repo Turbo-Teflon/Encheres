@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
+  <body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'">
+
+  <div class="container">
+    <h1>ENI-Enchères</h1>
+    <h2>Créer un compte</h2>
+    <form action="/creer-compte" method="post">
+      <div class="form-group">
+        <label for="pseudo">Pseudo :</label>
+        <input type="text" id="pseudo" name="pseudo" required />
+      </div>
+
+      <div class="form-group">
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" name="nom" required />
+      </div>
+
+      <div class="form-group">
+        <label for="prenom">Prénom :</label>
+        <input type="text" id="prenom" name="prenom" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email :</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="telephone">Téléphone :</label>
+        <input type="tel" id="telephone" name="telephone" />
+      </div>
+
+      <div class="form-group">
+        <label for="rue">Rue :</label>
+        <input type="text" id="rue" name="rue" />
+      </div>
+
+      <div class="form-group">
+        <label for="codePostal">Code postal :</label>
+        <input type="text" id="codePostal" name="codePostal" />
+      </div>
+
+      <div class="form-group">
+        <label for="ville">Ville :</label>
+        <input type="text" id="ville" name="ville" />
+      </div>
+
+      <div class="form-group">
+        <label for="motDePasse">Mot de passe :</label>
+        <input type="password" id="motDePasse" name="motDePasse" required />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmation">Confirmation :</label>
+        <input type="password" id="confirmation" name="confirmation" required />
+      </div>
+
+      <div class="buttons">
+        <button type="submit">Créer</button>
+        <button type="reset">Annuler</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

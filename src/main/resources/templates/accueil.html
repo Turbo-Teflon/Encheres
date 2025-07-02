@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
+  <body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'">
+
+ <header th:replace="~{fragments/fragment-entete :: entete}"></header>
+
+  <main>
+ 
+    <section class="filtres">
+  <h2>Filtres :</h2>
+  <form method="get" th:action="@{/encheres/filtrer}">
+    <label for="categorie">Catégories</label>
+    <select id="categorie" name="categorie">
+      <option value="">Toutes</option>
+      <!-- Autres catégories -->
+    </select>
+
+    <input type="text" placeholder="Le nom de l'article contient" name="nomArticle" />
+
+    <button type="submit">Rechercher</button>
+  </form>
+</section>
+
+    <section class="articles">
+      <article class="card">
+        <div class="image"></div>
+        <div class="details">
+          <p><strong>PC Gamer pour travailler</strong><br />
+          Prix : 210 points - Classement : 2<br />
+          Fin de l'enchère : 10/08/2018<br />
+          Retrait : 10 allée des Alouettes<br />
+          44800 Saint Herblain<br />
+          Vendeur : jojo44</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="image"></div>
+        <div class="details">
+          <p><strong>Rocket stove pour riz et pâtes</strong><br />
+          Prix : 185 points<br />
+          Fin de l'enchère : 09/10/2018<br />
+          Retrait : 5 rue des Pinsons<br />
+          44000 Nantes<br />
+          Vendeur : NineJea</p>
+        </div>
+      </article>
+    </section>
+    
+  </main>
+</body>
+</html>

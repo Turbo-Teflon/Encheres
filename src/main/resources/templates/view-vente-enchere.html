@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
+  <body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'">
+
+ <header th:replace="~{fragments/fragment-entete :: entete}"></header>
+
+  <main>
+    <section class="filtres">
+      <div class="radio-group">
+        <label><input type="radio" name="filtre" checked /> Mes ventes en cours</label>
+        <label><input type="radio" name="filtre" /> Ventes terminées</label>
+      </div>
+
+      <button onclick="location.href='view-creer-vente-enchere.html'">Vendre un article</button>
+    </section>
+
+    <section class="articles">
+      <article class="card">
+        <div class="image"></div>
+        <div class="details">
+          <p><strong>PC Gamer</strong><br />
+          Mise à prix : 100 pts<br />
+          Meilleure offre : 210 pts<br />
+          Fin : 10/08/2018<br />
+          Acheteur actuel : NineJea</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="image"></div>
+        <div class="details">
+          <p><strong>Rocket Stove</strong><br />
+          Mise à prix : 80 pts<br />
+          Aucune offre<br />
+          Fin : 12/08/2018<br />
+          Acheteur actuel : -</p>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

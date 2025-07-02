@@ -1,0 +1,152 @@
+package fr.eni.encheres.bo;
+
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+public class Article {
+
+
+    private int idArticle;
+    private String nomArticle;
+    private String description;
+    private LocalDateTime dateDebutEncheres;
+    private LocalDateTime dateFinEncheres;
+    private Integer miseAPrix;
+    private Integer prixVente;
+    private String etatVente;
+    private Utilisateur utilisateur;
+    private Categorie categorie;
+    private Retrait retrait;
+    private List<Enchere> encheres;
+    
+    
+	public Article() {
+		super();
+	}
+
+
+	public int getIdArticle() {
+		return idArticle;
+	}
+
+
+	public void setIdArticle(int idArticle) {
+		this.idArticle = idArticle;
+	}
+
+
+	public String getNomArticle() {
+		return nomArticle;
+	}
+
+
+	public void setNomArticle(String nomArticle) {
+		this.nomArticle = nomArticle;
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	public LocalDateTime getDateDebutEncheres() {
+		return dateDebutEncheres;
+	}
+
+
+	public void setDateDebutEncheres(LocalDateTime dateDebutEncheres) {
+		this.dateDebutEncheres = dateDebutEncheres;
+	}
+
+
+	public LocalDateTime getDateFinEncheres() {
+		return dateFinEncheres;
+	}
+
+
+	public void setDateFinEncheres(LocalDateTime dateFinEncheres) {
+		this.dateFinEncheres = dateFinEncheres;
+	}
+
+
+	public Integer getMiseAPrix() {
+		return miseAPrix;
+	}
+
+
+	public void setMiseAPrix(Integer miseAPrix) {
+		this.miseAPrix = miseAPrix;
+	}
+
+
+	public Integer getPrixVente() {
+		return prixVente;
+	}
+
+
+	public void setPrixVente(Integer prixVente) {
+		this.prixVente = prixVente;
+	}
+
+
+	public String getEtatVente() {
+		return etatVente;
+	}
+
+
+	public void setEtatVente(String etatVente) {
+		this.etatVente = etatVente;
+	}
+
+
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
+
+
+	public Categorie getCategorie() {
+		return categorie;
+	}
+
+
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
+	}
+
+
+	public Retrait getRetrait() {
+		return retrait;
+	}
+
+
+	public void setRetrait(Retrait retrait) {
+		this.retrait = retrait;
+	}
+
+
+	public List<Enchere> getEncheres() {
+		return encheres;
+	}
+
+
+	public void setEncheres(List<Enchere> encheres) {
+		this.encheres = encheres;
+	}
+	
+	
+
+
+}
+

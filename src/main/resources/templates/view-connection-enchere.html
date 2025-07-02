@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
+  <body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'">
+
+  <div class="container">
+    <h1>Connexion</h1>
+
+    <form action="/connexion" method="post">
+      <div class="form-group">
+        <label for="identifiant">Identifiant :</label>
+        <input type="text" id="identifiant" name="identifiant" required />
+      </div>
+
+      <div class="form-group">
+        <label for="motDePasse">Mot de passe :</label>
+        <input type="password" id="motDePasse" name="motDePasse" required />
+      </div>
+
+      <button type="submit">Connexion</button>
+    </form>
+
+    <p class="inscription">
+      Pas encore de compte ?
+      <a href="view-creer-compte-enchere.html">Créer un compte</a>
+    </p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+package fr.eni.encheres.bo;
+
+
+
+import java.time.LocalDateTime;
+
+
+public class Enchere {
+
+    private Utilisateur utilisateur;
+    private Article article;
+    private LocalDateTime dateEnchere;
+    private Integer montantEnchere;
+    
+    
+	public Enchere() {
+
+	}
+
+
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
+
+
+	public Article getArticle() {
+		return article;
+	}
+
+
+	public void setArticle(Article article) {
+		this.article = article;
+	}
+
+
+	public LocalDateTime getDateEnchere() {
+		return dateEnchere;
+	}
+
+
+	public void setDateEnchere(LocalDateTime dateEnchere) {
+		this.dateEnchere = dateEnchere;
+	}
+
+
+	public Integer getMontantEnchere() {
+		return montantEnchere;
+	}
+
+
+	public void setMontantEnchere(Integer montantEnchere) {
+		this.montantEnchere = montantEnchere;
+	}
+
+    
+}
+

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
+  <body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'">
+
+  <div class="container">
+    <h1>Félicitations 🎉</h1>
+
+    <div class="article">
+      <div class="image"></div>
+
+      <div class="infos">
+        <p><strong>Article :</strong> PC Gamer pour travailler</p>
+        <p><strong>Description :</strong> Très bon PC avec RAM 32 Go, SSD 1To</p>
+        <p><strong>Catégorie :</strong> Informatique</p>
+        <p><strong>Vendeur :</strong> jojo44</p>
+        <p><strong>Retrait :</strong> 10 allée des Alouettes<br>44800 Saint Herblain</p>
+        <p><strong>Montant remporté :</strong> 210 points</p>
+      </div>
+    </div>
+
+    <a href="view-achat-enchere.html" class="btn-retour">Retour aux enchères</a>
+  </div>
+</body>
+</html>
