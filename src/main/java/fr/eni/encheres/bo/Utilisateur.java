@@ -136,6 +136,11 @@ public class Utilisateur {
 		this.encheres = encheres;
 	}
 
+	public void setMain(String string) {
+		
+		
+	}
+
     
     
 }
