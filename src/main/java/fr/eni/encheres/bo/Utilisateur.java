@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Utilisateur {
 
-    private int idUtilisateur;
+    private long idUtilisateur;
     private String pseudo;
     private String nom;
     private String prenom;
@@ -15,20 +15,43 @@ public class Utilisateur {
     private String ville;
     private String motDePasse;
     private Integer credit;
-    private Boolean administrateur;
+    private boolean administrateur;
     private List<Article> articles;
     private List<Enchere> encheres;
-    private String main; // "droitier" ou "gaucher"
+    private boolean main; // "droitier" ou "gaucher"
     
 	public Utilisateur() {
 	
 	}
+	
+	
 
-	public int getIdUtilisateur() {
+	public Utilisateur(long idUtilisateur, String pseudo, String nom, String prenom, String email, String telephone,
+			String rue, String codePostal, String ville, String motDePasse, Integer credit, boolean administrateur,
+			boolean main) {
+		super();
+		this.idUtilisateur = idUtilisateur;
+		this.pseudo = pseudo;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.telephone = telephone;
+		this.rue = rue;
+		this.codePostal = codePostal;
+		this.ville = ville;
+		this.motDePasse = motDePasse;
+		this.credit = credit;
+		this.administrateur = administrateur;
+		this.main = main;
+	}
+
+
+
+	public long getIdUtilisateur() {
 		return idUtilisateur;
 	}
 
-	public void setIdUtilisateur(int idUtilisateur) {
+	public void setIdUtilisateur(long idUtilisateur) {
 		this.idUtilisateur = idUtilisateur;
 	}
 
@@ -116,7 +139,7 @@ public class Utilisateur {
 		return administrateur;
 	}
 
-	public void setAdministrateur(Boolean administrateur) {
+	public void setAdministrateur(boolean administrateur) {
 		this.administrateur = administrateur;
 	}
 
@@ -135,6 +158,20 @@ public class Utilisateur {
 	public void setEncheres(List<Enchere> encheres) {
 		this.encheres = encheres;
 	}
+	
+	
+
+	public boolean isMain() {
+		return main;
+	}
+
+
+
+	public void setMain(boolean main) {
+		this.main = main;
+	}
+
+
 
 	@Override
 	public String toString() {

@@ -9,7 +9,7 @@ import java.util.List;
 public class Categorie {
 
 
-    private int idCategorie;
+    private long idCategorie;
     private String libelle;
     private List<Article> articles;
 
@@ -18,12 +18,12 @@ public class Categorie {
 	}
 
 
-	public int getIdCategorie() {
+	public long getIdCategorie() {
 		return idCategorie;
 	}
 
 
-	public void setIdCategorie(int idCategorie) {
+	public void setIdCategorie(long idCategorie) {
 		this.idCategorie = idCategorie;
 	}
 

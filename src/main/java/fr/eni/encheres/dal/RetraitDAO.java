@@ -5,9 +5,9 @@ import fr.eni.encheres.bo.Retrait;
 public interface RetraitDAO {
 	void insert(Retrait retrait);
 
-	Retrait selectByArticle(int idArticle);
+	Retrait selectByArticle(long idArticle);
 
 	void update(Retrait retrait);
 
-	void deleteByArticle(int idArticle);
+	void deleteByArticle(long idArticle);
 }

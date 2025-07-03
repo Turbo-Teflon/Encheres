@@ -7,13 +7,13 @@ import java.util.List;
 public class Article {
 
 
-    private int idArticle;
+    private long idArticle;
     private String nomArticle;
     private String description;
     private LocalDateTime dateDebutEncheres;
     private LocalDateTime dateFinEncheres;
-    private Integer miseAPrix;
-    private Integer prixVente;
+    private int miseAPrix;
+    private int prixVente;
     private String etatVente;
     private Utilisateur utilisateur;
     private Categorie categorie;
@@ -26,12 +26,12 @@ public class Article {
 	}
 
 
-	public int getIdArticle() {
+	public long getIdArticle() {
 		return idArticle;
 	}
 
 
-	public void setIdArticle(int idArticle) {
+	public void setIdArticle(long idArticle) {
 		this.idArticle = idArticle;
 	}
 
@@ -76,22 +76,22 @@ public class Article {
 	}
 
 
-	public Integer getMiseAPrix() {
+	public int getMiseAPrix() {
 		return miseAPrix;
 	}
 
 
-	public void setMiseAPrix(Integer miseAPrix) {
+	public void setMiseAPrix(int miseAPrix) {
 		this.miseAPrix = miseAPrix;
 	}
 
 
-	public Integer getPrixVente() {
+	public int getPrixVente() {
 		return prixVente;
 	}
 
 
-	public void setPrixVente(Integer prixVente) {
+	public void setPrixVente(int prixVente) {
 		this.prixVente = prixVente;
 	}
 

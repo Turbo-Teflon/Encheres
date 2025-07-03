@@ -10,13 +10,13 @@ public interface EnchereDAO {
 	
 	void insert(Enchere enchere);
 
-	List<Enchere> selectByArticle(int idArticle);
+	List<Enchere> selectByArticle(long idArticle);
 
-	List<Enchere> selectByUtilisateur(int idUtilisateur);
+	List<Enchere> selectByUtilisateur(long idUtilisateur);
 
-	Enchere selectBestByArticle(int idArticle);
+	Enchere selectBestByArticle(long idArticle);
 
-	void deleteByArticle(int idArticle);
+	void deleteByArticle(long idArticle);
 	
 
 	
