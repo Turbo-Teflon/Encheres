@@ -22,7 +22,7 @@ public class CategorieServiceImpl implements CategorieService {
 	}
 
 	@Override
-	public Categorie selectById(int id) {
+	public Categorie selectById(long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

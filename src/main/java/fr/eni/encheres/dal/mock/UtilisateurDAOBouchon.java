@@ -29,7 +29,7 @@ public class UtilisateurDAOBouchon implements UtilisateurDAO{
 	    u1.setMotDePasse("mdpEric");
 	    u1.setCredit(100);
 	    u1.setAdministrateur(false);
-	    u1.setMain("droitière");
+	    u1.setMain(true);
 
 	    Utilisateur u2 = new Utilisateur();
 	    u2.setIdUtilisateur(2);
@@ -44,7 +44,7 @@ public class UtilisateurDAOBouchon implements UtilisateurDAO{
 	    u2.setMotDePasse("mdpVictoria");
 	    u2.setCredit(100);
 	    u2.setAdministrateur(false);
-	    u2.setMain("gaucher");
+	    u2.setMain(false);
 
 	    Utilisateur u3 = new Utilisateur();
 	    u3.setIdUtilisateur(3);
@@ -59,7 +59,7 @@ public class UtilisateurDAOBouchon implements UtilisateurDAO{
 	    u3.setMotDePasse("super69");
 	    u3.setCredit(100);
 	    u3.setAdministrateur(false);
-	    u3.setMain("droitier");
+	    u3.setMain(true);
 
 	    lstUtilisateur.add(u1);
 	    lstUtilisateur.add(u2);
@@ -84,8 +84,8 @@ public class UtilisateurDAOBouchon implements UtilisateurDAO{
 	    }
 
 	    // Génération de l’ID
-	    int maxId = lstUtilisateur.stream()
-	            .mapToInt(Utilisateur::getIdUtilisateur)
+	    long maxId = lstUtilisateur.stream()
+	            .mapToLong(Utilisateur::getIdUtilisateur)
 	            .max()
 	            .orElse(0);
 
@@ -94,7 +94,7 @@ public class UtilisateurDAOBouchon implements UtilisateurDAO{
 	}
 
 	@Override
-	public Utilisateur selectById(int id) {
+	public Utilisateur selectById(long id) {
 		// On impose la casse pour éviter toute confusion (ex: "DUDU" ≠ "dudu")
 	    // Lève une exception si aucun utilisateur trouvé		
 	    return lstUtilisateur.stream()
@@ -141,7 +141,7 @@ public class UtilisateurDAOBouchon implements UtilisateurDAO{
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 	    boolean removed = lstUtilisateur.removeIf(u -> u.getIdUtilisateur() == id);
 	    if (!removed) {
 	        throw new RuntimeException("Utilisateur à supprimer non trouvé : id " + id);

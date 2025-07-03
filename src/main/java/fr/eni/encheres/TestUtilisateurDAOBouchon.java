@@ -27,7 +27,7 @@ public class TestUtilisateurDAOBouchon {
         nouveau.setMotDePasse("gueudinPower");
         nouveau.setCredit(500);
         nouveau.setAdministrateur(false);
-        nouveau.setMain("droitier");
+        nouveau.setMain(true);
 
         dao.insert(nouveau);
 
@@ -65,7 +65,7 @@ public class TestUtilisateurDAOBouchon {
             doublon.setVille("Testville");
             doublon.setCredit(100);
             doublon.setAdministrateur(false);
-            doublon.setMain("droitier");
+            doublon.setMain(true);
 
             dao.insert(doublon);
 
@@ -88,7 +88,7 @@ public class TestUtilisateurDAOBouchon {
             doublonEmail.setVille("Testville");
             doublonEmail.setCredit(100);
             doublonEmail.setAdministrateur(false);
-            doublonEmail.setMain("gaucher");
+            doublonEmail.setMain(false);
 
             dao.insert(doublonEmail);
 

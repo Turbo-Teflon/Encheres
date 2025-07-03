@@ -7,7 +7,7 @@ import fr.eni.encheres.bo.Utilisateur;
 public interface UtilisateurService {
 	void insert(Utilisateur utilisateur);
 
-	Utilisateur selectById(int id);
+	Utilisateur selectById(long id);
 
 	Utilisateur selectByPseudo(String pseudo);
 
@@ -17,7 +17,7 @@ public interface UtilisateurService {
 
 	void update(Utilisateur utilisateur);
 
-	void delete(int id);
+	void delete(long id);
 
 	Utilisateur login(String identifiant, String motDePasse);
 }

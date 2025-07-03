@@ -26,21 +26,21 @@ public class RetraitDAOImpl implements RetraitDAO {
 
 	@Override
 	public void insert(Retrait retrait) {
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("idArticle", retrait.getArticle().getIdArticle());
-		params.addValue("rue", retrait.getRue());
-		params.addValue("codePostal", retrait.getCodePostal());
-		params.addValue("ville", retrait.getVille());
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("idArticle", retrait.getArticle().getIdArticle());
+		map.addValue("rue", retrait.getRue());
+		map.addValue("codePostal", retrait.getCodePostal());
+		map.addValue("ville", retrait.getVille());
 
-		jdbcTemplate.update(INSERT, params);
+		jdbcTemplate.update(INSERT, map);
 	}
 
 	@Override
-	public Retrait selectByArticle(int idArticle) {
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("idArticle", idArticle);
+	public Retrait selectByArticle(long idArticle) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("idArticle", idArticle);
 
-		return jdbcTemplate.queryForObject(SELECT_BY_ARTICLE, params, new RetraitRowMapper());
+		return jdbcTemplate.queryForObject(SELECT_BY_ARTICLE, map, new RetraitRowMapper());
 	}
 	
 	@Override
@@ -50,7 +50,7 @@ public class RetraitDAOImpl implements RetraitDAO {
 	}
 
 	@Override
-	public void deleteByArticle(int idArticle) {
+	public void deleteByArticle(long idArticle) {
 		// TODO Auto-generated method stub
 		
 	}

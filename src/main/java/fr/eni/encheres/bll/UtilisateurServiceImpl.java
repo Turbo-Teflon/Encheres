@@ -22,7 +22,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 	@Override
-	public Utilisateur selectById(int id) {
+	public Utilisateur selectById(long id) {
 		return utilisateurDAO.selectById(id);
 	}
 
@@ -51,7 +51,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		// TODO Auto-generated method stub
 		
 	}

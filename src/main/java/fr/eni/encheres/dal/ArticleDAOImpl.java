@@ -47,13 +47,13 @@ public class ArticleDAOImpl implements ArticleDAO {
 		
 		if(keyHolder != null && keyHolder.getKey() != null) {
 			
-			article.setIdArticle(keyHolder.getKey().intValue());
+			article.setIdArticle(keyHolder.getKey().longValue());
 		}
 		
 	}
 
 	@Override
-	public Article selectById(int id) {
+	public Article selectById(long id) {
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		mapSqlParameterSource.addValue("id", id);
 		return jdbcTemplate.queryForObject(SELECT_BY_ID, mapSqlParameterSource, new ArticleRowMapper());
@@ -65,7 +65,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 
 	@Override
-	public List<Article> selectByCategorie(int idCategorie) {
+	public List<Article> selectByCategorie(long idCategorie) {
 	    MapSqlParameterSource map = new MapSqlParameterSource();
 	    map.addValue("idCategorie", idCategorie);
 
@@ -74,7 +74,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 
 	@Override
-	public List<Article> selectByUtilisateur(int idUtilisateur) {
+	public List<Article> selectByUtilisateur(long idUtilisateur) {
 	    MapSqlParameterSource params = new MapSqlParameterSource();
 	    params.addValue("idUtilisateur", idUtilisateur);
 
@@ -88,7 +88,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -105,7 +105,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		@Override
 		public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Article a = new Article();
-			a.setIdArticle(rs.getInt("idArticle"));
+			a.setIdArticle(rs.getLong("idArticle"));
 			a.setNomArticle(rs.getString("nomArticle"));
 			a.setDescription(rs.getString("description"));
 			a.setMiseAPrix(rs.getInt("miseAPrix"));
@@ -116,12 +116,12 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 			
 			Utilisateur util = new Utilisateur();
-			util.setIdUtilisateur(rs.getInt("idUtilisateur"));
+			util.setIdUtilisateur(rs.getLong("idUtilisateur"));
 			a.setUtilisateur(util);
 
 			
 			Categorie cat = new Categorie();
-			cat.setIdCategorie(rs.getInt("idCategorie"));
+			cat.setIdCategorie(rs.getLong("idCategorie"));
 			a.setCategorie(cat);
 
 			return a;
