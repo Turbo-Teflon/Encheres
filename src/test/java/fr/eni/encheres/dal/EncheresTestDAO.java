@@ -37,6 +37,8 @@ public class EncheresTestDAO {
 	void test02_findDeleteInsertFind() {
 		List<Utilisateur> users = utilisateurDAO.selectAll();
 		Utilisateur u =  users.get(users.size()-1);
-		//TODO finir cette foutue classe de test
+		utilisateurDAO.delete(u.getIdUtilisateur());
+		
+		
 	}
 }
