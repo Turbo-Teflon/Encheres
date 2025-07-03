@@ -42,6 +42,9 @@
         <br />
         Fin de l'enchère :
         <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}"></span>
+         <br />
+        Vendeur :
+         <span th:text="${article.utilisateur.nom}"></span>
         
       </p>
     </div>

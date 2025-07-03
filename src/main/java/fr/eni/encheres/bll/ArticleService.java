@@ -20,4 +20,6 @@ public interface ArticleService {
 	void delete(long id);
 
 	List<Article> selectEnCours();
+	
+	void selectVendeur(Article article);
 }

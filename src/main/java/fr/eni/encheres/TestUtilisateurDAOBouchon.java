@@ -1,4 +1,4 @@
-package fr.eni.encheres;
+/*package fr.eni.encheres;
 
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.mock.UtilisateurDAOBouchon;
@@ -119,4 +119,4 @@ public class TestUtilisateurDAOBouchon {
         System.out.println(victoria.getPrenom() + " " + victoria.getNom());
     }
     
-}
+}*/

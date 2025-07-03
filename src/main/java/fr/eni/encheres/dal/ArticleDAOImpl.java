@@ -27,6 +27,8 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private static final String SELECT_BY_CATEGORIE =  "SELECT * FROM ARTICLES WHERE idCategorie = :idCategorie";
 	private static final String SELECT_BY_UTILISATEUR ="SELECT * FROM ARTICLES WHERE idUtilisateur = :idUtilisateur";
 	private static final String SELECT_ALL = "SELECT * FROM ARTICLES";
+//	private static final String SELECT_ALL = "SELECT *, u.pseudo as pseudoUtilisateur FROM ARTICLES a INNER JOIN UTILISATEURS u on a.idUtilisateur = u.idUtilisateur";
+	
 
 	
 	@Autowired

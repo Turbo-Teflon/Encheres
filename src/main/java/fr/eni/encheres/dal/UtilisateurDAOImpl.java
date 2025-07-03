@@ -20,7 +20,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private static final String INSERT = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse, credit, administrateur) "
 			+ "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :credit, :administrateur)";
 
-	private static final String SELECT_BY_ID = "SELECT * FROM UTILISATEURS WHERE id_utilisateur = :id";
+	private static final String SELECT_BY_ID = "SELECT * FROM UTILISATEURS WHERE idUtilisateur = :id";
 	private static final String SELECT_ALL = "SELECT * FROM UTILISATEURS";
 	private static final String UPDATE = "UPDATE UTILISATEURS SET pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email, telephone = :telephone, rue = :rue, codePostal = :codePostal, ville = :ville, motDePasse = :motDePasse, credit = :credit, administrateur = :administrateur WHERE idUtilisateur = :id";
 	private static final String DELETE = "DELETE FROM UTILISATEURS WHERE idUtilisateur = :id";
