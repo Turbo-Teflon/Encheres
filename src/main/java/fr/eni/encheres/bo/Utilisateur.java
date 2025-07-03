@@ -135,6 +135,16 @@ public class Utilisateur {
 	public void setEncheres(List<Enchere> encheres) {
 		this.encheres = encheres;
 	}
+	
+	
+
+	public String getMain() {
+		return main;
+	}
+
+	public void setMain(String main) {
+		this.main = main;
+	}
 
 	@Override
 	public String toString() {
