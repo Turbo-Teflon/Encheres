@@ -8,7 +8,7 @@ public interface UtilisateurDAO {
 	
 	void insert(Utilisateur utilisateur);
 
-	Utilisateur selectById(int id);
+	Utilisateur selectById(long id);
 
 	Utilisateur selectByPseudo(String pseudo);
 
@@ -17,9 +17,11 @@ public interface UtilisateurDAO {
 	List<Utilisateur> selectAll();
 
 	void update(Utilisateur utilisateur);
-
-	void delete(int id);
-
+	
 	Utilisateur login(String identifiant, String motDePasse);
+	
+	void delete(long id);
+
+
 	
 }

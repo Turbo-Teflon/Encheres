@@ -7,5 +7,5 @@ import fr.eni.encheres.bo.Categorie;
 public interface CategorieService {
 	List<Categorie> selectAll();
 
-	Categorie selectById(int id);
+	Categorie selectById(long id);
 }

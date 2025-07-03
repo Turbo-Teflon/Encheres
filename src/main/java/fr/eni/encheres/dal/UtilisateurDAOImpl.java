@@ -59,12 +59,12 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		
 		if(keyHolder != null && keyHolder.getKey() != null) {
 			
-			utilisateur.setIdUtilisateur(keyHolder.getKey().intValue());
+			utilisateur.setIdUtilisateur(keyHolder.getKey().longValue());
 		}
 	}
 
 	@Override
-	public Utilisateur selectById(int id) {
+	public Utilisateur selectById(long id) {
 		MapSqlParameterSource map = new MapSqlParameterSource("id", id);
 		return jdbcTemplate.queryForObject(SELECT_BY_ID, map, new UtilisateurRowMapper());
 	}
@@ -108,7 +108,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		MapSqlParameterSource map = new MapSqlParameterSource("id", id);
 		jdbcTemplate.update(DELETE, map);
 	}
@@ -140,9 +140,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		}
 	}
 
-
-
-
-
+	
 
 }

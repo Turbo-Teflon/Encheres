@@ -22,7 +22,7 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public Article selectById(int id) {
+	public Article selectById(long id) {
 		return articleDAO.selectById(id);
 	}
 
@@ -32,13 +32,13 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public List<Article> selectByCategorie(int idCategorie) {
+	public List<Article> selectByCategorie(long idCategorie) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Article> selectByUtilisateur(int idUtilisateur) {
+	public List<Article> selectByUtilisateur(long idUtilisateur) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -50,7 +50,7 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		// TODO Auto-generated method stub
 		
 	}

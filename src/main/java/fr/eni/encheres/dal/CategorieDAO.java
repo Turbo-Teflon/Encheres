@@ -8,5 +8,5 @@ public interface CategorieDAO {
 	
 	List<Categorie> selectAll();
 
-	Categorie selectById(int id);
+	Categorie selectById(long id);
 }

@@ -44,28 +44,28 @@ public class EnchereDAOImpl implements EnchereDAO {
 	}
 
 	@Override
-	public List<Enchere> selectByArticle(int idArticle) {
+	public List<Enchere> selectByArticle(long idArticle) {
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("idArticle", idArticle);
 		return jdbcTemplate.query(SELECT_BY_ARTICLE, map, new EnchereRowMapper());
 	}
 
 	@Override
-	public List<Enchere> selectByUtilisateur(int idUtilisateur) {
+	public List<Enchere> selectByUtilisateur(long idUtilisateur) {
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("idUtilisateur", idUtilisateur);
 		return jdbcTemplate.query(SELECT_BY_UTILISATEUR, map, new EnchereRowMapper());
 	}
 
 	@Override
-	public Enchere selectBestByArticle(int idArticle) {
+	public Enchere selectBestByArticle(long idArticle) {
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("idArticle", idArticle);
 		return jdbcTemplate.queryForObject(SELECT_BEST_BY_ARTICLE, map, new EnchereRowMapper());
 	}
 
 	@Override
-	public void deleteByArticle(int idArticle) {
+	public void deleteByArticle(long idArticle) {
 		// TODO Auto-generated method stub
 		
 	}

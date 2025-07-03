@@ -31,7 +31,7 @@ public class CategorieDAOImpl implements CategorieDAO {
 
 
 	@Override
-	public Categorie selectById(int id) {
+	public Categorie selectById(long id) {
 	    MapSqlParameterSource map = new MapSqlParameterSource();
 	    map.addValue("idCategorie", id);
 	    
@@ -45,7 +45,7 @@ public class CategorieDAOImpl implements CategorieDAO {
 	    @Override
 	    public Categorie mapRow(ResultSet rs, int rowNum) throws SQLException  {
 	        Categorie c = new Categorie();
-	        c.setIdCategorie(rs.getInt("idCategorie"));
+	        c.setIdCategorie(rs.getLong("idCategorie"));
 	        c.setLibelle(rs.getString("libelle"));
 	        return c;
 	    }

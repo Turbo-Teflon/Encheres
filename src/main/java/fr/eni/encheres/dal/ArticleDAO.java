@@ -8,17 +8,17 @@ public interface ArticleDAO {
 	
 	void insert(Article article);
 
-	Article selectById(int id);
+	Article selectById(long id);
 
 	List<Article> selectAll();
 
-	List<Article> selectByCategorie(int idCategorie);
+	List<Article> selectByCategorie(long idCategorie);
 
-	List<Article> selectByUtilisateur(int idUtilisateur);
+	List<Article> selectByUtilisateur(long idUtilisateur);
 
 	void update(Article article);
 
-	void delete(int id);
+	void delete(long id);
 
 	List<Article> selectEnCours();
 }

@@ -10,7 +10,7 @@ public class Enchere {
     private Utilisateur utilisateur;
     private Article article;
     private LocalDateTime dateEnchere;
-    private Integer montantEnchere;
+    private int montantEnchere;
     
     
 	public Enchere() {
@@ -48,12 +48,12 @@ public class Enchere {
 	}
 
 
-	public Integer getMontantEnchere() {
+	public int getMontantEnchere() {
 		return montantEnchere;
 	}
 
 
-	public void setMontantEnchere(Integer montantEnchere) {
+	public void setMontantEnchere(int montantEnchere) {
 		this.montantEnchere = montantEnchere;
 	}
 
