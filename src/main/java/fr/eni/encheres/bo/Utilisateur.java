@@ -18,7 +18,7 @@ public class Utilisateur {
     private boolean administrateur;
     private List<Article> articles;
     private List<Enchere> encheres;
-    private boolean main; // "droitier" ou "gaucher"
+    private boolean droitier; // "droitier" ou "gaucher"
     
 	public Utilisateur() {
 	
@@ -42,7 +42,7 @@ public class Utilisateur {
 		this.motDePasse = motDePasse;
 		this.credit = credit;
 		this.administrateur = administrateur;
-		this.main = main;
+		this.droitier = main;
 	}
 
 
@@ -161,13 +161,13 @@ public class Utilisateur {
 	
 
 	public boolean isMain() {
-		return main;
+		return droitier;
 	}
 
 
 
 	public void setMain(boolean main) {
-		this.main = main;
+		this.droitier = main;
 	}
 
 
@@ -178,7 +178,7 @@ public class Utilisateur {
 		return String.format(
 				"Utilisateur [idUtilisateur=%s, pseudo=%s, nom=%s, prenom=%s, email=%s, telephone=%s, rue=%s, codePostal=%s, ville=%s, motDePasse=%s, credit=%s, administrateur=%s, articles=%s, encheres=%s, main=%s]",
 				idUtilisateur, pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse, credit,
-				administrateur, articles, encheres, main);
+				administrateur, articles, encheres, droitier);
 	}	 
     
 }
