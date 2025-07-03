@@ -30,7 +30,7 @@ public class EncheresTestDAO {
 		List<Utilisateur> users = utilisateurDAO.selectAll();
 		assertNotNull(users);
 		assertEquals(count, users.size());
-		logger.info("Select All");
+		logger.info(" test 01 - Select All");
 		users.forEach(e -> logger.info(e));
 	}
 	
@@ -39,7 +39,7 @@ public class EncheresTestDAO {
 		List<Utilisateur> users = utilisateurDAO.selectAll();
 		Utilisateur u =  users.get(users.size()-1);
 		assertNotNull(u);
-		logger.info("Select All");
+		logger.info("test 02");
 		logger.info(u);
 		int l = utilisateurDAO.delete(u.getIdUtilisateur());
 		assertEquals(1, l);

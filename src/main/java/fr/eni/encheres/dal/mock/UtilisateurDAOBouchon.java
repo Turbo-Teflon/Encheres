@@ -150,13 +150,4 @@ public class UtilisateurDAOBouchon implements UtilisateurDAO{
 	    return 1;
 	}
 
-	@Override
-	public Utilisateur login(String identifiant, String motDePasse) {		
-		//seul le mot de passe est sensible à la casse, mais pas l’identifiant (volontaire).
-	    return lstUtilisateur.stream()
-	            .filter(u -> (u.getPseudo().equalsIgnoreCase(identifiant) || u.getEmail().equalsIgnoreCase(identifiant))
-	                      && u.getMotDePasse().equals(motDePasse))
-	            .findFirst()
-	            .orElse(null);
-	}
 }

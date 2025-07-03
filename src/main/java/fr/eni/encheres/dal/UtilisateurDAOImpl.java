@@ -118,11 +118,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 
 
-	@Override
-	public Utilisateur login(String identifiant, String motDePasse) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	class UtilisateurRowMapper implements RowMapper<Utilisateur> {
 		@Override

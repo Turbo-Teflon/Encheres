@@ -18,8 +18,6 @@ public interface UtilisateurDAO {
 
 	void update(Utilisateur utilisateur);
 	
-	Utilisateur login(String identifiant, String motDePasse);
-	
 	int delete(long id);
 
 
