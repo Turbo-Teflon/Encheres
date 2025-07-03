@@ -30,13 +30,24 @@ public class EncheresTestDAO {
 		List<Utilisateur> users = utilisateurDAO.selectAll();
 		assertNotNull(users);
 		assertEquals(count, users.size());
-		logger.info("Select All");
+		logger.info(" test 01 - Select All");
 		users.forEach(e -> logger.info(e));
 	}
 	
-	void test02_findDeleteInsertFind() {
+	@Test
+	void test02_findDeleteInsert() {
 		List<Utilisateur> users = utilisateurDAO.selectAll();
 		Utilisateur u =  users.get(users.size()-1);
-		//TODO finir cette foutue classe de test
+		assertNotNull(u);
+		logger.info("test 02");
+		logger.info(u);
+		int l = utilisateurDAO.delete(u.getIdUtilisateur());
+		assertEquals(1, l);
+		l = utilisateurDAO.insert(u);
+		assertEquals(1, l);
+		logger.info(u);
+		
+		
+		
 	}
 }

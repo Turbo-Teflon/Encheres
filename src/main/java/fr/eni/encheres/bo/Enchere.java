@@ -57,6 +57,23 @@ public class Enchere {
 		this.montantEnchere = montantEnchere;
 	}
 
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Enchere [utilisateur=");
+		builder.append(utilisateur);
+		builder.append(", article=");
+		builder.append(article);
+		builder.append(", dateEnchere=");
+		builder.append(dateEnchere);
+		builder.append(", montantEnchere=");
+		builder.append(montantEnchere);
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	
     
 }
 
