@@ -66,7 +66,7 @@ public class UtilisateurDAOBouchon implements UtilisateurDAO{
 	    lstUtilisateur.add(u3);
 	}
 	@Override
-	public void insert(Utilisateur utilisateur) {
+	public int insert(Utilisateur utilisateur) {
 	    // Vérifier doublon pseudo
 	    boolean pseudoExiste = lstUtilisateur.stream()
 	            .anyMatch(u -> u.getPseudo().equals(utilisateur.getPseudo()));
@@ -91,6 +91,7 @@ public class UtilisateurDAOBouchon implements UtilisateurDAO{
 
 	    utilisateur.setIdUtilisateur(maxId + 1);
 	    lstUtilisateur.add(utilisateur);
+	    return 1;
 	}
 
 	@Override
@@ -141,11 +142,12 @@ public class UtilisateurDAOBouchon implements UtilisateurDAO{
 	}
 
 	@Override
-	public void delete(long id) {
+	public int delete(long id) {
 	    boolean removed = lstUtilisateur.removeIf(u -> u.getIdUtilisateur() == id);
 	    if (!removed) {
 	        throw new RuntimeException("Utilisateur à supprimer non trouvé : id " + id);
 	    }
+	    return 1;
 	}
 
 	@Override

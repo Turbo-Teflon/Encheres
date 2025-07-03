@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -15,12 +15,14 @@ import org.springframework.stereotype.Repository;
 import fr.eni.encheres.bo.Utilisateur;
 
 @Repository
+@Primary
 public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 	private static final String INSERT = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse, credit, administrateur) "
 			+ "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :credit, :administrateur)";
 
 	private static final String SELECT_BY_ID = "SELECT * FROM UTILISATEURS WHERE id_utilisateur = :id";
+	private static final String SELECT_BY_EMAIL = "SELECT * FROM UTILISATEURS WHERE email = :email";
 	private static final String SELECT_ALL = "SELECT * FROM UTILISATEURS";
 	private static final String UPDATE = "UPDATE UTILISATEURS SET pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email, telephone = :telephone, rue = :rue, codePostal = :codePostal, ville = :ville, motDePasse = :motDePasse, credit = :credit, administrateur = :administrateur WHERE idUtilisateur = :id";
 	private static final String DELETE = "DELETE FROM UTILISATEURS WHERE idUtilisateur = :id";
@@ -40,7 +42,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public void insert(Utilisateur utilisateur) {
+	public int insert(Utilisateur utilisateur) {
+		int nbLigne;
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("pseudo", utilisateur.getPseudo());
 		map.addValue("nom", utilisateur.getNom());
@@ -55,12 +58,13 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		map.addValue("administrateur", utilisateur.isAdministrateur());
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		jdbcTemplate.update(INSERT, map, keyHolder);
+		nbLigne = jdbcTemplate.update(INSERT, map, keyHolder);
 		
 		if(keyHolder != null && keyHolder.getKey() != null) {
 			
 			utilisateur.setIdUtilisateur(keyHolder.getKey().longValue());
 		}
+		return nbLigne;
 	}
 
 	@Override
@@ -77,8 +81,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 	@Override
 	public Utilisateur selectByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		MapSqlParameterSource map = new MapSqlParameterSource("email", email);
+		return jdbcTemplate.queryForObject(SELECT_BY_EMAIL, map, new UtilisateurRowMapper());
 	}
 	
 	@Override
@@ -108,9 +112,9 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public void delete(long id) {
+	public int delete(long id) {
 		MapSqlParameterSource map = new MapSqlParameterSource("id", id);
-		jdbcTemplate.update(DELETE, map);
+		return jdbcTemplate.update(DELETE, map);
 	}
 
 

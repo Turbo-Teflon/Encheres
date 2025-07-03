@@ -34,10 +34,19 @@ public class EncheresTestDAO {
 		users.forEach(e -> logger.info(e));
 	}
 	
-	void test02_findDeleteInsertFind() {
+	@Test
+	void test02_findDeleteInsert() {
 		List<Utilisateur> users = utilisateurDAO.selectAll();
 		Utilisateur u =  users.get(users.size()-1);
-		utilisateurDAO.delete(u.getIdUtilisateur());
+		assertNotNull(u);
+		logger.info("Select All");
+		logger.info(u);
+		int l = utilisateurDAO.delete(u.getIdUtilisateur());
+		assertEquals(1, l);
+		l = utilisateurDAO.insert(u);
+		assertEquals(1, l);
+		logger.info(u);
+		
 		
 		
 	}

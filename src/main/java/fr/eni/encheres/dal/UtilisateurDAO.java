@@ -6,7 +6,7 @@ import fr.eni.encheres.bo.Utilisateur;
 
 public interface UtilisateurDAO {
 	
-	void insert(Utilisateur utilisateur);
+	int insert(Utilisateur utilisateur);
 
 	Utilisateur selectById(long id);
 
@@ -20,7 +20,7 @@ public interface UtilisateurDAO {
 	
 	Utilisateur login(String identifiant, String motDePasse);
 	
-	void delete(long id);
+	int delete(long id);
 
 
 	
