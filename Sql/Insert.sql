@@ -22,13 +22,13 @@ VALUES
 ('Électroménager');
 
 INSERT INTO Articles (
-nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixActuel, prixVente, idUtilisateur, idCategorie)
+nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente, idUtilisateur, idCategorie)
 VALUES 
-('Ordinateur portable', 'Laptop Dell 15 pouces', '2025-07-01', '2025-07-07', 300, 300, NULL, 1, 1),
-('Canapé', 'Canapé en cuir 3 places', '2025-07-01', '2025-07-05', 150, 150, NULL, 2, 2),
-('Robe été', 'Robe légère taille M', '2025-07-02', '2025-07-06', 30, 30, NULL, 3, 3),
-('PS5', 'Console Sony avec 2 manettes', '2025-07-03', '2025-07-08', 400, 400, NULL, 4, 4),
-('Micro-ondes', 'Micro-ondes Samsung 25L', '2025-07-01', '2025-07-05', 70, 70, NULL, 5, 5);
+('Ordinateur portable', 'Laptop Dell 15 pouces', '2025-07-01', '2025-07-07', 300, NULL, 1, 1),
+('Canapé', 'Canapé en cuir 3 places', '2025-07-01', '2025-07-05', 150, NULL, 2, 2),
+('Robe été', 'Robe légère taille M', '2025-07-02', '2025-07-06', 30, NULL, 3, 3),
+('PS5', 'Console Sony avec 2 manettes', '2025-07-03', '2025-07-08', 400, NULL, 4, 4),
+('Micro-ondes', 'Micro-ondes Samsung 25L', '2025-07-01', '2025-07-05', 70, NULL, 5, 5);
 
 
 INSERT INTO Retraits (idArticle, rue, codePostal, ville)
