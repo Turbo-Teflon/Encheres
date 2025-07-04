@@ -21,5 +21,11 @@ public interface ArticleService {
 
 	List<Article> selectEnCours();
 	
-	void selectVendeur(Article article);
+	void readVendeurByArticle(Article article);
+	
+	void readBestEnchereByArticle(Article article);
+	
+	List<Article> encheresEnCours();
+	
+	List<Article> selectEncheresEnCoursFiltre(long idCategorie, String nomArticle);
 }

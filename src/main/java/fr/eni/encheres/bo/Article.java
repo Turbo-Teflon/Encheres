@@ -13,6 +13,7 @@ public class Article {
     private LocalDateTime dateDebutEncheres;
     private LocalDateTime dateFinEncheres;
     private int miseAPrix;
+    private int prixActuel;
     private int prixVente;
     private String etatVente;
     private Utilisateur utilisateur;
@@ -22,8 +23,9 @@ public class Article {
     
     
 	public Article() {
-		super();
 	}
+	
+	
 
 
 	public long getIdArticle() {
@@ -143,6 +145,16 @@ public class Article {
 
 	public void setEncheres(List<Enchere> encheres) {
 		this.encheres = encheres;
+	}
+
+
+	public int getPrixActuel() {
+		return prixActuel;
+	}
+
+
+	public void setPrixActuel(int prixActuel) {
+		this.prixActuel = prixActuel;
 	}
 	
 	

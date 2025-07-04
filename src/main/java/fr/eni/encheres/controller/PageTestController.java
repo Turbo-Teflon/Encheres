@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.eni.encheres.bll.ArticleService;
 import fr.eni.encheres.bll.CategorieService;
@@ -13,7 +14,7 @@ import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Categorie;
 
 @Controller
-@RequestMapping("/test")
+
 public class PageTestController {
 	
 	
@@ -32,8 +33,20 @@ public class PageTestController {
 	    model.addAttribute("user", "jojo44");
 	    List<Categorie> categories = categorieService.selectAll();
 	    model.addAttribute("categories", categories);
-	    List<Article> articles = articleService.selectAll(); 
+	    List<Article> articles = articleService.encheresEnCours(); 
 	    model.addAttribute("articles", articles);   
+	    return "accueil";
+	}
+	
+	@GetMapping("/encheres/filtrer")
+	public String filtrer(@RequestParam (name="categorie", defaultValue="0") long categorie, @RequestParam (name="nomArticle", defaultValue = "") String nomArticle, Model model) {
+	    model.addAttribute("user", "jojo44");
+	    List<Categorie> categories = categorieService.selectAll();
+	    model.addAttribute("categories", categories);
+	    List<Article> articles = articleService.selectEncheresEnCoursFiltre(categorie, nomArticle); 
+	    model.addAttribute("articles", articles);
+	    model.addAttribute("nomArticle", nomArticle);
+	    model.addAttribute("categorie", categorie);
 	    return "accueil";
 	}
 

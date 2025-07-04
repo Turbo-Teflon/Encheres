@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.ArticleDAO;
+import fr.eni.encheres.dal.EnchereDAO;
 import fr.eni.encheres.dal.UtilisateurDAO;
 
 
@@ -16,10 +18,12 @@ public class ArticleServiceImpl implements ArticleService {
 
 	private ArticleDAO articleDAO;
 	private UtilisateurDAO utilisateurDAO;
+	private EnchereDAO enchereDAO;
 	
-	public ArticleServiceImpl(ArticleDAO articleDAO, UtilisateurDAO utilisateurDAO) {
+	public ArticleServiceImpl(ArticleDAO articleDAO, UtilisateurDAO utilisateurDAO, EnchereDAO enchereDAO) {
 		this.articleDAO=articleDAO;
 		this.utilisateurDAO=utilisateurDAO;
+		this.enchereDAO=enchereDAO;
 	}
 	@Override
 	public void insert(Article article) {
@@ -39,7 +43,10 @@ public class ArticleServiceImpl implements ArticleService {
 		
 
 		if (articles != null) {
-			articles.forEach(a -> selectVendeur(a));
+			articles.forEach(a -> {
+				readVendeurByArticle(a);
+				readBestEnchereByArticle(a);
+			});
 		}
 		
 		return articles;
@@ -76,10 +83,44 @@ public class ArticleServiceImpl implements ArticleService {
 		return null;
 	}
 	@Override
-	public void selectVendeur(Article article) {
+	public void readVendeurByArticle(Article article) {
 		Utilisateur utilisateur = utilisateurDAO.selectById(article.getUtilisateur().getIdUtilisateur());
 		article.setUtilisateur(utilisateur);
 		
+	}
+	@Override
+	public void readBestEnchereByArticle(Article article) {
+		Enchere bestEnchere = enchereDAO.selectBestByArticle(article.getIdArticle());
+		article.setPrixActuel(bestEnchere.getMontantEnchere());
+		
+	}
+	@Override
+	public List<Article> encheresEnCours() {
+		List<Article> articles = this.articleDAO.selectEncheresEnCours();
+		
+
+		if (articles != null) {
+			articles.forEach(a -> {
+				readVendeurByArticle(a);
+				readBestEnchereByArticle(a);
+			});
+		}
+		
+		return articles;
+	}
+	@Override
+	public List<Article> selectEncheresEnCoursFiltre(long idCategorie, String nomArticle) {
+List<Article> articles = this.articleDAO.selectEncheresEnCoursFiltre(idCategorie, nomArticle);
+		
+
+		if (articles != null) {
+			articles.forEach(a -> {
+				readVendeurByArticle(a);
+				readBestEnchereByArticle(a);
+			});
+		}
+		
+		return articles;
 	}
 	
 

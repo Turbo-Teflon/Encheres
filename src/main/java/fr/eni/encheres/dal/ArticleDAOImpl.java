@@ -27,8 +27,10 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private static final String SELECT_BY_CATEGORIE =  "SELECT * FROM ARTICLES WHERE idCategorie = :idCategorie";
 	private static final String SELECT_BY_UTILISATEUR ="SELECT * FROM ARTICLES WHERE idUtilisateur = :idUtilisateur";
 	private static final String SELECT_ALL = "SELECT * FROM ARTICLES";
-//	private static final String SELECT_ALL = "SELECT *, u.pseudo as pseudoUtilisateur FROM ARTICLES a INNER JOIN UTILISATEURS u on a.idUtilisateur = u.idUtilisateur";
-	
+	private static final String SELECT_ENCHERES_EN_COURS = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE()";
+	private static final String SELECT_ENCHERES_EN_COURS_BY_CATEGORIE = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE() AND idCategorie = :idCategorie";
+	private static final String SELECT_ENCHERES_EN_COURS_FILTRE = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
+
 
 	
 	@Autowired
@@ -111,6 +113,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 			a.setNomArticle(rs.getString("nomArticle"));
 			a.setDescription(rs.getString("description"));
 			a.setMiseAPrix(rs.getInt("miseAPrix"));
+			a.setMiseAPrix(rs.getInt("prixActuel"));
 			a.setPrixVente(rs.getInt("prixVente"));
 			a.setEtatVente(rs.getString("etatVente"));
 			a.setDateDebutEncheres(rs.getTimestamp("dateDebutEncheres").toLocalDateTime());
@@ -129,6 +132,27 @@ public class ArticleDAOImpl implements ArticleDAO {
 			return a;
 		}
 		
+	}
+
+
+	@Override
+	public List<Article> selectEncheresEnCours() {
+		return jdbcTemplate.query(SELECT_ENCHERES_EN_COURS, new ArticleRowMapper());
+	}
+
+//	@Override
+//	public List<Article> selectEncheresEnCoursFiltreCategorie(long idCategorie) {
+//		  MapSqlParameterSource map = new MapSqlParameterSource();
+//		    map.addValue("idCategorie", idCategorie);
+//		return jdbcTemplate.query(SELECT_ENCHERES_EN_COURS_BY_CATEGORIE, map, new ArticleRowMapper());
+//	}
+
+	@Override
+	public List<Article> selectEncheresEnCoursFiltre(long idCategorie, String nomArticle) {
+		  MapSqlParameterSource map = new MapSqlParameterSource();
+		    map.addValue("idCategorie", idCategorie);
+		    map.addValue("nomArticle", "%" + nomArticle + "%");
+		return jdbcTemplate.query(SELECT_ENCHERES_EN_COURS_FILTRE, map, new ArticleRowMapper());
 	}
 	
 	

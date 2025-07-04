@@ -25,7 +25,7 @@ public class EnchereDAOImpl implements EnchereDAO {
 	private static final String SELECT_BY_UTILISATEUR = "SELECT * FROM ENCHERES WHERE idUtilisateur = :idUtilisateur";
 
 	private static final String SELECT_BEST_BY_ARTICLE = 
-	    "SELECT * FROM ENCHERES WHERE idArticle = :idArticle ORDER BY montantEnchere DESC LIMIT 1";
+	    "SELECT TOP 1 * FROM ENCHERES WHERE idArticle = :idArticle ORDER BY montantEnchere DESC";
 
 
 

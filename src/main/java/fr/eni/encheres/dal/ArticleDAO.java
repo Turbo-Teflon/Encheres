@@ -21,4 +21,8 @@ public interface ArticleDAO {
 	void delete(long id);
 
 	List<Article> selectEnCours();
+	
+	List<Article> selectEncheresEnCours();
+	
+	List<Article> selectEncheresEnCoursFiltre(long idCategorie, String nomArticle);
 }
