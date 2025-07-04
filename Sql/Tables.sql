@@ -1,3 +1,5 @@
+USE BDD_Encheres;
+
 IF OBJECT_ID('Encheres', 'U') IS NOT NULL DROP TABLE Encheres;
 IF OBJECT_ID('Retraits', 'U') IS NOT NULL DROP TABLE Retraits;
 IF OBJECT_ID('Articles', 'U') IS NOT NULL DROP TABLE Articles;
@@ -21,7 +23,7 @@ CREATE TABLE Utilisateurs (
 
 CREATE TABLE Categories (
     idCategorie INT PRIMARY KEY IDENTITY(1,1),
-    libelle NVARCHAR(100) NOT NULL
+    libelle VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Articles (
@@ -31,8 +33,9 @@ CREATE TABLE Articles (
     dateDebutEncheres DATETIME,
     dateFinEncheres DATETIME,
     miseAPrix INT,
+    prixActuel INT,
     prixVente INT,
-    etatVente VARCHAR(50),
+    etatVente NVARCHAR(50),
     idUtilisateur INT NOT NULL,
     idCategorie INT NOT NULL,
     FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs(idUtilisateur),
@@ -41,9 +44,9 @@ CREATE TABLE Articles (
 
 CREATE TABLE Retraits (
     idArticle INT PRIMARY KEY,
-    rue VARCHAR(255),
-    codePostal VARCHAR(10),
-    ville VARCHAR(100),
+    rue NVARCHAR(255),
+    codePostal NVARCHAR(10),
+    ville NVARCHAR(100),
     FOREIGN KEY (idArticle) REFERENCES Articles(idArticle)
 );
 
@@ -60,3 +63,5 @@ select * from Encheres;
 select * from Articles;
 
 EXEC sp_help Utilisateurs;
+
+
