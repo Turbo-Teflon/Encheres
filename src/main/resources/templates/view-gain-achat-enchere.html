@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
-  <body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'">
+<head th:replace="~{fragments/fragment-head :: head('Enchères gagnées - ENI-Enchères')}"></head>
+<body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">r'">
 
-  <div class="container">
-    <h1>Félicitations 🎉</h1>
+<div class="container">
+  <h1>Félicitations 🎉</h1>
 
-    <div class="article">
-      <div class="image"></div>
+  <div class="article" th:each="enchere : ${encheres}">
+    <div class="image"></div>
 
-      <div class="infos">
-        <p><strong>Article :</strong> PC Gamer pour travailler</p>
-        <p><strong>Description :</strong> Très bon PC avec RAM 32 Go, SSD 1To</p>
-        <p><strong>Catégorie :</strong> Informatique</p>
-        <p><strong>Vendeur :</strong> jojo44</p>
-        <p><strong>Retrait :</strong> 10 allée des Alouettes<br>44800 Saint Herblain</p>
-        <p><strong>Montant remporté :</strong> 210 points</p>
-      </div>
+    <div class="infos">
+      <p><strong>Article :</strong> <span th:text="${enchere.article.nomArticle}">Nom article</span></p>
+      <p><strong>Description :</strong> <span th:text="${enchere.article.description}">Description</span></p>
+      <p><strong>Catégorie :</strong> <span th:text="${enchere.article.categorie.libelle}">Catégorie</span></p>
+      <p><strong>Vendeur :</strong> <span th:text="${enchere.article.utilisateur.pseudo}">Vendeur</span></p>
+      <p><strong>Retrait :</strong>
+        <span th:text="${enchere.article.retrait.rue}">rue</span><br>
+        <span th:text="${enchere.article.retrait.codePostal}">CP</span>
+        <span th:text="${enchere.article.retrait.ville}">ville</span>
+      </p>
+      <p><strong>Montant remporté :</strong> <span th:text="${enchere.montantEnchere}">0</span> points</p>
     </div>
-
-    <a href="view-achat-enchere.html" class="btn-retour">Retour aux enchères</a>
   </div>
+
+  <a th:href="@{/encheres}" class="btn-retour">Retour aux enchères</a>
+</div>
+
 </body>
 </html>

@@ -3,9 +3,14 @@ package fr.eni.encheres.bll.mock;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
 import fr.eni.encheres.bll.UtilisateurService;
 import fr.eni.encheres.bo.Utilisateur;
 
+@Primary
+@Service
 public class UtilisateurServiceBouchon implements UtilisateurService {
 
 	private List<Utilisateur> utilisateurs = new ArrayList<>();
