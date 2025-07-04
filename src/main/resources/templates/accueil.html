@@ -17,14 +17,14 @@
   <form method="get" th:action="@{/encheres/filtrer}">
     <label for="categorie">Catégories</label>
    <select id="categorie" name="categorie">
-  <option value="" th:selected="${categorie == null}">Toutes</option>
+  <option value="0" th:selected="${categorie == 0}">Toutes</option>
   <option th:each="cat : ${categories}"
           th:value="${cat.idCategorie}"
           th:text="${cat.libelle}"
           th:selected="${categorie == cat.idCategorie}">Catégorie</option>
 </select>
 
-    <input type="text" placeholder="Le nom de l'article contient" name="nomArticle" />
+    <input type="text" placeholder="Le nom de l'article contient" name="nomArticle" th:value="${nomArticle}" />
 
     <button type="submit">Rechercher</button>
   </form>
@@ -37,14 +37,14 @@
       <p>
         <strong th:text="${article.nomArticle}"></strong>
         <br />
-        Prix de départ :
-         <span th:text="${article.miseAPrix}"></span>
+        Prix :
+         <span th:text="${article.prixActuel}"></span>
         <br />
         Fin de l'enchère :
         <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}"></span>
          <br />
         Vendeur :
-         <span th:text="${article.utilisateur.nom}"></span>
+         <span th:text="${article.utilisateur.pseudo}"></span>
         
       </p>
     </div>
