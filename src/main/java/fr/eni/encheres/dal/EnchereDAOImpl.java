@@ -24,8 +24,10 @@ public class EnchereDAOImpl implements EnchereDAO {
 
 	private static final String SELECT_BY_UTILISATEUR = "SELECT * FROM ENCHERES WHERE idUtilisateur = :idUtilisateur";
 
-	private static final String SELECT_BEST_BY_ARTICLE = 
-	    "SELECT TOP 1 * FROM ENCHERES WHERE idArticle = :idArticle ORDER BY montantEnchere DESC";
+	private static final String SELECT_BEST_BY_ARTICLE = "SELECT TOP 1 * FROM ENCHERES WHERE idArticle = :idArticle ORDER BY montantEnchere DESC";
+	
+	private static final String DELETE_BY_ARTICLE = "DELETE FROM ENCHERES WHERE idArticle = :id";
+	private static final String DELETE_BY_UTILISATEUR = "DELETE FROM ENCHERES WHERE idUtilisateur = :id";
 
 
 
@@ -65,9 +67,10 @@ public class EnchereDAOImpl implements EnchereDAO {
 	}
 
 	@Override
-	public void deleteByArticle(long idArticle) {
-		// TODO Auto-generated method stub
-		
+	public int deleteByArticle(long idArticle) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("id", idArticle);
+		return jdbcTemplate.update(DELETE_BY_ARTICLE, map);
 	}
 
 
@@ -89,6 +92,15 @@ public class EnchereDAOImpl implements EnchereDAO {
 
 			return e;
 		}
+	}
+
+
+
+	@Override
+	public int deleteByUtilisateur(long idUtilisateur) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("id", idUtilisateur);
+		return jdbcTemplate.update(DELETE_BY_UTILISATEUR, map);
 	}
 
 
