@@ -9,12 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import fr.eni.encheres.bll.ArticleService;
 import fr.eni.encheres.bll.CategorieService;
-import fr.eni.encheres.bll.CategorieServiceImpl;
-import fr.eni.encheres.bll.UtilisateurService;
 import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Categorie;
-import fr.eni.encheres.dal.ArticleDAO;
-import fr.eni.encheres.dal.CategorieDAO;
 
 @Controller
 @RequestMapping("/test")
@@ -68,4 +64,3 @@ public class PageTestController {
 
     // Ajoute les autres pages ici si besoin
 }
-
