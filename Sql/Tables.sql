@@ -33,7 +33,6 @@ CREATE TABLE Articles (
     dateDebutEncheres DATETIME,
     dateFinEncheres DATETIME,
     miseAPrix INT,
-    prixActuel INT,
     prixVente INT,
     etatVente NVARCHAR(50),
     idUtilisateur INT NOT NULL,
