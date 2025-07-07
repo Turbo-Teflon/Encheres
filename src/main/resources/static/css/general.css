@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+/* RESET + BASE */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -12,6 +13,7 @@ body {
   padding: 1rem;
 }
 
+/* CONTAINERS ET TITRES */
 .container {
   max-width: 500px;
   margin: 2rem auto;
@@ -27,6 +29,7 @@ h1, h2 {
   color: #333;
 }
 
+/* IMAGES */
 .image {
   width: 100%;
   height: 150px;
@@ -34,6 +37,7 @@ h1, h2 {
   border-radius: 4px;
 }
 
+/* BOUTONS */
 .btn,
 .btn-retour {
   display: block;
@@ -52,28 +56,35 @@ h1, h2 {
   color: #000;
 }
 
-/* Par défaut : droitier */
+/* ALIGNEMENT MAIN DOMINANTE */
 .buttons {
+  display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: flex-end; /* Par défaut droitier */
 }
 
-/* Gaucher : boutons alignés à gauche */
 body.gaucher .buttons {
   justify-content: flex-start;
 }
 
- nav.top-right-nav {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-family: Arial, sans-serif;
-    }
-    
-nav.top-right-nav a {
-      margin-left: 15px;
-      text-decoration: none;
-      color: #333;
-      font-weight: bold;
-    }
+/* NAVIGATION EN HAUT À DROITE */
+nav.top-right-nav {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
 
+nav.top-right-nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+nav.top-right-nav span {
+  font-weight: bold;
+}

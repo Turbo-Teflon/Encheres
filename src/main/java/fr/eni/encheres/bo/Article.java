@@ -25,7 +25,16 @@ public class Article {
 	public Article() {
 	}
 	
-	
+	public Article(long id, String nom, String desc, int miseAPrix, int prixActuel, LocalDateTime debut, LocalDateTime fin) {
+	    this.idArticle = id;
+	    this.nomArticle = nom;
+	    this.description = desc;
+	    this.miseAPrix = miseAPrix;
+	    this.prixActuel = prixActuel;
+	    this.dateDebutEncheres = debut;
+	    this.dateFinEncheres = fin;
+	}
+
 
 
 	public long getIdArticle() {

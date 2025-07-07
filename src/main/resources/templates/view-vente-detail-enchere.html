@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
   <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
-  <body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'">
+  <body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
 
   <!-- Ajoute dynamiquement la classe "terminee" si l'enchère est finie -->
   <div class="container terminee">

@@ -1,50 +1,48 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
-  <body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'"> 
+  <head th:replace="~{fragments/fragment-head :: head('Accueil - ENI-Enchères')}"></head>
+  <body th:classappend="${user != null and user?.main == 'gaucher'} ? 'gaucher' : 'droitier'"> 
 
- <header th:replace="~{fragments/fragment-entete :: entete}"></header>
+    <header th:replace="~{fragments/fragment-entete :: entete}"></header>
 
-  <main>
-    <section class="filtres">
-      <div class="radio-group">
-        <label><input type="radio" name="filtre" checked /> Achats ouverts</label>
-        <label><input type="radio" name="filtre" /> Mes enchères</label>
-        <label><input type="radio" name="filtre" /> Mes acquisitions</label>
-      </div>
-
-      <label for="categorie">Catégories</label>
-      <select id="categorie" name="categorie">
-        <option value="">Toutes</option>
-        <!-- Autres options -->
-      </select>
-
-      <input type="text" placeholder="Le nom de l'article contient" name="nomArticle" />
-
-      <button type="submit">Rechercher</button>
-    </section>
-
-    <section class="articles">
-      <article class="card">
-        <div class="image"></div>
-        <div class="details">
-          <p><strong>PC Gamer</strong><br />
-          Prix : 210 pts<br />
-          Fin : 10/08/2018<br />
-          Vendeur : jojo44</p>
+    <main>
+      <!-- Formulaire de filtre -->
+      <form th:action="@{/encheres/filtrer}" method="get" class="filtres">
+        <div class="radio-group">
+          <label><input type="radio" name="filtre" checked /> Achats ouverts</label>
+          <label><input type="radio" name="filtre" /> Mes enchères</label>
+          <label><input type="radio" name="filtre" /> Mes acquisitions</label>
         </div>
-      </article>
 
-      <article class="card">
-        <div class="image"></div>
-        <div class="details">
-          <p><strong>Rocket stove</strong><br />
-          Prix : 185 pts<br />
-          Fin : 09/10/2018<br />
-          Vendeur : NineJea</p>
-        </div>
-      </article>
-    </section>
-  </main>
-</body>
+        <label for="categorie">Catégories</label>
+        <select id="categorie" name="categorie" th:value="${categorie}">
+          <option value="0">Toutes</option>
+          <option th:each="cat : ${categories}"
+                  th:value="${cat.idCategorie}"
+                  th:text="${cat.libelle}"
+                  th:selected="${cat.idCategorie == categorie}"></option>
+        </select>
+
+        <input type="text" name="nomArticle" placeholder="Le nom de l'article contient"
+               th:value="${nomArticle}" />
+
+        <button type="submit">Rechercher</button>
+      </form>
+
+      <!-- Liste des articles -->
+      <section class="articles">
+        <article class="card" th:each="article : ${articles}">
+          <div class="image"></div>
+          <div class="details">
+            <p>
+              <strong th:text="${article.nomArticle}">Nom</strong><br />
+              Prix : <span th:text="${article.prixActuel}">0</span> pts<br />
+              Fin : <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}">xx/xx/xxxx</span><br />
+              Vendeur : <span th:text="${article.utilisateur?.pseudo}">Pseudo</span>
+            </p>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
 </html>

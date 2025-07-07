@@ -11,6 +11,11 @@ public class Categorie {
 
 	public Categorie() {
 	}
+	
+	public Categorie(long idCategorie, String libelle) {
+        this.idCategorie = idCategorie;
+        this.libelle = libelle;
+    }
 
 
 	public long getIdCategorie() {
