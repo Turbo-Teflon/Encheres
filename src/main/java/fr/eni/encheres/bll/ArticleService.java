@@ -3,6 +3,7 @@ package fr.eni.encheres.bll;
 import java.util.List;
 
 import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.bo.Enchere;
 
 public interface ArticleService {
 	void insert(Article article);
@@ -21,11 +22,23 @@ public interface ArticleService {
 
 	List<Article> selectEnCours();
 	
-	void readVendeurByArticle(Article article);
+	void setVendeurByArticle(Article article);
 	
-	void readBestEnchereByArticle(Article article);
+	void setBestEnchereByArticle(Article article);
 	
-	List<Article> encheresEnCours();
+	List<Article> selectEncheresOuvertes(long idCategorie, String nomArticle);
 	
-	List<Article> selectEncheresEnCoursFiltre(long idCategorie, String nomArticle);
+	List<Article> selectMesEncheres(long idUtilisateur, long idCategorie, String nomArticle);
+	
+	List<Article> selectMesEncheresRemportees(long idUtilisateur, long idCategorie, String nomArticle);
+	
+	List<Article> selectMesVentesEnCours(long idUtilisateur, long idCategorie, String nomArticle);
+	
+	List<Article> selectMesVentesNonDebutees(long idUtilisateur, long idCategorie, String nomArticle);
+	
+	List<Article> selectMesVentesTerminees(long idUtilisateur, long idCategorie, String nomArticle);
+	
+	void insertEnchere(Enchere enchere);
+	
+	void encherir( long idUtilisateur, long idArticle, int montantEnchere);
 }

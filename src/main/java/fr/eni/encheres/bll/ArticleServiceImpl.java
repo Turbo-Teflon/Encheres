@@ -1,5 +1,7 @@
 package fr.eni.encheres.bll;
 
+import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -27,7 +29,7 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	@Override
 	public void insert(Article article) {
-		// TODO Auto-generated method stub
+		articleDAO.insert(article);
 	
 	}
 
@@ -36,22 +38,22 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleDAO.selectById(id);
 	}
 
-	@Override
-	public List<Article> selectAll() {
-	
-		List<Article> articles = this.articleDAO.selectAll();
-		
-
-		if (articles != null) {
-			articles.forEach(a -> {
-				readVendeurByArticle(a);
-				readBestEnchereByArticle(a);
-			});
-		}
-		
-		return articles;
-	
-	}
+//	@Override
+//	public List<Article> selectAll() {
+//	
+//		List<Article> articles = this.articleDAO.selectAll();
+//		
+//
+//		if (articles != null) {
+//			articles.forEach(a -> {
+//				setVendeurByArticle(a);
+//				setBestEnchereByArticle(a);
+//			});
+//		}
+//		
+//		return articles;
+//	
+//	}
 
 	@Override
 	public List<Article> selectByCategorie(long idCategorie) {
@@ -82,46 +84,184 @@ public class ArticleServiceImpl implements ArticleService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+
+	
 	@Override
-	public void readVendeurByArticle(Article article) {
+	public void setVendeurByArticle(Article article) {
 		Utilisateur utilisateur = utilisateurDAO.selectById(article.getUtilisateur().getIdUtilisateur());
 		article.setUtilisateur(utilisateur);
 		
 	}
 	@Override
-	public void readBestEnchereByArticle(Article article) {
+	public void setBestEnchereByArticle(Article article) {
 		Enchere bestEnchere = enchereDAO.selectBestByArticle(article.getIdArticle());
 		article.setPrixActuel(bestEnchere.getMontantEnchere());
 		
 	}
 	@Override
-	public List<Article> encheresEnCours() {
-		List<Article> articles = this.articleDAO.selectEncheresEnCours();
+	public List<Article> selectAll() {
+List<Article> articles = this.articleDAO.selectAll();
 		
 
 		if (articles != null) {
 			articles.forEach(a -> {
-				readVendeurByArticle(a);
-				readBestEnchereByArticle(a);
+				setVendeurByArticle(a);
+				setBestEnchereByArticle(a);
 			});
 		}
 		
 		return articles;
+	}
+	
+	
+	@Override
+	public void insertEnchere(Enchere enchere) {
+		enchereDAO.insert(enchere);
+		
 	}
 	@Override
-	public List<Article> selectEncheresEnCoursFiltre(long idCategorie, String nomArticle) {
-List<Article> articles = this.articleDAO.selectEncheresEnCoursFiltre(idCategorie, nomArticle);
-		
+	public List<Article> selectMesEncheres(long idUtilisateur, long idCategorie, String nomArticle) {
+	    List<Article> articles = this.articleDAO.selectEncheresOuvertes(idCategorie, nomArticle);
 
-		if (articles != null) {
-			articles.forEach(a -> {
-				readVendeurByArticle(a);
-				readBestEnchereByArticle(a);
-			});
-		}
-		
-		return articles;
+	    if (articles != null) {
+	        Iterator<Article> it = articles.iterator();
+
+	        while (it.hasNext()) {
+	            Article a = it.next();
+
+	            setVendeurByArticle(a);
+	            setBestEnchereByArticle(a);
+
+	            Enchere best = enchereDAO.selectBestByArticle(a.getIdArticle());
+
+	            if (best == null || best.getUtilisateur().getIdUtilisateur() != idUtilisateur) {
+	                it.remove();
+	            }
+	        }
+	    }
+
+	    return articles;
 	}
+
+
+	public List<Article> selectEncheresOuvertes(long idCategorie, String nomArticle) {
+		List<Article> articles = this.articleDAO.selectEncheresOuvertes(idCategorie, nomArticle);
+				
+
+				if (articles != null) {
+					articles.forEach(a -> {
+						setVendeurByArticle(a);
+						setBestEnchereByArticle(a);
+					});
+				}
+				
+				return articles;
+			}
+	@Override
+	public List<Article> selectMesEncheresRemportees(long idUtilisateur, long idCategorie, String nomArticle) {
+		 List<Article> articles = this.articleDAO.selectEncheresTerminees(idCategorie, nomArticle);
+
+		    if (articles != null) {
+		        Iterator<Article> it = articles.iterator();
+
+		        while (it.hasNext()) {
+		            Article a = it.next();
+
+		            setVendeurByArticle(a);
+		            setBestEnchereByArticle(a);
+
+		            Enchere best = enchereDAO.selectBestByArticle(a.getIdArticle());
+
+		            if (best == null || best.getUtilisateur().getIdUtilisateur() != idUtilisateur) {
+		                it.remove();
+		            }
+		        }
+		    }
+
+		    return articles;
+	}
+	public List<Article> selectMesVentesEnCours(long idUtilisateur, long idCategorie, String nomArticle) {
+	    List<Article> articles = this.articleDAO.selectEncheresOuvertes(idCategorie, nomArticle);
+
+	    if (articles != null) {
+	        Iterator<Article> it = articles.iterator();
+
+	        while (it.hasNext()) {
+	            Article a = it.next();
+
+	            setVendeurByArticle(a); 
+	            setBestEnchereByArticle(a);
+
+	          
+	            if (a.getUtilisateur() == null || a.getUtilisateur().getIdUtilisateur() != idUtilisateur) {
+	                it.remove();
+	            }
+	        }
+	    }
+
+	    return articles;
+	}
+	@Override
+	public List<Article> selectMesVentesNonDebutees(long idUtilisateur, long idCategorie, String nomArticle) {
+		   List<Article> articles = this.articleDAO.selectEncheresNonDebutees(idCategorie, nomArticle);
+
+		    if (articles != null) {
+		        Iterator<Article> it = articles.iterator();
+
+		        while (it.hasNext()) {
+		            Article a = it.next();
+
+		            setVendeurByArticle(a); 
+		            setBestEnchereByArticle(a);
+
+		          
+		            if (a.getUtilisateur() == null || a.getUtilisateur().getIdUtilisateur() != idUtilisateur) {
+		                it.remove();
+		            }
+		        }
+		    }
+
+		    return articles;
+	}
+	@Override
+	public List<Article> selectMesVentesTerminees(long idUtilisateur, long idCategorie, String nomArticle) {
+		 List<Article> articles = this.articleDAO.selectEncheresTerminees(idCategorie, nomArticle);
+
+		    if (articles != null) {
+		        Iterator<Article> it = articles.iterator();
+
+		        while (it.hasNext()) {
+		            Article a = it.next();
+
+		            setVendeurByArticle(a); 
+		            setBestEnchereByArticle(a);
+
+		          
+		            if (a.getUtilisateur() == null || a.getUtilisateur().getIdUtilisateur() != idUtilisateur) {
+		                it.remove();
+		            }
+		        }
+		    }
+
+		    return articles;
+	}
+	@Override
+	public void encherir(long idUtilisateur, long idArticle, int montantEnchere) {
+		Utilisateur utilisateur = utilisateurDAO.selectById(idUtilisateur);
+		Article article = articleDAO.selectById(idArticle);
+		
+		Enchere enchere = new Enchere();
+		
+		enchere.setUtilisateur(utilisateur);
+		enchere.setArticle(article);
+		enchere.setMontantEnchere(montantEnchere);
+		enchere.setDateEnchere(LocalDateTime.now());
+		
+		this.insertEnchere(enchere);
+		
+	}
+
 	
 
 }

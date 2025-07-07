@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragment-head :: head('Accueil - ENI-Enchères')}"></head>
+<body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'">
+
+<nav class="top-right-nav">
+  <a href="/test/creer-compte">S'inscrire</a>
+  <a href="/test/connexion">Se connecter</a>
+</nav>
+
+<header th:replace="~{fragments/fragment-entete :: entete}"></header>
+
+<main>
+
+  <!-- SECTION : Filtres -->
+  <section class="filtres">
+    <h2>Filtres :</h2>
+    <form method="get" th:action="@{/encheres/filtrer}">
+      <label for="categorie">Catégorie :</label>
+      <select id="categorie" name="categorie">
+        <option value="0" th:selected="${categorie == 0}">Toutes</option>
+        <option th:each="cat : ${categories}"
+                th:value="${cat.idCategorie}"
+                th:text="${cat.libelle}"
+                th:selected="${categorie == cat.idCategorie}">
+        </option>
+      </select>
+
+      <input type="text" name="nomArticle" placeholder="Le nom de l'article contient"
+             th:value="${nomArticle}" />
+
+
+     
+  
+	<div id="filtres-achats" th:if="${filtreType == 'achats'}">
+	  <label><input type="checkbox" name="encheresOuvertes" th:checked="${encheresOuvertes}" /> Enchères ouvertes</label>
+	  <label><input type="checkbox" name="mesEncheres" th:checked="${mesEncheres}" /> Mes enchères</label>
+	  <label><input type="checkbox" name="mesEncheresRemportees" th:checked="${mesEncheresRemportees}" /> Mes enchères remportées</label>
+	</div>
+	
+	
+	<div id="filtres-ventes" th:if="${filtreType == 'ventes'}">
+	  <label><input type="checkbox" name="ventesEnCours" th:checked="${ventesEnCours}" /> Mes ventes en cours</label>
+	  <label><input type="checkbox" name="ventesNonDebutees" th:checked="${ventesNonDebutees}" /> Ventes non débutées</label>
+	  <label><input type="checkbox" name="ventesTerminees" th:checked="${ventesTerminees}" /> Ventes terminées</label>
+	</div>
+
+      <button type="submit">Rechercher</button>
+    </form>
+  </section>
+
+ 
+  <section class="articles">
+    <article class="card" th:each="article : ${articles}">
+      <div class="image"></div>
+      <div class="details">
+        <p>
+          <strong th:text="${article.nomArticle}"></strong><br />
+          Prix : <span th:text="${article.prixActuel}"></span><br />
+          Fin de l'enchère :
+          <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}"></span><br />
+          Vendeur :
+          <span th:text="${article.utilisateur.pseudo}"></span>
+        </p>
+      </div>
+    </article>
+  </section>
+
+</main>
+</body>
+</html>

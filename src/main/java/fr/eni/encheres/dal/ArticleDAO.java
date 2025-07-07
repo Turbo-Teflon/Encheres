@@ -22,7 +22,9 @@ public interface ArticleDAO {
 
 	List<Article> selectEnCours();
 	
-	List<Article> selectEncheresEnCours();
+	List<Article> selectEncheresOuvertes(long idCategorie, String nomArticle);
 	
-	List<Article> selectEncheresEnCoursFiltre(long idCategorie, String nomArticle);
+	List<Article> selectEncheresTerminees(long idCategorie, String nomArticle);
+	
+	List<Article> selectEncheresNonDebutees(long idCategorie, String nomArticle);
 }
