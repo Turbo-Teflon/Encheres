@@ -6,14 +6,14 @@
 <body >
 
   <div class="container">
-    <h1>Modifier mon profil</h1>
+    <h1>Créer mon profil</h1>
 
-    <form th:action="@{/creer-compte}" th:object="${utilisateur}" method="post">
+    <form th:action="@{/creer-compte}" th:object="${utilisateurFormDto}" method="post">
 
 
       <div class="form-group">
         <label for="pseudo">Pseudo :</label>
-        <input type="text" id="pseudo" th:field="*{pseudo}" required />
+        <input type="text" id="pseudo" th:field="*{pseudo}" autocomplete="on" required />
       </div>
 
       <div class="form-group">
@@ -49,32 +49,28 @@
       <div class="form-group">
         <label for="ville">Ville :</label>
         <input type="text" id="ville" th:field="*{ville}" />
-      </div>     
+      </div>   	  
 
-		<!-- Champs liés à Utilisateur -->
-  <input type="text" th:field="*{pseudo}" />
-  <!-- ... autres champs liés ... -->
-  <input type="password" th:field="*{motDePasse}" />
+		<div class="form-group" style="position: relative;">
+  <label for="motDePasse">Mot de passe :</label>
+  <input type="password" id="motDePasse" th:field="*{motDePasse}" required />
+  <button type="button" onclick="togglePassword('motDePasse')" 
+          style="position: absolute; right: 10px; top: 32px; background: none; border: none; cursor: pointer;">
+    👁️
+  </button>
+</div>
 
-  <!-- Champs indépendants (hors th:object) -->
-  <input type="password" id="confirmation" name="confirmation" placeholder="Confirmer le mot de passe" required />
 
-  <button type="submit">Créer mon compte</button>
+      <div class="form-group" style="position: relative;">
+  <label for="confirmation">Confirmation :</label>
+  <input type="password" id="confirmation" th:field="*{confirmation}" />
+  <button type="button" onclick="togglePassword('confirmation')" 
+          style="position: absolute; right: 10px; top: 32px; background: none; border: none; cursor: pointer;">
+    👁️
+  </button>
+</div>
 
       <div class="form-group">
-        <label for="confirmation">Confirmation :</label>
-        <input type="password" id="confirmation" th:field="*{confirmation}" />
-      </div>
-
-      <div class="buttons">
-        <button type="submit">Enregistrer</button>
-        <button type="reset">Annuler</button>
-        
-      </div>
-      
-      <!--TODO à mettre dans Utilisateur.java  => private String main; // "droitier" ou "gaucher"-->
-      
-	  <div class="form-group">
 	  <label for="main">Main dominante :</label>
 	  <select id="main" th:field="*{main}" required>
 	    <option value="">-- Sélectionnez --</option>
@@ -83,9 +79,18 @@
 
 	  </select>
 	  </div>
+
+      <div class="buttons">     
+      <button type="submit">Créer mon compte</button>   
+        <button type="reset">Annuler</button>
+        
+      </div>        
       
     </form>
   </div>
+  
+  <script src="/js/motdepasse.js"></script>
+  
 </body>
 </html>
 

@@ -15,6 +15,7 @@ import fr.eni.encheres.bll.CategorieService;
 import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dto.UtilisateurFormDto;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -33,8 +34,8 @@ public class UtilisateurController {
 		this.articleService=articleService;
 	}
 	@ModelAttribute("utilisateur")
-	public String utilisateurActif(HttpSession session) {
-	    return (String) session.getAttribute("utilisateur");
+	public Utilisateur utilisateurActif(HttpSession session) {
+	    return (Utilisateur) session.getAttribute("utilisateur");
 	}
 
 
@@ -61,14 +62,15 @@ public class UtilisateurController {
 
     @GetMapping("/connexion")
     public String connexion() {
-        return "view-connection-enchere";
+        return "view-connexion-enchere";
     }
 
     @GetMapping("/creer-compte")
-    public String afficherFormulaireCreation(Model model) {
-        model.addAttribute("utilisateur", new Utilisateur());
-        return "view-creer-compte-enchere"; 
+    public String creerCompteForm(Model model) {
+        model.addAttribute("utilisateurFormDto", new UtilisateurFormDto());
+        return "view-creer-compte-enchere";
     }
+
 
 
     @GetMapping("/profil")
@@ -90,20 +92,45 @@ public class UtilisateurController {
         session.invalidate(); // Supprime toutes les données de session
         return "redirect:/accueil";
     }
-    @PostMapping("/creer-compte")    
+    @PostMapping("/creer-compte")
     public String creerComptePost(
-            @ModelAttribute Utilisateur utilisateur,
-            @RequestParam("confirmation") String confirmation,
+            @ModelAttribute UtilisateurFormDto formDto,
             Model model) {
 
         // Vérification que les mots de passe correspondent
-        if (!utilisateur.getMotDePasse().equals(confirmation)) {
+        if (!formDto.getMotDePasse().equals(formDto.getConfirmation())) {
             model.addAttribute("erreur", "Les mots de passe ne correspondent pas.");
-            return "view-creer-compte-enchere"; // on renvoie le formulaire avec le message d'erreur
+            return "view-creer-compte-enchere";
         }
 
-        // TODO : enregistrement de l'utilisateur
+        // Conversion du DTO vers l'entité métier Utilisateur
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setPseudo(formDto.getPseudo());
+        utilisateur.setEmail(formDto.getEmail());
+        utilisateur.setMotDePasse(formDto.getMotDePasse());
+        
+        // TODO : enregistrer l'utilisateur (via le service)
         return "redirect:/connexion";
     }
+    @PostMapping("/connexion")
+    public String traiterConnexion(
+            @RequestParam("identifiant") String identifiant,
+            @RequestParam("motDePasse") String motDePasse,
+            HttpSession session,
+            Model model) {
+
+        // 🔐 TODO : valider identifiant / motDePasse (fictif ou via service)
+        if ("admin".equals(identifiant) && "admin".equals(motDePasse)) {
+        	Utilisateur utilisateur = new Utilisateur();
+        	utilisateur.setPseudo(identifiant); // à remplacer plus tard par l’objet récupéré depuis ta BDD
+        	session.setAttribute("utilisateur", utilisateur);
+
+            return "redirect:/accueil";
+        } else {
+            model.addAttribute("erreur", "Identifiants invalides.");
+            return "view-connexion-enchere";
+        }
+    }
+
 
 }
