@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import fr.eni.encheres.bll.EnchereService;
@@ -15,8 +15,9 @@ import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Retrait;
 import fr.eni.encheres.bo.Utilisateur;
 
-@Primary
+
 @Service
+@Profile("dev")
 public class EnchereServiceBouchon implements EnchereService {
 
     private final List<Enchere> encheres = new ArrayList<>();

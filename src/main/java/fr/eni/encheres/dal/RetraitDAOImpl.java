@@ -3,6 +3,7 @@ package fr.eni.encheres.dal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,6 +13,7 @@ import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Retrait;
 
 @Repository
+@Profile("prod")
 public class RetraitDAOImpl implements RetraitDAO {
 
 	private static final String INSERT = "INSERT INTO RETRAITS (idArticle, rue, codePostal, ville) " +
