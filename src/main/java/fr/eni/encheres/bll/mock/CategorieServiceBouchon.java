@@ -4,14 +4,15 @@ package fr.eni.encheres.bll.mock;
 
 import java.util.List;
 
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import fr.eni.encheres.bll.CategorieService;
 import fr.eni.encheres.bo.Categorie;
 
-@Primary
+
 @Service("categorieServiceBouchon")
+@Profile("dev")
 public class CategorieServiceBouchon implements CategorieService {
 
 	@Override

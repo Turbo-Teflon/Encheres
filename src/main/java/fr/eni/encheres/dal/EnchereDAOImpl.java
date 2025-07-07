@@ -4,17 +4,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
-import fr.eni.encheres.bo.Article;
 
 @Repository
+@Profile("prod")
 public class EnchereDAOImpl implements EnchereDAO {
 
 	private static final String INSERT = "INSERT INTO ENCHERES (idUtilisateur, idArticle, dateEnchere, montantEnchere) " +
@@ -31,8 +32,17 @@ public class EnchereDAOImpl implements EnchereDAO {
 
 
 
-	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
+	
+	
+
+	/**
+	 * @param jdbcTemplate
+	 */
+	public EnchereDAOImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+		super();
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
 	@Override
 	public void insert(Enchere enchere) {

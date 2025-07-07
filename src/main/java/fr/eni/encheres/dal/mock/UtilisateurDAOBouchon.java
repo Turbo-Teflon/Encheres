@@ -4,12 +4,14 @@ package fr.eni.encheres.dal.mock;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.UtilisateurDAO;
 
 @Repository("utilisateurDAOBouchon")
+@Profile("dev")
 public class UtilisateurDAOBouchon implements UtilisateurDAO{
 	
 	public static List<Utilisateur> lstUtilisateur;

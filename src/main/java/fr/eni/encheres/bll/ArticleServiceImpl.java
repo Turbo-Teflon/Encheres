@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import fr.eni.encheres.bo.Article;
@@ -14,7 +15,7 @@ import fr.eni.encheres.dal.EnchereDAO;
 import fr.eni.encheres.dal.UtilisateurDAO;
 
 
-
+@Profile("prod")
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
