@@ -35,8 +35,13 @@ public class UtilisateurController {
 	}
 	@ModelAttribute("utilisateur")
 	public Utilisateur utilisateurActif(HttpSession session) {
-	    return (Utilisateur) session.getAttribute("utilisateur");
+	    Object userInSession = session.getAttribute("utilisateur");
+	    if (userInSession instanceof Utilisateur) {
+	        return (Utilisateur) userInSession;
+	    }
+	    return null;
 	}
+
 
 
 	@GetMapping("/accueil")
