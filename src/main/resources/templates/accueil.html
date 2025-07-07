@@ -1,58 +1,50 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
-  <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
-  <body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'">
+<head
+	th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
+<body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
 
-  <nav class="top-right-nav">
-    <a href="/test/creer-compte">S'inscrire</a>
-    <a href="/test/connexion">Se connecter</a>
-  </nav>
- <header th:replace="~{fragments/fragment-entete :: entete}"></header>
+	<header th:replace="~{fragments/fragment-entete :: entete}"></header>
 
-  <main>
- 
-    <section class="filtres">
-  <h2>Filtres :</h2>
-  <form method="get" th:action="@{/encheres/filtrer}">
-    <label for="categorie">Catégories</label>
-   <select id="categorie" name="categorie">
-  <option value="0" th:selected="${categorie == 0}">Toutes</option>
-  <option th:each="cat : ${categories}"
-          th:value="${cat.idCategorie}"
-          th:text="${cat.libelle}"
-          th:selected="${categorie == cat.idCategorie}">Catégorie</option>
-</select>
 
-    <input type="text" placeholder="Le nom de l'article contient" name="nomArticle" th:value="${nomArticle}" />
+	<main>
+		
+		<section class="filtres">
+			<h2>Filtres :</h2>
+			<form method="get" th:action="@{/encheres/filtrer}">
+				<label for="categorie">Catégories</label> <select id="categorie"
+					name="categorie">
+					<option value="0" th:selected="${categorie == 0}">Toutes</option>
+					<option th:each="cat : ${categories}" th:value="${cat.idCategorie}"
+						th:text="${cat.libelle}"
+						th:selected="${categorie == cat.idCategorie}">Catégorie</option>
+				</select> <input type="text" placeholder="Le nom de l'article contient"
+					name="nomArticle" th:value="${nomArticle}" />
 
-    <button type="submit">Rechercher</button>
-  </form>
-</section>
+				<button type="submit">Rechercher</button>
+			</form>
+		</section>
 
-<section class="articles">
-  <article class="card" th:each="article : ${articles}">
-    <div class="image"></div>
-    <div class="details">
-      <p>
-        <strong th:text="${article.nomArticle}"></strong>
-        <br />
-        Prix :
-         <span th:text="${article.prixActuel}"></span>
-        <br />
-        Fin de l'enchère :
-        <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}"></span>
-         <br />
-        Vendeur :
-         <span th:text="${article.utilisateur.pseudo}"></span>
-        
-      </p>
-    </div>
-  </article>
-</section>
+		<section class="articles">
+			<article class="card" th:each="article : ${articles}">
+				<div class="image"></div>
+				<div class="details">
+					<p>
+						<strong th:text="${article.nomArticle}"></strong> <br /> Prix : <span
+							th:text="${article.prixActuel}"></span> <br /> Fin de l'enchère
+						: <span
+							th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}"></span>
+						<br /> Vendeur : <span th:text="${article.utilisateur.pseudo}"></span>
 
-   
-    
-  </main>
+					</p>
+				</div>
+			</article>
+		</section>
+
+</a></div>
+
+
+	</main>
 </body>
 </html>

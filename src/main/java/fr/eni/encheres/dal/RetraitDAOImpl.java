@@ -3,7 +3,6 @@ package fr.eni.encheres.dal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -19,10 +18,21 @@ public class RetraitDAOImpl implements RetraitDAO {
 	                                     "VALUES (:idArticle, :rue, :codePostal, :ville)";
 
 	private static final String SELECT_BY_ARTICLE = "SELECT * FROM RETRAITS WHERE idArticle = :idArticle";
+	
+	private static final String DELETE = "DELETE FROM RETRAITS WHERE idArticle = :idArticle";
+	private static final String UPDATE = "UPDATE UTILISATEURS SET rue = :rue, codePostal= :codePostal, ville = :ville WHERE idArticle = :id";
 
-
-	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
+	
+	
+
+	/**
+	 * @param jdbcTemplate
+	 */
+	public RetraitDAOImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+		super();
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
 	@Override
 	public void insert(Retrait retrait) {
@@ -45,13 +55,22 @@ public class RetraitDAOImpl implements RetraitDAO {
 	
 	@Override
 	public void update(Retrait retrait) {
-		// TODO Auto-generated method stub
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("id", retrait.getArticle().getIdArticle());
+		map.addValue("rue", retrait.getRue());
+		map.addValue("codePostal", retrait.getCodePostal());
+		map.addValue("ville", retrait.getVille());
+		
+		jdbcTemplate.update(UPDATE, map);
 		
 	}
 
 	@Override
 	public void deleteByArticle(long idArticle) {
-		// TODO Auto-generated method stub
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("idArticle", idArticle);
+		
+		jdbcTemplate.update(DELETE, map);
 		
 	}
 
@@ -61,7 +80,7 @@ public class RetraitDAOImpl implements RetraitDAO {
 		public Retrait mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Retrait retrait = new Retrait();
 			retrait.setRue(rs.getString("rue"));
-			retrait.setCodePostal(rs.getString("code_postal"));
+			retrait.setCodePostal(rs.getString("codePostal"));
 			retrait.setVille(rs.getString("ville"));
 
 			Article article = new Article();

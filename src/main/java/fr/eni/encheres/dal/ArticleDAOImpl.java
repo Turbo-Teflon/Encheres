@@ -27,9 +27,17 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private static final String SELECT_BY_CATEGORIE =  "SELECT * FROM ARTICLES WHERE idCategorie = :idCategorie";
 	private static final String SELECT_BY_UTILISATEUR ="SELECT * FROM ARTICLES WHERE idUtilisateur = :idUtilisateur";
 	private static final String SELECT_ALL = "SELECT * FROM ARTICLES";
+
 	private static final String SELECT_ENCHERES_OUVERTES= "SELECT * FROM ARTICLES WHERE dateFinEncheres > GETDATE() AND dateDebutEncheres < GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
 	private static final String SELECT_ENCHERES_TERMINEES= "SELECT * FROM ARTICLES WHERE dateFinEncheres < GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
 	private static final String SELECT_ENCHERES_NON_DEBUTEES= "SELECT * FROM ARTICLES WHERE dateDebutEncheres > GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
+
+	private static final String SELECT_ENCHERES_EN_COURS = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE()";
+	private static final String SELECT_ENCHERES_EN_COURS_BY_CATEGORIE = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE() AND idCategorie = :idCategorie";
+	private static final String SELECT_ENCHERES_EN_COURS_FILTRE = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
+	private static final String UPDATE = "UPDATE ARTICLES SET nomArticle = :nomArticle, description = :description, dateDebutEncheres = :dateDebutEncheres, dateFinEncheres = :dateFinEncheres, miseAPrix = :miseAPrix, prixVente = :prixVente, etatVente = :etatVente, idUtilisateur = :idUtilisateur, idCategorie = :idCategorie WHERE idArticle = :idArticle";
+	private static final String DELETE = "DELETE FROM ARTICLES WHERE idArticle = :id";
+
 
 	
 	@Autowired
@@ -85,14 +93,29 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 
 	@Override
-	public void update(Article article) {
-		// TODO Auto-generated method stub
+	public int update(Article article) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("nomArticle", article.getNomArticle());
+		map.addValue("description", article.getDescription());
+		map.addValue("dateDebutEncheres", article.getDateDebutEncheres());
+		map.addValue("dateFinEncheres", article.getDateFinEncheres());
+		map.addValue("miseAPrix", article.getMiseAPrix());
+		map.addValue("prixVente", article.getPrixVente());
+		map.addValue("etatVente", article.getEtatVente());
+		map.addValue("idUtilisateur", article.getUtilisateur().getIdUtilisateur());
+		map.addValue("idCategorie", article.getCategorie().getIdCategorie());
+		map.addValue("idArticle", article.getIdArticle());
+		
+		return jdbcTemplate.update(UPDATE, map);
 		
 	}
 
 	@Override
-	public void delete(long id) {
-		// TODO Auto-generated method stub
+	public int delete(long id) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("id", id);
+		
+		return jdbcTemplate.update(DELETE, map);
 		
 	}
 

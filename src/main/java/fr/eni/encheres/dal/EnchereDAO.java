@@ -16,7 +16,9 @@ public interface EnchereDAO {
 
 	Enchere selectBestByArticle(long idArticle);
 
-	void deleteByArticle(long idArticle);
+	int deleteByArticle(long idArticle);
+	
+	int deleteByUtilisateur(long idUtilisateur);
 	
 
 	

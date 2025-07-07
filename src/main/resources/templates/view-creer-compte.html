@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
   <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
-  <body>
+
+
+  <body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
+
 
   <div class="container">
     <h1>ENI-Enchères</h1>

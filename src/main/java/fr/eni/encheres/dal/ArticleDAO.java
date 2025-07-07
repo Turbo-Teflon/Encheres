@@ -16,9 +16,9 @@ public interface ArticleDAO {
 
 	List<Article> selectByUtilisateur(long idUtilisateur);
 
-	void update(Article article);
+	int update(Article article);
 
-	void delete(long id);
+	int delete(long id);
 
 	List<Article> selectEnCours();
 	
