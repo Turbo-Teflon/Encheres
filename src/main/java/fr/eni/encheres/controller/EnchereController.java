@@ -30,7 +30,17 @@ public class EnchereController {
         this.articleService = articleService;
         this.categorieService=categorieService;
     }
-
+    
+    
+	@GetMapping("/accueil")
+	public String accueil(Model model) {	    
+	    List<Categorie> categories = categorieService.selectAll();
+	    model.addAttribute("categories", categories);
+	    List<Article> articles = articleService.selectAll(); 
+	    model.addAttribute("articles", articles);   
+	    return "accueil";
+	}
+	
     // Détail des enchères d’un article
     @GetMapping("/encheres/detail")
     public String voirDetailEnchere(@RequestParam("id") long idArticle, Model model) {
