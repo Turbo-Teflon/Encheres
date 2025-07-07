@@ -20,13 +20,18 @@ import fr.eni.encheres.bo.Utilisateur;
 @Repository
 public class ArticleDAOImpl implements ArticleDAO {
 	
-	private static final String INSERT = "INSERT INTO ARTICLES (nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAprix, prixVente, etatVente, idUtilisateur, idCategorie) \r\n"
-			+ "	VALUES (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :miseAprix, :prixVente, :etatVente, :idUtilisateur, :idCategorie)";
+	private static final String INSERT = "INSERT INTO ARTICLES (nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAprix, idUtilisateur, idCategorie) \r\n"
+			+ "	VALUES (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :miseAprix, :idUtilisateur, :idCategorie)";
 
 	private static final String SELECT_BY_ID="SELECT * FROM ARTICLES WHERE idArticle = :id";
 	private static final String SELECT_BY_CATEGORIE =  "SELECT * FROM ARTICLES WHERE idCategorie = :idCategorie";
 	private static final String SELECT_BY_UTILISATEUR ="SELECT * FROM ARTICLES WHERE idUtilisateur = :idUtilisateur";
 	private static final String SELECT_ALL = "SELECT * FROM ARTICLES";
+
+	private static final String SELECT_ENCHERES_OUVERTES= "SELECT * FROM ARTICLES WHERE dateFinEncheres > GETDATE() AND dateDebutEncheres < GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
+	private static final String SELECT_ENCHERES_TERMINEES= "SELECT * FROM ARTICLES WHERE dateFinEncheres < GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
+	private static final String SELECT_ENCHERES_NON_DEBUTEES= "SELECT * FROM ARTICLES WHERE dateDebutEncheres > GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
+
 	private static final String SELECT_ENCHERES_EN_COURS = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE()";
 	private static final String SELECT_ENCHERES_EN_COURS_BY_CATEGORIE = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE() AND idCategorie = :idCategorie";
 	private static final String SELECT_ENCHERES_EN_COURS_FILTRE = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
@@ -130,7 +135,6 @@ public class ArticleDAOImpl implements ArticleDAO {
 			a.setNomArticle(rs.getString("nomArticle"));
 			a.setDescription(rs.getString("description"));
 			a.setMiseAPrix(rs.getInt("miseAPrix"));
-			a.setMiseAPrix(rs.getInt("prixActuel"));
 			a.setPrixVente(rs.getInt("prixVente"));
 			a.setEtatVente(rs.getString("etatVente"));
 			a.setDateDebutEncheres(rs.getTimestamp("dateDebutEncheres").toLocalDateTime());
@@ -152,25 +156,32 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 
 
-	@Override
-	public List<Article> selectEncheresEnCours() {
-		return jdbcTemplate.query(SELECT_ENCHERES_EN_COURS, new ArticleRowMapper());
-	}
 
-//	@Override
-//	public List<Article> selectEncheresEnCoursFiltreCategorie(long idCategorie) {
-//		  MapSqlParameterSource map = new MapSqlParameterSource();
-//		    map.addValue("idCategorie", idCategorie);
-//		return jdbcTemplate.query(SELECT_ENCHERES_EN_COURS_BY_CATEGORIE, map, new ArticleRowMapper());
-//	}
 
 	@Override
-	public List<Article> selectEncheresEnCoursFiltre(long idCategorie, String nomArticle) {
+	public List<Article> selectEncheresOuvertes(long idCategorie, String nomArticle) {
 		  MapSqlParameterSource map = new MapSqlParameterSource();
 		    map.addValue("idCategorie", idCategorie);
 		    map.addValue("nomArticle", "%" + nomArticle + "%");
-		return jdbcTemplate.query(SELECT_ENCHERES_EN_COURS_FILTRE, map, new ArticleRowMapper());
+		return jdbcTemplate.query(SELECT_ENCHERES_OUVERTES, map, new ArticleRowMapper());
 	}
+
+	@Override
+	public List<Article> selectEncheresTerminees(long idCategorie, String nomArticle) {
+		  MapSqlParameterSource map = new MapSqlParameterSource();
+		    map.addValue("idCategorie", idCategorie);
+		    map.addValue("nomArticle", "%" + nomArticle + "%");
+		return jdbcTemplate.query(SELECT_ENCHERES_TERMINEES, map, new ArticleRowMapper());
+	}
+
+	@Override
+	public List<Article> selectEncheresNonDebutees(long idCategorie, String nomArticle) {
+		  MapSqlParameterSource map = new MapSqlParameterSource();
+		    map.addValue("idCategorie", idCategorie);
+		    map.addValue("nomArticle", "%" + nomArticle + "%");
+		return jdbcTemplate.query(SELECT_ENCHERES_NON_DEBUTEES, map, new ArticleRowMapper());
+	}
+	
 	
 	
 	

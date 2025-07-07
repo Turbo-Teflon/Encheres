@@ -1,55 +1,60 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
   <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
+
+
   <body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
+
 
   <div class="container">
     <h1>ENI-Enchères</h1>
-    <h2>Créer un compte</h2>
-    <form action="/creer-compte" method="post">
+    <h2>Créer son compte</h2>
+    
+    <form th:action="@{/creer-compte}" th:object="${utilisateur}" method="post">
+      
       <div class="form-group">
         <label for="pseudo">Pseudo :</label>
-        <input type="text" id="pseudo" name="pseudo" required />
+        <input type="text" th:field="*{pseudo}" id="pseudo" required />
       </div>
 
       <div class="form-group">
         <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" required />
+        <input type="text" th:field="*{nom}" id="nom" required />
       </div>
 
       <div class="form-group">
         <label for="prenom">Prénom :</label>
-        <input type="text" id="prenom" name="prenom" required />
+        <input type="text" th:field="*{prenom}" id="prenom" required />
       </div>
 
       <div class="form-group">
         <label for="email">Email :</label>
-        <input type="email" id="email" name="email" required />
+        <input type="email" th:field="*{email}" id="email" required />
       </div>
 
       <div class="form-group">
         <label for="telephone">Téléphone :</label>
-        <input type="tel" id="telephone" name="telephone" />
+        <input type="tel" th:field="*{telephone}" id="telephone" />
       </div>
 
       <div class="form-group">
         <label for="rue">Rue :</label>
-        <input type="text" id="rue" name="rue" />
+        <input type="text" th:field="*{rue}" id="rue" />
       </div>
 
       <div class="form-group">
         <label for="codePostal">Code postal :</label>
-        <input type="text" id="codePostal" name="codePostal" />
+        <input type="text" th:field="*{codePostal}" id="codePostal" />
       </div>
 
       <div class="form-group">
         <label for="ville">Ville :</label>
-        <input type="text" id="ville" name="ville" />
+        <input type="text" th:field="*{ville}" id="ville" />
       </div>
 
       <div class="form-group">
         <label for="motDePasse">Mot de passe :</label>
-        <input type="password" id="motDePasse" name="motDePasse" required />
+        <input type="password" th:field="*{motDePasse}" id="motDePasse" required />
       </div>
 
       <div class="form-group">
@@ -65,3 +70,4 @@
   </div>
 </body>
 </html>
+

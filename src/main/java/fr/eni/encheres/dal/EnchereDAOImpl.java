@@ -40,7 +40,7 @@ public class EnchereDAOImpl implements EnchereDAO {
 		map.addValue("idUtilisateur", enchere.getUtilisateur().getIdUtilisateur());
 		map.addValue("idArticle", enchere.getArticle().getIdArticle());
 		map.addValue("dateEnchere", enchere.getDateEnchere());
-		map.addValue("montant", enchere.getMontantEnchere());
+		map.addValue("montantEnchere", enchere.getMontantEnchere());
 
 		jdbcTemplate.update(INSERT, map);
 	}

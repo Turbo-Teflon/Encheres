@@ -1,5 +1,6 @@
 package fr.eni.encheres.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,15 +24,17 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class EnchereController {
 
-	private final EnchereService enchereService;
-	private final ArticleService articleService;
-	private CategorieService categorieService;
 
-	public EnchereController(EnchereService enchereService,
-			@Qualifier("articleServiceBouchon") ArticleService articleService) {
-		this.enchereService = enchereService;
-		this.articleService = articleService;
-	}
+    private final EnchereService enchereService;
+    private final ArticleService articleService;
+    private final CategorieService categorieService;
+
+    public EnchereController(EnchereService enchereService,@Qualifier("articleServiceBouchon") ArticleService articleService, CategorieService categorieService) {
+        this.enchereService = enchereService;
+        this.articleService = articleService;
+        this.categorieService=categorieService;
+    }
+
 
 	@ModelAttribute("utilisateur")
 	public Utilisateur utilisateurActif(HttpSession session) {
@@ -152,5 +155,57 @@ public class EnchereController {
 			return "view-connexion-enchere";
 		}
 	}
+    
+    @GetMapping("/encheres/filtrer")
+	public String filtrer(@RequestParam(name = "categorie", defaultValue = "0") long categorie,
+		    @RequestParam(name = "nomArticle", defaultValue = "") String nomArticle,
+		    @RequestParam(name = "filtreType", defaultValue = "achats") String filtreType,
+		    @RequestParam(name = "encheresOuvertes") boolean encheresOuvertes,
+		    @RequestParam(name = "mesEncheres") boolean mesEncheres,
+		    @RequestParam(name = "mesEncheresRemportees") boolean mesEncheresRemportees,
+		    @RequestParam(name = "ventesEnCours") boolean ventesEnCours,
+		    @RequestParam(name = "ventesNonDebutees") boolean ventesNonDebutees,
+		    @RequestParam(name = "ventesTerminees") boolean ventesTerminees,
+		    Model model, HttpSession session
+			) {
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateurConnecte");
+	    model.addAttribute("user", utilisateur.getPseudo());
+		List<Categorie> categories = categorieService.selectAll();
+	    model.addAttribute("categories", categories);
+//	    List<Article> articles = articleService.selectEncheresOuvertes(categorie, nomArticle); 
+//	    model.addAttribute("articles", articles);
+	    model.addAttribute("nomArticle", nomArticle);
+	    model.addAttribute("categorie", categorie);
+	    
+	    List<Article> articles = new ArrayList<>();
+
+	   
+	    if (filtreType.equals("achats")) {
+	        if (encheresOuvertes) {
+	            articles = articleService.selectEncheresOuvertes(categorie, nomArticle);
+	        } else if (mesEncheres) {
+	            articles = articleService.selectMesEncheres(utilisateur.getIdUtilisateur(), categorie, nomArticle);
+	        } else {
+	            articles = articleService.selectMesEncheresRemportees(utilisateur.getIdUtilisateur(), categorie, nomArticle);
+	        }
+	    } else if (filtreType.equals("ventes")) {
+	        if (ventesEnCours) {
+	            articles = articleService.selectMesVentesEnCours(utilisateur.getIdUtilisateur(), categorie, nomArticle);
+	        } else if (ventesNonDebutees) {
+	            articles = articleService.selectMesVentesNonDebutees(utilisateur.getIdUtilisateur(), categorie, nomArticle);
+	        } else {
+	            articles = articleService.selectMesVentesTerminees(utilisateur.getIdUtilisateur(), categorie, nomArticle);
+	        } 
+	    }
+	    
+	    model.addAttribute("encheresOuvertes", encheresOuvertes);
+	    model.addAttribute("mesEncheres", mesEncheres);
+	    model.addAttribute("mesEncheresRemportees", mesEncheresRemportees);
+	    model.addAttribute("ventesEnCours", ventesEnCours);
+	    model.addAttribute("ventesNonDebutees", ventesNonDebutees);
+	    model.addAttribute("ventesTerminees", ventesTerminees);
+	    return "accueil-utilisateur";
+	}
+
 
 }

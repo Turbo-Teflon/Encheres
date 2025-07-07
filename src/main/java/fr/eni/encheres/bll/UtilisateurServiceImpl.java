@@ -17,7 +17,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	
 	@Override
 	public void insert(Utilisateur utilisateur) {
-		// TODO Auto-generated method stub
+		utilisateurDAO.insert(utilisateur);
 		
 	}
 
