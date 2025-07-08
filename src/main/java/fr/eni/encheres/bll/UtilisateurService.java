@@ -2,8 +2,11 @@ package fr.eni.encheres.bll;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import fr.eni.encheres.bo.Utilisateur;
 
+@Service
 public interface UtilisateurService {
 	void insert(Utilisateur utilisateur);
 

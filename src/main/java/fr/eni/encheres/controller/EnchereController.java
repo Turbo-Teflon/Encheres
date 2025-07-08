@@ -3,7 +3,8 @@ package fr.eni.encheres.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.UtilisateurDAO;
 import fr.eni.encheres.dto.UtilisateurFormDto;
 import jakarta.servlet.http.HttpSession;
 
@@ -27,12 +29,21 @@ public class EnchereController {
 	private final EnchereService enchereService;
 	private final ArticleService articleService;
 	private final CategorieService categorieService;
+	private final UtilisateurDAO utilisateurDAO;
 
-	public EnchereController(EnchereService enchereService,
-			@Qualifier("articleServiceBouchon") ArticleService articleService, CategorieService categorieService) {
+	
+
+	public EnchereController(EnchereService enchereService, ArticleService articleService,
+			CategorieService categorieService, UtilisateurDAO utilisateurDAO) {
 		this.enchereService = enchereService;
 		this.articleService = articleService;
 		this.categorieService = categorieService;
+		this.utilisateurDAO = utilisateurDAO;
+	}
+	
+	@GetMapping("/")
+	public String redirectionAccueil() {
+	    return "redirect:/accueil";
 	}
 
 	@GetMapping("/accueil")
@@ -46,7 +57,7 @@ public class EnchereController {
 
 	@ModelAttribute("utilisateur")
 	public Utilisateur utilisateurActif(HttpSession session) {
-		Object userInSession = session.getAttribute("utilisateur");
+		Object userInSession = session.getAttribute("utilisateurConnecte");
 		if (userInSession instanceof Utilisateur) {
 			return (Utilisateur) userInSession;
 		}
@@ -86,7 +97,12 @@ public class EnchereController {
 	}
 
 	@GetMapping("/profil")
-	public String profil() {
+	public String profil(HttpSession session, Model model) {
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateurConnecte");
+		if (utilisateur == null) {
+			return "redirect:/connexion";
+		}
+		model.addAttribute("utilisateur", utilisateur);
 		return "view-profil-enchere";
 	}
 
@@ -108,40 +124,28 @@ public class EnchereController {
 
 	@PostMapping("/creer-compte")
 	public String creerComptePost(@ModelAttribute UtilisateurFormDto formDto, Model model) {
-
-		// Vérification que les mots de passe correspondent
 		if (!formDto.getMotDePasse().equals(formDto.getConfirmation())) {
 			model.addAttribute("erreur", "Les mots de passe ne correspondent pas.");
 			return "view-creer-compte-enchere";
 		}
 
-		// Conversion du DTO vers l'entité métier Utilisateur
 		Utilisateur utilisateur = new Utilisateur();
 		utilisateur.setPseudo(formDto.getPseudo());
+		utilisateur.setNom(formDto.getNom());
+		utilisateur.setPrenom(formDto.getPrenom());
 		utilisateur.setEmail(formDto.getEmail());
-		utilisateur.setMotDePasse(formDto.getMotDePasse());
+		utilisateur.setTelephone(formDto.getTelephone());
+		utilisateur.setRue(formDto.getRue());
+		utilisateur.setCodePostal(formDto.getCodePostal());
+		utilisateur.setVille(formDto.getVille());
+		utilisateur.setCredit(100);
+		utilisateur.setAdministrateur(false);
 
-		// TODO : enregistrer l'utilisateur (via le service)
+		utilisateurDAO.insert(utilisateur);
 		return "redirect:/connexion";
 	}
 
-	@PostMapping("/connexion")
-	public String traiterConnexion(@RequestParam("identifiant") String identifiant,
-			@RequestParam("motDePasse") String motDePasse, HttpSession session, Model model) {
-
-		// 🔐 TODO : valider identifiant / motDePasse (fictif ou via service)
-		if ("admin".equals(identifiant) && "admin".equals(motDePasse)) {
-			Utilisateur utilisateur = new Utilisateur();
-			utilisateur.setPseudo(identifiant); // à remplacer plus tard par l’objet récupéré depuis ta BDD
-			session.setAttribute("utilisateur", utilisateur);
-
-			return "redirect:/accueil";
-		} else {
-			model.addAttribute("erreur", "Identifiants invalides.");
-			return "view-connexion-enchere";
-		}
-	}
-
+	
 	@GetMapping("/encheres/filtrer")
 	public String filtrer(@RequestParam(name = "categorie", defaultValue = "0") long categorie,
 			@RequestParam(name = "nomArticle", defaultValue = "") String nomArticle,
@@ -153,7 +157,11 @@ public class EnchereController {
 			@RequestParam(name = "ventesNonDebutees") boolean ventesNonDebutees,
 			@RequestParam(name = "ventesTerminees") boolean ventesTerminees, Model model, HttpSession session) {
 		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateurConnecte");
+		if (utilisateur == null) {
+			return "redirect:/connexion";
+		}
 		model.addAttribute("user", utilisateur.getPseudo());
+
 		List<Categorie> categories = categorieService.selectAll();
 		model.addAttribute("categories", categories);
 //	    List<Article> articles = articleService.selectEncheresOuvertes(categorie, nomArticle); 
@@ -191,6 +199,11 @@ public class EnchereController {
 		model.addAttribute("ventesNonDebutees", ventesNonDebutees);
 		model.addAttribute("ventesTerminees", ventesTerminees);
 		return "accueil-utilisateur";
+	}
+	@Autowired
+	public void testEncoder(PasswordEncoder passwordEncoder) {
+	    System.out.println(">>> PasswordEncoder utilisé : " + passwordEncoder.getClass().getSimpleName());
+	    System.out.println(">>> Résultat du match : " + passwordEncoder.matches("pass123", "pass123"));
 	}
 
 }
