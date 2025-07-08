@@ -1,5 +1,5 @@
 USE BDD_Encheres;
-
+IF OBJECT_ID('Roles', 'U') IS NOT NULL DROP TABLE Roles;
 IF OBJECT_ID('Encheres', 'U') IS NOT NULL DROP TABLE Encheres;
 IF OBJECT_ID('Retraits', 'U') IS NOT NULL DROP TABLE Retraits;
 IF OBJECT_ID('Articles', 'U') IS NOT NULL DROP TABLE Articles;

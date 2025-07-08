@@ -65,4 +65,4 @@ VALUES
 (9, 'ROLE_USER'),
 (10, 'ROLE_USER');
 
-SELECT * FROM Roles r JOIN Utilisateurs u ON (r.idUtilisateur = u.idUtilisateur);
+SELECT role FROM Roles WHERE idUtilisateur = 3;
