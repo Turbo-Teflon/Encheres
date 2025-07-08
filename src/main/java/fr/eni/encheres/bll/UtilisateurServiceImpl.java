@@ -11,16 +11,20 @@ import fr.eni.encheres.dal.UtilisateurDAO;
 @Service
 @Profile("prod")
 public class UtilisateurServiceImpl implements UtilisateurService {
-	private UtilisateurDAO utilisateurDAO;
 	
-	public UtilisateurServiceImpl (UtilisateurDAO utilisateurDAO) {
-		this.utilisateurDAO = utilisateurDAO;
+	private final UtilisateurDAO utilisateurDAO;
+	
+
+	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO) {
+	    this.utilisateurDAO = utilisateurDAO;
+	    
 	}
 	
 	@Override
 	public void insert(Utilisateur utilisateur) {
-		utilisateurDAO.insert(utilisateur);
 		
+		// 💾 Insertion
+		utilisateurDAO.insert(utilisateur);
 	}
 
 	@Override
@@ -30,38 +34,28 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	@Override
 	public Utilisateur selectByPseudo(String pseudo) {
-		// TODO Auto-generated method stub
-		return null;
+		return utilisateurDAO.selectByPseudo(pseudo);
 	}
 
 	@Override
 	public Utilisateur selectByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		return utilisateurDAO.selectByEmail(email);
 	}
 
 	@Override
 	public List<Utilisateur> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return utilisateurDAO.selectAll();
 	}
 
 	@Override
 	public void update(Utilisateur utilisateur) {
-		// TODO Auto-generated method stub
-		
+		// TODO : penser à hasher ici si le mot de passe a changé
+		utilisateurDAO.update(utilisateur);
 	}
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Utilisateur login(String identifiant, String motDePasse) {
-		// TODO Auto-generated method stub
-		return null;
+		utilisateurDAO.delete(id);
 	}
 
 }

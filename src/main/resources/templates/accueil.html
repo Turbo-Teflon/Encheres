@@ -3,7 +3,7 @@
 
 <head
 	th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
-<body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
+<body >
 
 	<header th:replace="~{fragments/fragment-entete :: entete}"></header>
 
@@ -13,8 +13,8 @@
 		<section class="filtres">
 			<h2>Filtres :</h2>
 			<form method="get" th:action="@{/encheres/filtrer}">
-				<label for="categorie">Catégories</label> <select id="categorie"
-					name="categorie">
+				<label for="categorie">Catégories</label> 
+				<select id="categorie" name="categorie">
 					<option value="0" th:selected="${categorie == 0}">Toutes</option>
 					<option th:each="cat : ${categories}" th:value="${cat.idCategorie}"
 						th:text="${cat.libelle}"
@@ -42,9 +42,10 @@
 			</article>
 		</section>
 
-</a></div>
+
 
 
 	</main>
 </body>
 </html>
+

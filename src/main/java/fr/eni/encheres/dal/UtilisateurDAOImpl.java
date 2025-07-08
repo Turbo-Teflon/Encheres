@@ -35,12 +35,10 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
-	
-
 	/**
 	 * @param jdbcTemplate
 	 */
-	public UtilisateurDAOImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+		public UtilisateurDAOImpl(NamedParameterJdbcTemplate jdbcTemplate) {
 		super();
 		this.jdbcTemplate = jdbcTemplate;
 	}
@@ -143,6 +141,9 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		}
 	}
 
+
+
+	
 	
 
 }

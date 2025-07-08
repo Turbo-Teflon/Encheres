@@ -1,25 +1,21 @@
 <!-- templates/fragments/fragment-entete.html -->
-<!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
-<body>
+
   <header th:fragment="entete">
     <div class="entete-container">
       <h1><a href="/" class="logo">ENI-Enchères</a></h1>
       <nav class="entete-nav">    
-        <!-- Affichage si l'utilisateur est connecté -->
-        <span th:if="${utilisateur != null}">Bonjour <strong th:text="${utilisateur.pseudo}">Utilisateur</strong>
-        <a th:href="@{/profil}">Profil</a>
-  		<a th:href="@{/deconnexion}">Déconnexion</a>
+    <span th:if="${session.utilisateurConnecte != null}">
+  Bonjour <strong th:text="${session.utilisateurConnecte.pseudo}">Utilisateur</strong>
+  <a th:href="@{/profil}">Profil</a>
+  <a th:href="@{/deconnexion}">Déconnexion</a>
 </span>
-
-        <!-- Affichage si l'utilisateur n'est pas connecté -->
-        <span th:if="${utilisateur == null}">
-  		<a th:href="@{/connexion}">Se connecter</a>
-        <a th:href="@{/creer-compte}">S'inscrire</a> 
-          
-        </span>
+<span th:if="${session.utilisateurConnecte == null}">
+  <a th:href="@{/connexion}">Se connecter</a>
+  <a th:href="@{/creer-compte}">S'inscrire</a> 
+</span>
       </nav>
     </div>
   </header>
-</body>
-</html>
+

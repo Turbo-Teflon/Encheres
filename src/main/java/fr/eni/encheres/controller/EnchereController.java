@@ -3,7 +3,7 @@ package fr.eni.encheres.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import fr.eni.encheres.bll.ArticleService;
 import fr.eni.encheres.bll.CategorieService;
 import fr.eni.encheres.bll.EnchereService;
+import fr.eni.encheres.bll.UtilisateurService;
 import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
-import fr.eni.encheres.dal.UtilisateurDAO;
 import fr.eni.encheres.dto.UtilisateurFormDto;
 import jakarta.servlet.http.HttpSession;
 
@@ -29,16 +29,13 @@ public class EnchereController {
 	private final EnchereService enchereService;
 	private final ArticleService articleService;
 	private final CategorieService categorieService;
-	private final UtilisateurDAO utilisateurDAO;
+	private final UtilisateurService utilisateurService;
 
-	
-
-	public EnchereController(EnchereService enchereService, ArticleService articleService,
-			CategorieService categorieService, UtilisateurDAO utilisateurDAO) {
+	public EnchereController(EnchereService enchereService, ArticleService articleService, CategorieService categorieService, UtilisateurService utilisateurService) {
 		this.enchereService = enchereService;
 		this.articleService = articleService;
 		this.categorieService = categorieService;
-		this.utilisateurDAO = utilisateurDAO;
+		this.utilisateurService = utilisateurService;
 	}
 	
 	@GetMapping("/")
@@ -47,17 +44,39 @@ public class EnchereController {
 	}
 
 	@GetMapping("/accueil")
-	public String accueil(Model model) {
-		List<Categorie> categories = categorieService.selectAll();
-		model.addAttribute("categories", categories);
-		List<Article> articles = articleService.selectAll();
-		model.addAttribute("articles", articles);
-		return "accueil";
+	
+	public String accueil(HttpSession session, Model model) {
+		System.out.println("=====> TU ES DANS LA METHODE ACCUEIL");
+	    System.out.println("==== PAGE ACCUEIL ====");
+	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+	    System.out.println("Utilisateur dans session : " + utilisateur);
+
+	    try {
+	        List<Categorie> categories = categorieService.selectAll();
+	        System.out.println("Catégories récupérées : " + categories.size());
+	        model.addAttribute("categories", categories);
+	    } catch (Exception e) {
+	        System.out.println("Erreur récupération catégories : " + e.getMessage());
+	    }
+
+	    try {
+	        List<Article> articles = articleService.selectAll();
+	        System.out.println("Articles récupérés : " + articles.size());
+	        model.addAttribute("articles", articles);
+	    } catch (Exception e) {
+	        System.out.println("Erreur récupération articles : " + e.getMessage());
+	    }
+
+	    model.addAttribute("utilisateur", utilisateur);
+	    return "accueil";
 	}
+
+
+
 
 	@ModelAttribute("utilisateur")
 	public Utilisateur utilisateurActif(HttpSession session) {
-		Object userInSession = session.getAttribute("utilisateurConnecte");
+		Object userInSession = session.getAttribute("utilisateur");
 		if (userInSession instanceof Utilisateur) {
 			return (Utilisateur) userInSession;
 		}
@@ -92,13 +111,13 @@ public class EnchereController {
 
 	@GetMapping("/creer-compte")
 	public String creerCompteForm(Model model) {
-		model.addAttribute("utilisateurFormDto", new UtilisateurFormDto());
+		model.addAttribute("utilisateur", new UtilisateurFormDto());
 		return "view-creer-compte-enchere";
 	}
 
 	@GetMapping("/profil")
 	public String profil(HttpSession session, Model model) {
-		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateurConnecte");
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 		if (utilisateur == null) {
 			return "redirect:/connexion";
 		}
@@ -140,8 +159,17 @@ public class EnchereController {
 		utilisateur.setVille(formDto.getVille());
 		utilisateur.setCredit(100);
 		utilisateur.setAdministrateur(false);
+		/* Création d'un PasswordEncoder capable de gérer plusieurs types d'encodage de mots de passe.
+		 Cette méthode retourne un "DelegatingPasswordEncoder", c'est-à-dire un encodeur principal qui peut déléguer
+		 à d'autres encodeurs en fonction d'un préfixe dans le mot de passe encodé (ex: {bcrypt}, {noop}, etc.).
+		 Par défaut, il utilise BCrypt (recommandé pour la sécurité), mais peut aussi reconnaître d'autres formats.
+		 Cela permet par exemple de migrer des anciens mots de passe sans casser la compatibilité.*/
+		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); 
+        String password = formDto.getMotDePasse();
+        String hash = encoder.encode(password);
+		utilisateur.setMotDePasse(hash);
+		utilisateurService.insert(utilisateur);
 
-		utilisateurDAO.insert(utilisateur);
 		return "redirect:/connexion";
 	}
 
@@ -200,10 +228,5 @@ public class EnchereController {
 		model.addAttribute("ventesTerminees", ventesTerminees);
 		return "accueil-utilisateur";
 	}
-	@Autowired
-	public void testEncoder(PasswordEncoder passwordEncoder) {
-	    System.out.println(">>> PasswordEncoder utilisé : " + passwordEncoder.getClass().getSimpleName());
-	    System.out.println(">>> Résultat du match : " + passwordEncoder.matches("pass123", "pass123"));
-	}
-
+	
 }

@@ -60,3 +60,23 @@ button[type="reset"] {
   background-color: #ccc;
   color: black;
 }
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 2.5em; /* laisse de la place à droite pour l’icône */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.2em;
+  color: #555;
+  user-select: none;
+}
+
