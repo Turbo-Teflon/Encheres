@@ -8,7 +8,12 @@
       <nav class="entete-nav">    
         <!-- Affichage si l'utilisateur est connecté -->
         <span th:if="${utilisateur != null}">Bonjour <strong th:text="${utilisateur.pseudo}">Utilisateur</strong>
+<<<<<<< HEAD
 
+=======
+        <a th:href="@{/profil}">Profil</a>
+  		<a th:href="@{/deconnexion}">Déconnexion</a>
+>>>>>>> main
 </span>
 
           
