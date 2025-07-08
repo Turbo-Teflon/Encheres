@@ -153,5 +153,23 @@ public class UtilisateurDAOBouchon implements UtilisateurDAO{
 	    return 1;
 	}
 
+	@Override
+	public boolean isAdmin(Utilisateur u) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void updateRole(long id, String role) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void insertRole(long id, String role) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.encheres.bll.ArticleService;
 import fr.eni.encheres.bll.CategorieService;
@@ -24,6 +25,7 @@ import fr.eni.encheres.dto.UtilisateurFormDto;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
+@SessionAttributes("utilisateur")
 public class EnchereController {
 
 	private final EnchereService enchereService;
@@ -54,6 +56,12 @@ public class EnchereController {
 		model.addAttribute("articles", articles);
 		return "accueil";
 	}
+	
+	@GetMapping("/creer")
+	public String getMethodName(@RequestParam String param) {
+		return "view-creer-vente";
+	}
+	
 
 	@ModelAttribute("utilisateur")
 	public Utilisateur utilisateurActif(HttpSession session) {

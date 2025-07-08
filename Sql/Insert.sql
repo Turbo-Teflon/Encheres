@@ -47,3 +47,22 @@ VALUES
 (5, 3, '2025-07-03', 40),
 (1, 4, '2025-07-04', 450),
 (3, 5, '2025-07-02', 90);
+
+UPDATE UTILISATEURS SET motDePasse = '$2a$10$f0fFTPEbAigttVzemzjorOmkJctjesIQOpsPFOQh6A/auqhD6e3U6'
+
+SELECT * FROM Utilisateurs;
+
+INSERT INTO Roles (idUtilisateur, role)
+VALUES
+(1, 'ROLE_ADMIN'),
+(2, 'ROLE_ADMIN'),
+(3, 'ROLE_USER'),
+(4, 'ROLE_USER'),
+(5, 'ROLE_USER'),
+(6, 'ROLE_USER'),
+(7, 'ROLE_USER'),
+(8, 'ROLE_USER'),
+(9, 'ROLE_USER'),
+(10, 'ROLE_USER');
+
+SELECT * FROM Roles r JOIN Utilisateurs u ON (r.idUtilisateur = u.idUtilisateur);

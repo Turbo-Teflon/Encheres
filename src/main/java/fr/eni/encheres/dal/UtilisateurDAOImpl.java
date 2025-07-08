@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import fr.eni.encheres.bo.Utilisateur;
 
 @Repository
-@Primary
+@Profile("prod")
 public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 	private static final String INSERT = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse, credit) "
@@ -31,7 +31,11 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private static final String UPDATE = "UPDATE UTILISATEURS SET pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email, telephone = :telephone, rue = :rue, codePostal = :codePostal, ville = :ville, motDePasse = :motDePasse, credit = :credit, administrateur = :administrateur WHERE idUtilisateur = :id";
 	private static final String DELETE = "DELETE FROM UTILISATEURS WHERE idUtilisateur = :id";
 	private static final String SELECT_BY_PSEUDO = "SELECT * FROM UTILISATEURS WHERE pseudo = :pseudo";
-
+	private static final String SELECT_ROLE = "SELECT role FROM ROLES WHERE idUtilisateur = :id";
+	private static final String UPDATE_ROLE = "UPDATE Roles SET role = :role WHERE idUtilisateur = :id";
+	private static final String INSERT_ROLE = "INSERT INTO ROLES (idUtilisateur, role) VALUES (:id, :role)";
+	private static final String ROLE_ADMIN = "ROLE_ADMIN";
+	private static final String ROLE_USER = "ROLE_USER";
 
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
@@ -68,6 +72,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			
 			utilisateur.setIdUtilisateur(keyHolder.getKey().longValue());
 		}
+		
 		return nbLigne;
 	}
 
@@ -113,6 +118,13 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		map.addValue("administrateur", utilisateur.isAdministrateur());
 
 		jdbcTemplate.update(UPDATE, map);
+		
+		if(utilisateur.isAdministrateur()) {
+			updateRole(utilisateur.getIdUtilisateur(), ROLE_ADMIN);
+		}else {
+			updateRole(utilisateur.getIdUtilisateur(), ROLE_USER);
+
+		}
 	}
 
 	@Override
@@ -121,7 +133,29 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		return jdbcTemplate.update(DELETE, map);
 	}
 
+	@Override
+	public boolean isAdmin(Utilisateur u) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("id", u.getIdUtilisateur());
+		String role = jdbcTemplate.queryForObject(SELECT_ROLE, map, String.class);
+		return role == ROLE_ADMIN;
+	}
 
+	@Override
+	public void updateRole(long id, String role) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("role", role);
+		map.addValue("id", id);
+		jdbcTemplate.update(UPDATE_ROLE, map);
+	}
+	
+	@Override
+	public void insertRole(long id, String role) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("id", id);
+		map.addValue("role", role);
+		jdbcTemplate.update(INSERT_ROLE, map);
+	}
 
 	class UtilisateurRowMapper implements RowMapper<Utilisateur> {
 		@Override
@@ -142,6 +176,11 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			return u;
 		}
 	}
+
+
+
+
+
 
 	
 

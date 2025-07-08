@@ -21,6 +21,12 @@ CREATE TABLE Utilisateurs (
     administrateur BIT DEFAULT 0
 );
 
+CREATE TABLE Roles (
+	idUtilisateur INT PRIMARY KEY,
+	role VARCHAR(20),
+	FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs(idUtilisateur)
+);
+
 CREATE TABLE Categories (
     idCategorie INT PRIMARY KEY IDENTITY(1,1),
     libelle VARCHAR(100) NOT NULL

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
-<head
-	th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
+<head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
 <body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
 
 	<header th:replace="~{fragments/fragment-entete :: entete}"></header>
@@ -13,13 +12,14 @@
 		<section class="filtres">
 			<h2>Filtres :</h2>
 			<form method="get" th:action="@{/encheres/filtrer}">
-				<label for="categorie">Catégories</label> <select id="categorie"
-					name="categorie">
+				<label for="categorie">Catégories</label>
+				<select id="categorie" name="categorie">
 					<option value="0" th:selected="${categorie == 0}">Toutes</option>
 					<option th:each="cat : ${categories}" th:value="${cat.idCategorie}"
 						th:text="${cat.libelle}"
 						th:selected="${categorie == cat.idCategorie}">Catégorie</option>
-				</select> <input type="text" placeholder="Le nom de l'article contient"
+				</select>
+				<input type="text" placeholder="Le nom de l'article contient"
 					name="nomArticle" th:value="${nomArticle}" />
 
 				<button type="submit">Rechercher</button>
