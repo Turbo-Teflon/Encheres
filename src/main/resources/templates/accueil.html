@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-
-<head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
-<body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
+<head
+	th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
+<body >
 
 	<header th:replace="~{fragments/fragment-entete :: entete}"></header>
 
@@ -42,9 +42,10 @@
 			</article>
 		</section>
 
-</a></div>
+
 
 
 	</main>
 </body>
 </html>
+

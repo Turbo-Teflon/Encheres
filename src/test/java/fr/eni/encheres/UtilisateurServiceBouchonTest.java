@@ -27,7 +27,7 @@ class UtilisateurServiceBouchonTest {
         service = new UtilisateurServiceBouchon(); // Instanciation du faux service (mock/bouchon)
     }
 
-    @Test
+    /*@Test
     void testLoginOK() {
         // On teste une connexion avec des identifiants valides
         Utilisateur u = service.login("jdoe", "mdp123");
@@ -48,7 +48,7 @@ class UtilisateurServiceBouchonTest {
         assertNull(u, "L'utilisateur devrait être nul avec des identifiants incorrects");
 
         logger.info("Connexion échouée comme prévu.");
-    }
+    }*/
 
     @Test
     void testInsertEtSelectByPseudo() {

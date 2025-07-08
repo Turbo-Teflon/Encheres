@@ -2,9 +2,7 @@
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
   <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
 
-
-  <body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
-
+  <body>
 
   <div class="container">
     <h1>ENI-Enchères</h1>
@@ -68,6 +66,9 @@
       </div>
     </form>
   </div>
+  <script th:src="@{/js/password.js}"></script>
+
+
 </body>
 </html>
 

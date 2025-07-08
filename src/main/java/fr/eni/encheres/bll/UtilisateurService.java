@@ -22,5 +22,5 @@ public interface UtilisateurService {
 
 	void delete(long id);
 
-	Utilisateur login(String identifiant, String motDePasse);
+	
 }

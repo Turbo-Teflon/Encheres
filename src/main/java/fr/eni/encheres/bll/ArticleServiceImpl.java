@@ -15,8 +15,9 @@ import fr.eni.encheres.dal.EnchereDAO;
 import fr.eni.encheres.dal.UtilisateurDAO;
 
 
-@Profile("prod")
+
 @Service
+@Profile("prod")
 public class ArticleServiceImpl implements ArticleService {
 
 	private ArticleDAO articleDAO;

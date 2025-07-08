@@ -70,7 +70,7 @@ public class UtilisateurServiceBouchon implements UtilisateurService {
 		utilisateurs.removeIf(u -> u.getIdUtilisateur() == id);
 	}
 
-	@Override
+	/*@Override
 	public Utilisateur login(String identifiant, String motDePasse) {
 		return utilisateurs.stream()
 				.filter(u -> (u.getPseudo().equalsIgnoreCase(identifiant)
@@ -78,5 +78,5 @@ public class UtilisateurServiceBouchon implements UtilisateurService {
 						&& u.getMotDePasse().equals(motDePasse))
 				.findFirst()
 				.orElse(null);
-	}
+	}*/
 }
