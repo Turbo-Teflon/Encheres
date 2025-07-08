@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+.filtre-section {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .filtre-colonne {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .filtre-colonne label {
+    margin-top: 0.5rem;
+  }
+
+  .disabled label {
+    color: #aaa;
+  }
+
+  .disabled input[type="checkbox"] {
+    pointer-events: none;
+    opacity: 0.5;
+  }

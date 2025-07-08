@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/fragment-head :: head('Accueil - ENI-Enchères')}"></head>
+<body th:classappend="${Utilisateur != null and Utilisateur?.main == 'gaucher'} ? 'gaucher' : 'droitier'">
+
+<nav class="top-right-nav">
+  <a href="/test/creer-compte">S'inscrire</a>
+  <a href="/test/connexion">Se connecter</a>
+</nav>
+
+<header th:replace="~{fragments/fragment-entete :: entete}"></header>
+
+<main>
+
+  
+  <section class="filtres">
+    <h2>Liste des enchères :</h2>
+    
+    <form method="get" th:action="@{/encheres/filtrer}">
+  <label for="categorie">Catégorie :</label>
+  <select id="categorie" name="categorie">
+    <option value="0" th:selected="${categorie == 0}">Toutes</option>
+    <option th:each="cat : ${categories}"
+            th:value="${cat.idCategorie}"
+            th:text="${cat.libelle}"
+            th:selected="${categorie == cat.idCategorie}">
+    </option>
+  </select>
+
+  <input type="text" name="nomArticle" placeholder="Le nom de l'article contient"
+         th:value="${nomArticle}" />
+
+
+<div class="filtre-section">
+  <div class="filtre-colonne">
+    <label><input type="radio" name="filtreType" value="achats" th:checked="${filtreType == 'achats'}" onchange="this.form.submit()"> Achats</label>
+    <div th:classappend="${filtreType != 'achats'} ? 'disabled'" class="filtre-options">
+      <label><input type="checkbox" name="encheresOuvertes" th:checked="${encheresOuvertes}" /> enchères ouvertes</label>
+      <label><input type="checkbox" name="mesEncheres" th:checked="${mesEncheres}" /> mes enchères</label>
+      <label><input type="checkbox" name="mesEncheresRemportees" th:checked="${mesEncheresRemportees}" /> mes enchères remportées</label>
+    </div>
+  </div>
+
+  <div class="filtre-colonne">
+    <label><input type="radio" name="filtreType" value="ventes" th:checked="${filtreType == 'ventes'}" onchange="this.form.submit()"> Mes ventes</label>
+    <div th:classappend="${filtreType != 'ventes'} ? 'disabled'" class="filtre-options">
+      <label><input type="checkbox" name="ventesEnCours" th:checked="${ventesEnCours}" /> mes ventes en cours</label>
+      <label><input type="checkbox" name="ventesNonDebutees" th:checked="${ventesNonDebutees}" /> ventes non débutées</label>
+      <label><input type="checkbox" name="ventesTerminees" th:checked="${ventesTerminees}" /> ventes terminées</label>
+    </div>
+  </div>
+</div>
+
+  <button type="submit">Rechercher</button>
+</form>
+    
+  </section>
+
+ 
+  <section class="articles">
+    <article class="card" th:each="article : ${articles}">
+      <div class="image"></div>
+      <div class="details">
+        <p>
+          <strong th:text="${article.nomArticle}"></strong><br />
+          Prix : <span th:text="${article.prixActuel}"></span><br />
+          Fin de l'enchère :
+          <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}"></span><br />
+          Vendeur :
+          <span th:text="${article.utilisateur.pseudo}"></span>
+        </p>
+      </div>
+    </article>
+  </section>
+
+</main>
+</body>
+</html>

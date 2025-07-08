@@ -5,14 +5,22 @@
 	th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
 <body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
 
+<nav class="top-right-nav">
+  <a href="/test/creer-compte">Enchères</a>
+  <a href="/test/connexion">Vendre un article</a>
+  <a href="/test/creer-compte">Mon profil</a>
+  <a href="/test/connexion">Déconnexion</a>
+  
+</nav>
+
 	<header th:replace="~{fragments/fragment-entete :: entete}"></header>
 
 
 	<main>
 		
 		<section class="filtres">
-			<h2>Filtres :</h2>
-			<form method="get" th:action="@{/encheres/filtrer}">
+			<h2>Liste des enchères :</h2>
+			<form method="get" th:action="@{/encheres/filtrerPublic}">
 				<label for="categorie">Catégories</label> <select id="categorie"
 					name="categorie">
 					<option value="0" th:selected="${categorie == 0}">Toutes</option>
