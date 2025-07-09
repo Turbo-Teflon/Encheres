@@ -1,39 +1,33 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const fields = [
-        { inputId: "motDePasse", iconId: "eye-icon1" },
-        { inputId: "confirmation", iconId: "eye-icon2" }
-    ];
+  const fields = [
+    { inputId: "motDePasse", iconId: "eye-icon1" },
+    { inputId: "confirmation", iconId: "eye-icon2" }
+  ];
 
-    fields.forEach(field => {
-        const input = document.getElementById(field.inputId);
-        if (!input) return;
+  fields.forEach(field => {
+    const input = document.getElementById(field.inputId);
+    if (!input) return;
 
-        const wrapper = document.createElement("div");
-        wrapper.classList.add("password-container");
+    // Création du wrapper
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("password-wrapper");
 
-        // Insérer le wrapper AVANT l'input
-        input.parentNode.insertBefore(wrapper, input);
+    // Remplacement de l'input par le wrapper dans le DOM
+    input.parentNode.replaceChild(wrapper, input);
+    wrapper.appendChild(input);
 
-        // Déplacer l'input dedans
-        wrapper.appendChild(input);
+    // Création et ajout du bouton œil
+    const button = document.createElement("span");
+    button.classList.add("toggle-password");
+    button.id = field.iconId;
+    button.textContent = "🙈";
 
-        // Ajouter le bouton dans le wrapper
-        const button = document.createElement("span");
-        button.classList.add("toggle-password");
-        button.id = field.iconId;
-        button.textContent = "🙈";
-
-        button.addEventListener("click", () => {
-            if (input.type === "password") {
-                input.type = "text";
-                button.textContent = "👁️";
-            } else {
-                input.type = "password";
-                button.textContent = "🙈";
-            }
-        });
-
-        wrapper.appendChild(button);
+    button.addEventListener("click", () => {
+      const isHidden = input.type === "password";
+      input.type = isHidden ? "text" : "password";
+      button.textContent = isHidden ? "👁️" : "🙈";
     });
-});
 
+    wrapper.appendChild(button);
+  });
+});

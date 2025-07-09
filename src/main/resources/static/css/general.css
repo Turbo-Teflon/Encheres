@@ -110,6 +110,30 @@ nav.top-right-nav span {
 .form-group {
   position: relative;
 }
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 
+.password-wrapper input {
+  flex: 1;
+  padding-right: 2.5rem;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-password {
+  font-size: 1.2rem;
+  color: #666;
+}
+.toggle-password:hover {
+  color: #000;
+}
 
 
