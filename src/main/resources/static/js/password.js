@@ -8,30 +8,32 @@ document.addEventListener("DOMContentLoaded", function () {
         const input = document.getElementById(field.inputId);
         if (!input) return;
 
-        // Création du conteneur
-        const container = document.createElement("div");
-        container.classList.add("password-container");
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("password-container");
 
-        // Création du bouton
+        // Insérer le wrapper AVANT l'input
+        input.parentNode.insertBefore(wrapper, input);
+
+        // Déplacer l'input dedans
+        wrapper.appendChild(input);
+
+        // Ajouter le bouton dans le wrapper
         const button = document.createElement("span");
         button.classList.add("toggle-password");
         button.id = field.iconId;
-        button.textContent = "👁️";
+        button.textContent = "🙈";
 
-        // Fonction toggle
         button.addEventListener("click", () => {
             if (input.type === "password") {
                 input.type = "text";
-                button.textContent = "🙈";
+                button.textContent = "👁️";
             } else {
                 input.type = "password";
-                button.textContent = "👁️";
+                button.textContent = "🙈";
             }
         });
 
-        // Remplacer l'input par le container (et y réintégrer l'input et le bouton)
-        input.parentNode.replaceChild(container, input);
-        container.appendChild(input);
-        container.appendChild(button);
+        wrapper.appendChild(button);
     });
 });
+

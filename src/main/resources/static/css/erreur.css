@@ -17,3 +17,13 @@
   border-radius: 4px;
   margin-top: 0.5rem;
 }
+.alert {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+.erreur {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 0.25rem;
+}

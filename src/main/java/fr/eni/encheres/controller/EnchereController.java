@@ -3,10 +3,12 @@ package fr.eni.encheres.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,7 @@ import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dto.UtilisateurFormDto;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 @SessionAttributes("utilisateur")
@@ -33,59 +36,57 @@ public class EnchereController {
 	private final CategorieService categorieService;
 	private final UtilisateurService utilisateurService;
 
-	public EnchereController(EnchereService enchereService, ArticleService articleService, CategorieService categorieService, UtilisateurService utilisateurService) {
+	public EnchereController(EnchereService enchereService, ArticleService articleService,
+			CategorieService categorieService, UtilisateurService utilisateurService) {
 		this.enchereService = enchereService;
 		this.articleService = articleService;
 		this.categorieService = categorieService;
 		this.utilisateurService = utilisateurService;
 	}
-	
+
 	@GetMapping("/")
 	public String redirectionAccueil() {
-	    return "redirect:/accueil";
+		return "redirect:/accueil";
 	}
 
 	@GetMapping("/accueil")
 	public String accueil(HttpSession session, Model model) {
-	    System.out.println("=====> TU ES DANS LA METHODE ACCUEIL");
-	    System.out.println("==== PAGE ACCUEIL ====");
+		System.out.println("=====> TU ES DANS LA METHODE ACCUEIL");
+		System.out.println("==== PAGE ACCUEIL ====");
 
-	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-	    if (utilisateur == null) {
-	        utilisateur = new Utilisateur(); // objet vide pour éviter le null
-	    }
-	    model.addAttribute("utilisateur", session.getAttribute("utilisateur")); // même si c’est null
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+		if (utilisateur == null) {
+			utilisateur = new Utilisateur();
+		}
+		model.addAttribute("utilisateur", utilisateur);
 
-	    System.out.println("Session ID dans accueil : " + session.getId());
-	    System.out.println("Utilisateur dans session : " + utilisateur);
+		System.out.println("Session ID dans accueil : " + session.getId());
+		System.out.println("Utilisateur dans session : " + utilisateur);
 
-	    try {
-	        List<Categorie> categories = categorieService.selectAll();
-	        model.addAttribute("categories", categories);
-	        System.out.println("Catégories récupérées : " + categories.size());
-	    } catch (Exception e) {
-	        System.out.println("Erreur récupération catégories : " + e.getMessage());
-	    }
+		try {
+			List<Categorie> categories = categorieService.selectAll();
+			model.addAttribute("categories", categories);
+			System.out.println("Catégories récupérées : " + categories.size());
+		} catch (Exception e) {
+			System.out.println("Erreur récupération catégories : " + e.getMessage());
+		}
 
-	    try {
-	        List<Article> articles = articleService.selectEncheresOuvertes(0, "");
-	        model.addAttribute("articles", articles);
-	        System.out.println("Articles récupérés : " + articles.size());
-	    } catch (Exception e) {
-	        System.out.println("Erreur récupération articles : " + e.getMessage());
-	    }
+		try {
+			List<Article> articles = articleService.selectEncheresOuvertes(0, "");
+			model.addAttribute("articles", articles);
+			System.out.println("Articles récupérés : " + articles.size());
+		} catch (Exception e) {
+			System.out.println("Erreur récupération articles : " + e.getMessage());
+		}
 
-	    model.addAttribute("utilisateur", utilisateur); // pour afficher son pseudo ou autre dans la page
-
-	    return "accueil";
+		return "accueil";
 	}
 
-	
 	@GetMapping("/creer")
 	public String getMethodName(@RequestParam String param) {
 		return "view-creer-vente";
 	}
-	
+
 	@ModelAttribute("utilisateur")
 	public Utilisateur utilisateurActif(HttpSession session) {
 		Object userInSession = session.getAttribute("utilisateur");
@@ -95,26 +96,22 @@ public class EnchereController {
 		return null;
 	}
 
-	// Détail des enchères d’un article
 	@GetMapping("/encheres/detail")
 	public String voirDetailEnchere(@RequestParam("id") long idArticle, Model model) {
 		Article article = articleService.selectById(idArticle);
 		if (article == null) {
-		    return "redirect:/accueil"; 
+			return "redirect:/accueil";
 		}
 		List<Enchere> encheres = enchereService.selectByArticle(idArticle);
-
 		model.addAttribute("article", article);
 		model.addAttribute("encheres", encheres);
 		return "view-achat-detail-enchere";
 	}
 
-	// Enchères gagnées par un utilisateur fictif (exemple user id = 1)
 	@GetMapping("/encheres/gagnees")
 	public String voirEncheresGagnees(Model model) {
 		long idUtilisateur = 1; // à remplacer par l’utilisateur connecté
 		List<Enchere> encheres = enchereService.selectByUtilisateur(idUtilisateur);
-
 		model.addAttribute("encheres", encheres);
 		return "view-gain-achat-enchere";
 	}
@@ -126,7 +123,7 @@ public class EnchereController {
 
 	@GetMapping("/creer-compte")
 	public String creerCompteForm(Model model) {
-		model.addAttribute("utilisateur", new UtilisateurFormDto());
+		model.addAttribute("utilisateurForm", new UtilisateurFormDto());
 		return "view-creer-compte-enchere";
 	}
 
@@ -152,10 +149,10 @@ public class EnchereController {
 
 	@GetMapping("/deconnexion")
 	public String Deconnexion(HttpSession session) {
-		session.invalidate(); // Supprime toutes les données de session
+		session.invalidate();
 		return "redirect:/accueil";
 	}
-	
+
 	@GetMapping("/encheres/filtrer")
 	public String filtrer(@RequestParam(name = "categorie", defaultValue = "0") long categorie,
 			@RequestParam(name = "nomArticle", defaultValue = "") String nomArticle,
@@ -166,42 +163,34 @@ public class EnchereController {
 			@RequestParam(name = "ventesEnCours") boolean ventesEnCours,
 			@RequestParam(name = "ventesNonDebutees") boolean ventesNonDebutees,
 			@RequestParam(name = "ventesTerminees") boolean ventesTerminees, Model model, HttpSession session) {
-		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateurConnecte");
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 		if (utilisateur == null) {
 			return "redirect:/connexion";
 		}
 		model.addAttribute("user", utilisateur.getPseudo());
-
 		List<Categorie> categories = categorieService.selectAll();
 		model.addAttribute("categories", categories);
-//	    List<Article> articles = articleService.selectEncheresOuvertes(categorie, nomArticle); 
-//	    model.addAttribute("articles", articles);
 		model.addAttribute("nomArticle", nomArticle);
 		model.addAttribute("categorie", categorie);
-
 		List<Article> articles = new ArrayList<>();
-
 		if (filtreType.equals("achats")) {
 			if (encheresOuvertes) {
 				articles = articleService.selectEncheresOuvertes(categorie, nomArticle);
 			} else if (mesEncheres) {
 				articles = articleService.selectMesEncheres(utilisateur.getIdUtilisateur(), categorie, nomArticle);
 			} else {
-				articles = articleService.selectMesEncheresRemportees(utilisateur.getIdUtilisateur(), categorie,
-						nomArticle);
+				articles = articleService.selectMesEncheresRemportees(utilisateur.getIdUtilisateur(), categorie, nomArticle);
 			}
 		} else if (filtreType.equals("ventes")) {
 			if (ventesEnCours) {
 				articles = articleService.selectMesVentesEnCours(utilisateur.getIdUtilisateur(), categorie, nomArticle);
 			} else if (ventesNonDebutees) {
-				articles = articleService.selectMesVentesNonDebutees(utilisateur.getIdUtilisateur(), categorie,
-						nomArticle);
+				articles = articleService.selectMesVentesNonDebutees(utilisateur.getIdUtilisateur(), categorie, nomArticle);
 			} else {
-				articles = articleService.selectMesVentesTerminees(utilisateur.getIdUtilisateur(), categorie,
-						nomArticle);
+				articles = articleService.selectMesVentesTerminees(utilisateur.getIdUtilisateur(), categorie, nomArticle);
 			}
 		}
-
+		model.addAttribute("articles", articles);
 		model.addAttribute("encheresOuvertes", encheresOuvertes);
 		model.addAttribute("mesEncheres", mesEncheres);
 		model.addAttribute("mesEncheresRemportees", mesEncheresRemportees);
@@ -210,13 +199,18 @@ public class EnchereController {
 		model.addAttribute("ventesTerminees", ventesTerminees);
 		return "accueil-utilisateur";
 	}
+
 	@PostMapping("/creer-compte")
-	public String creerComptePost(@ModelAttribute UtilisateurFormDto formDto, Model model) {
+	public String creerComptePost(@Valid @ModelAttribute("utilisateurForm") UtilisateurFormDto formDto, BindingResult result, Model model, HttpSession session)
+ {
+		if (result.hasErrors()) {
+		    return "view-creer-compte-enchere";
+		}
+
 		if (!formDto.getMotDePasse().equals(formDto.getConfirmation())) {
 			model.addAttribute("erreur", "Les mots de passe ne correspondent pas.");
 			return "view-creer-compte-enchere";
 		}
-
 		Utilisateur utilisateur = new Utilisateur();
 		utilisateur.setPseudo(formDto.getPseudo());
 		utilisateur.setNom(formDto.getNom());
@@ -228,17 +222,27 @@ public class EnchereController {
 		utilisateur.setVille(formDto.getVille());
 		utilisateur.setCredit(100);
 		utilisateur.setAdministrateur(false);
-		/* Création d'un PasswordEncoder capable de gérer plusieurs types d'encodage de mots de passe.
-		 Cette méthode retourne un "DelegatingPasswordEncoder", c'est-à-dire un encodeur principal qui peut déléguer
-		 à d'autres encodeurs en fonction d'un préfixe dans le mot de passe encodé (ex: {bcrypt}, {noop}, etc.).
-		 Par défaut, il utilise BCrypt (recommandé pour la sécurité), mais peut aussi reconnaître d'autres formats.
-		 Cela permet par exemple de migrer des anciens mots de passe sans casser la compatibilité.*/
-		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); 
-        String password = formDto.getMotDePasse();
-        String hash = encoder.encode(password);
+		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		String password = formDto.getMotDePasse();
+		String hash = encoder.encode(password);
 		utilisateur.setMotDePasse(hash);
-		utilisateurService.insert(utilisateur);
+		
+		try {
+			utilisateurService.insert(utilisateur);
+			session.setAttribute("utilisateur", utilisateur);
+			return "redirect:/accueil";
+		} catch (DuplicateKeyException e) {
+			String message = e.getMessage();
 
-		return "redirect:/connexion";
-	}	
+			if (message.contains("UQ__Utilisat__EA0EEA22")) {
+				model.addAttribute("erreur", "Ce pseudo est déjà utilisé.");
+			} else if (message.toLowerCase().contains("email")) {
+				model.addAttribute("erreur", "Cet email est déjà utilisé.");
+			} else {
+				model.addAttribute("erreur", "Une erreur est survenue.");
+			}
+
+			return "view-creer-compte-enchere";
+		}
+	}
 }

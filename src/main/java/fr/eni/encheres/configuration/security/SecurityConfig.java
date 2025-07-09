@@ -41,13 +41,13 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/accueil", true)
                 .failureUrl("/connexion?error")
                 .usernameParameter("identifiant")
-                .passwordParameter("password")
+                .passwordParameter("motDePasse")
                 .successHandler(monCustomLoginSuccessHandler)                
                 .permitAll()
             )
             .logout(logout -> logout
                 .logoutUrl("/deconnexion")
-                .logoutSuccessUrl("/connexion?logout")
+                .logoutSuccessUrl("/accueil")
                 .permitAll()
             );
 
