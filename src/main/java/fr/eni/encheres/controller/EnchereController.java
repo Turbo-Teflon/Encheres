@@ -24,7 +24,9 @@ import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dto.UtilisateurFormDto;
 import jakarta.servlet.http.HttpSession;
+
 import jakarta.validation.Valid;
+
 
 @Controller
 public class EnchereController {
@@ -113,9 +115,20 @@ public class EnchereController {
 	}
 
 	@GetMapping("/creer")
-	public String getMethodName(@RequestParam String param) {
+	public String creerAnnonce(HttpSession session, Model model) {
+		Article a = new Article();
+		model.addAttribute("article", a);
 		return "view-creer-vente";
 	}
+	
+	@PostMapping("/vendre")
+	public String postCreerAnnonce(HttpSession session, @ModelAttribute Article article) {
+		
+		article.setUtilisateur((Utilisateur) session.getAttribute("utilisateur"));
+		this.articleService.insert(article);
+		return "redirect:/accueil";
+	}
+
 
 	@ModelAttribute("utilisateur")
 	public Utilisateur utilisateurActif(HttpSession session) {
@@ -124,6 +137,12 @@ public class EnchereController {
 			return (Utilisateur) userInSession;
 		}
 		return null;
+	}
+	
+	@ModelAttribute("categories")
+	public List<Categorie> categories(){
+		System.out.println("Mise en session des catégories");
+		return this.categorieService.selectAll();
 	}
 
 	

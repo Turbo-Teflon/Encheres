@@ -9,8 +9,9 @@
 			
 			<!-- ✅ Si connecté -->
 			<span sec:authorize="isAuthenticated()">
-				Bonjour <strong th:text="${utilisateur.pseudo}">Utilisateur</strong>
+				<p> Bonjour <strong th:text="${utilisateur.pseudo}">Utilisateur</strong></p>
 				<a th:href="@{/profil}" class="bouton-nav">Profil</a>
+				<a th:href="@{/creer}" class="bouton-nav">Nouvelle Annonce</a>
 				<form th:action="@{/deconnexion}" method="post" style="display:inline;">
 					<button type="submit" class="bouton-nav">Déconnexion</button>
 				</form>

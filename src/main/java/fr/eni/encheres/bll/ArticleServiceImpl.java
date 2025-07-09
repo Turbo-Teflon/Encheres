@@ -1,5 +1,6 @@
 package fr.eni.encheres.bll;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +36,8 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	@Override
 	public void insert(Article article) {
+		article.setEtatVente("O");
+		article.setDateDebutEncheres(LocalDateTime.now());
 		articleDAO.insert(article);
 	
 	}
@@ -106,7 +109,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public List<Article> selectAll() {
-List<Article> articles = this.articleDAO.selectAll();
+		List<Article> articles = this.articleDAO.selectAll();
 		
 
 		if (articles != null) {

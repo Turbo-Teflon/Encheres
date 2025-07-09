@@ -21,8 +21,8 @@ import fr.eni.encheres.bo.Utilisateur;
 @Repository
 public class ArticleDAOImpl implements ArticleDAO {
 	
-	private static final String INSERT = "INSERT INTO ARTICLES (nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAprix, idUtilisateur, idCategorie) \r\n"
-			+ "	VALUES (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :miseAprix, :idUtilisateur, :idCategorie)";
+	private static final String INSERT = "INSERT INTO ARTICLES (nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAprix, idUtilisateur, idCategorie, etatVente) \r\n"
+			+ "	VALUES (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :idUtilisateur, :idCategorie, :etatVente)";
 
 	private static final String SELECT_BY_ID="SELECT * FROM ARTICLES WHERE idArticle = :id";
 	private static final String SELECT_BY_CATEGORIE =  "SELECT * FROM ARTICLES WHERE idCategorie = :idCategorie";
@@ -33,9 +33,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private static final String SELECT_ENCHERES_TERMINEES= "SELECT * FROM ARTICLES WHERE dateFinEncheres < GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
 	private static final String SELECT_ENCHERES_NON_DEBUTEES= "SELECT * FROM ARTICLES WHERE dateDebutEncheres > GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
 
-	private static final String SELECT_ENCHERES_EN_COURS = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE()";
-	private static final String SELECT_ENCHERES_EN_COURS_BY_CATEGORIE = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE() AND idCategorie = :idCategorie";
-	private static final String SELECT_ENCHERES_EN_COURS_FILTRE = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
+//	private static final String SELECT_ENCHERES_EN_COURS = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE()";
+//	private static final String SELECT_ENCHERES_EN_COURS_BY_CATEGORIE = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE() AND idCategorie = :idCategorie";
+//	private static final String SELECT_ENCHERES_EN_COURS_FILTRE = "SELECT * FROM ARTICLES WHERE dateFinEncheres >= GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
 	private static final String UPDATE = "UPDATE ARTICLES SET nomArticle = :nomArticle, description = :description, dateDebutEncheres = :dateDebutEncheres, dateFinEncheres = :dateFinEncheres, miseAPrix = :miseAPrix, prixVente = :prixVente, etatVente = :etatVente, idUtilisateur = :idUtilisateur, idCategorie = :idCategorie WHERE idArticle = :idArticle";
 	private static final String DELETE = "DELETE FROM ARTICLES WHERE idArticle = :id";
 
@@ -51,8 +51,10 @@ public class ArticleDAOImpl implements ArticleDAO {
 		mapSqlParameterSource.addValue("description", article.getDescription());
 		mapSqlParameterSource.addValue("dateDebutEncheres", article.getDateDebutEncheres());
 		mapSqlParameterSource.addValue("dateFinEncheres", article.getDateFinEncheres());
-		mapSqlParameterSource.addValue("idUtilisateur", article.getUtilisateur());
-		mapSqlParameterSource.addValue("idCategorie", article.getCategorie());
+		mapSqlParameterSource.addValue("miseAPrix", article.getMiseAPrix());
+		mapSqlParameterSource.addValue("etatVente", article.getEtatVente());
+		mapSqlParameterSource.addValue("idUtilisateur", article.getUtilisateur().getIdUtilisateur());
+		mapSqlParameterSource.addValue("idCategorie", article.getCategorie().getIdCategorie());
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(INSERT, mapSqlParameterSource, keyHolder);

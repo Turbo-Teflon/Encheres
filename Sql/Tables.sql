@@ -40,7 +40,7 @@ CREATE TABLE Articles (
     dateFinEncheres DATETIME,
     miseAPrix INT,
     prixVente INT,
-    etatVente NVARCHAR(50),
+    etatVente CHAR(1),
     idUtilisateur INT NOT NULL,
     idCategorie INT NOT NULL,
     FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs(idUtilisateur),
