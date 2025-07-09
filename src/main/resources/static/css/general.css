@@ -88,3 +88,22 @@ nav.top-right-nav a {
 nav.top-right-nav span {
   font-weight: bold;
 }
+/* general.css */
+.bouton-nav {
+    background-color: #4CAF50;  /* vert */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    margin: 0 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.bouton-nav:hover {
+    background-color: #45a049;
+}
+

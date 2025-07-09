@@ -41,9 +41,13 @@
                 <div class="image"></div>
                 <div class="details">
                     <p>
+<<<<<<< HEAD
                         <a th:href="@{/encheres/detail(idArticle=${article.idArticle})}">
           <strong th:text="${article.nomArticle}">Nom article</strong></a>
                        
+=======
+                        <strong th:text="${article.nomArticle}">Nom article</strong><br />
+>>>>>>> main
                         Prix : <span th:text="${article.prixActuel}">0</span><br />
                         Fin de l'enchère :
                         <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}">00/00/0000</span><br />

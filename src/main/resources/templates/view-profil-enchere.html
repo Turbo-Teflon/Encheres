@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
-  <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
-  <body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
+<head th:replace="~{fragments/fragment-head :: head('Mon Profil - ENI-Enchères')}"></head>
+<body th:classappend="${utilisateur.main} == 'droitier' ? 'droitier' : 'gaucher'">
 
-<body>
   <div class="container">
     <h1>Mon profil</h1>
 
     <div class="info-profil">
-      <p><strong>Pseudo :</strong> jojo44</p>
-      <p><strong>Nom :</strong> Dupont</p>
-      <p><strong>Prénom :</strong> Jean</p>
-      <p><strong>Email :</strong> jojo44@example.com</p>
-      <p><strong>Téléphone :</strong> 0601020304</p>
-      <p><strong>Adresse :</strong> 10 allée des Alouettes<br>44800 Saint-Herblain</p>
-      <p><strong>Crédit :</strong> 400 points</p>
+      <p><strong>Pseudo :</strong> <span th:text="${utilisateur.pseudo}">jojo44</span></p>
+      <p><strong>Nom :</strong> <span th:text="${utilisateur.nom}">Dupont</span></p>
+      <p><strong>Prénom :</strong> <span th:text="${utilisateur.prenom}">Jean</span></p>
+      <p><strong>Email :</strong> <span th:text="${utilisateur.email}">jojo44@example.com</span></p>
+      <p><strong>Téléphone :</strong> <span th:text="${utilisateur.telephone}">0601020304</span></p>
+      <p><strong>Adresse :</strong> 
+        <span th:text="${utilisateur.rue}">10 allée des Alouettes</span><br>
+        <span th:text="${utilisateur.codePostal}">44800</span>
+        <span th:text="${utilisateur.ville}">Saint-Herblain</span>
+      </p>
+      <p><strong>Crédit :</strong> <span th:text="${utilisateur.credit}">400</span> points</p>
     </div>
 
     <div class="buttons">
-      <a href="view-modifier-profil-enchere.html" class="btn">Modifier</a>
-      <a href="accueil.html" class="btn secondary">Retour</a>
+      <a th:href="@{/modifier-profil}" class="btn">Modifier</a>
+      <a th:href="@{/accueil}" class="btn secondary">Retour</a>
       <a th:href="@{/deconnexion}">Déconnexion</a>
-      
     </div>
   </div>
+
 </body>
 </html>

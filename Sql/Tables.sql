@@ -1,5 +1,5 @@
 USE BDD_Encheres;
-
+IF OBJECT_ID('Roles', 'U') IS NOT NULL DROP TABLE Roles;
 IF OBJECT_ID('Encheres', 'U') IS NOT NULL DROP TABLE Encheres;
 IF OBJECT_ID('Retraits', 'U') IS NOT NULL DROP TABLE Retraits;
 IF OBJECT_ID('Articles', 'U') IS NOT NULL DROP TABLE Articles;
@@ -19,6 +19,12 @@ CREATE TABLE Utilisateurs (
     motDePasse VARCHAR(255) NOT NULL,
     credit INT DEFAULT 0,
     administrateur BIT DEFAULT 0
+);
+
+CREATE TABLE Roles (
+	idUtilisateur INT PRIMARY KEY,
+	role VARCHAR(20),
+	FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs(idUtilisateur)
 );
 
 CREATE TABLE Categories (

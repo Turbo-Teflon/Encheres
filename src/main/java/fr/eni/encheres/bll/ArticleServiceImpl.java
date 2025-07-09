@@ -17,8 +17,9 @@ import fr.eni.encheres.dal.EnchereDAO;
 import fr.eni.encheres.dal.UtilisateurDAO;
 
 
-@Profile("prod")
+
 @Service
+@Profile("prod")
 public class ArticleServiceImpl implements ArticleService {
 
 	private ArticleDAO articleDAO;
@@ -89,12 +90,20 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	@Override
 	public void setBestEnchereByArticle(Article article) {
+
 		Enchere bestEnchere = enchereDAO.selectBestByArticle(article.getIdArticle());
+		if (bestEnchere != null) {
+		    article.setPrixActuel(bestEnchere.getMontantEnchere());
+		} else {
+		    article.setPrixActuel(article.getMiseAPrix());
+}
 		long idUtilisateurEnchere = bestEnchere.getUtilisateur().getIdUtilisateur();
 		Utilisateur utilisateurEnchere = utilisateurDAO.selectById(idUtilisateurEnchere);
 		article.setPrixActuel(bestEnchere.getMontantEnchere());
 		article.setDernierEncherisseur(utilisateurEnchere.getPseudo());
+
 	}
+
 	@Override
 	public List<Article> selectAll() {
 List<Article> articles = this.articleDAO.selectAll();

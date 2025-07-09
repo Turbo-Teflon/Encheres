@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -16,7 +17,7 @@ import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Utilisateur;
 
-
+@Profile("prod")
 @Repository
 public class ArticleDAOImpl implements ArticleDAO {
 	
@@ -67,7 +68,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 	public Article selectById(long id) {
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		mapSqlParameterSource.addValue("id", id);
-		return jdbcTemplate.queryForObject(SELECT_BY_ID, mapSqlParameterSource, new ArticleRowMapper());
+		List<Article> articles = jdbcTemplate.query(SELECT_BY_ID, mapSqlParameterSource, new ArticleRowMapper());
+		return articles.isEmpty() ? null : articles.get(0);
+
 	}
 
 	@Override

@@ -86,44 +86,7 @@ public class EnchereController {
 	}
 
 	
-	  
-//    @GetMapping("/accueil")
-//    public String accueil(@RequestParam(name = "categorie", defaultValue = "0") long idCategorie,
-//		    @RequestParam(name = "nomArticle", defaultValue = "") String nomArticle, Model model,
-//		    @AuthenticationPrincipal UserDetails userDetails) {
-//
-//        Utilisateur utilisateur = null;
-//        if (userDetails != null) {
-//            utilisateur = utilisateurService.selectByPseudo(userDetails.getUsername());
-//            model.addAttribute("utilisateurConnecte", utilisateur);
-//        } 
-//    	
-//    	
-//        List<Categorie> categories = categorieService.selectAll();
-//        List<Article> articles = articleService.selectEncheresOuvertes(idCategorie,nomArticle); 
-//        
-//        model.addAttribute("categories", categories);
-//        model.addAttribute("articles", articles);
-//        
-////        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateurConnecte");
-//	System.out.println(utilisateur);
-//    	
-//      
-//        model.addAttribute("categorie", idCategorie);
-//        model.addAttribute("nomArticle", nomArticle);
-//        model.addAttribute("filtreType", "achats"); 
-//
-//        
-//        model.addAttribute("encheresOuvertes", false);
-//        model.addAttribute("mesEncheres", false);
-//        model.addAttribute("mesEncheresRemportees", false);
-//
-//        model.addAttribute("ventesEnCours", false);
-//        model.addAttribute("ventesNonDebutees", false);
-//        model.addAttribute("ventesTerminees", false);
-//
-//        return "accueil";
-//    } 
+	 
 
 	
 	@GetMapping("/")

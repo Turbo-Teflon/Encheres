@@ -71,10 +71,14 @@ public class EnchereDAOImpl implements EnchereDAO {
 
 	@Override
 	public Enchere selectBestByArticle(long idArticle) {
-		MapSqlParameterSource map = new MapSqlParameterSource();
-		map.addValue("idArticle", idArticle);
-		return jdbcTemplate.queryForObject(SELECT_BEST_BY_ARTICLE, map, new EnchereRowMapper());
+	    MapSqlParameterSource map = new MapSqlParameterSource();
+	    map.addValue("idArticle", idArticle);
+
+	    List<Enchere> result = jdbcTemplate.query(SELECT_BEST_BY_ARTICLE, map, new EnchereRowMapper());
+	    return result.isEmpty() ? null : result.get(0);
 	}
+
+
 
 	@Override
 	public int deleteByArticle(long idArticle) {
