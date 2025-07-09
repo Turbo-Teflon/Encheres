@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
   <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
-  <body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
-
+ <!-- <body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'"> --> 
+ <body>
   <div class="container terminee">
-    <h1 class="titre">Détail vente</h1>
+    <h1 class="titre" th:text="${article.dernierEncherisseur} + ' a remporté la vente'">a remporté la vente</h1>
+    
 
     <div class="article">
       <div class="image"></div>
@@ -24,22 +25,12 @@
           <strong>Retrait :</strong> 
           <span th:text="${article.utilisateur.rue + ', ' + article.utilisateur.codePostal + ' ' + article.utilisateur.ville}"></span>
         </p>
-
-        <!-- Formulaire d'enchère -->
-        <form th:action="@{/encheres/detail/proposerEnchere}" method="post">
-          <input type="hidden" name="idArticle" th:value="${article.idArticle}" />
 		
 		<br>
 		
-      <label for="montantEnchere"><strong>Ma proposition :</strong></label>
-		<input type="number" name="montantEnchere" id="montantEnchere"
-       th:min="${article.prixActuel + 1}" step="1"
-       th:value="${article.prixActuel + 1}" required />
-      
-
-          <button type="submit">Enchérir</button>
-        </form>
-        <!-- Fin du formulaire -->
+        <form th:action="@{/accueil}" method="get">
+              <button type="submit">Retour</button>
+            </form>
 
       </div>
     </div>
@@ -48,4 +39,3 @@
   </div>
 </body>
 </html>
-

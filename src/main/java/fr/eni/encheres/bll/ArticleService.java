@@ -28,6 +28,8 @@ public interface ArticleService {
 	
 	List<Article> selectEncheresOuvertes(long idCategorie, String nomArticle);
 	
+	List<Article> selectEncheresTerminees(long idCategorie, String nomArticle);
+	
 	List<Article> selectMesEncheres(long idUtilisateur, long idCategorie, String nomArticle);
 	
 	List<Article> selectMesEncheresRemportees(long idUtilisateur, long idCategorie, String nomArticle);

@@ -148,8 +148,8 @@ List<Article> articles = this.articleDAO.selectAll();
 
 	    return articles;
 	}
-
-
+	
+	@Override
 	public List<Article> selectEncheresOuvertes(long idCategorie, String nomArticle) {
 		List<Article> articles = this.articleDAO.selectEncheresOuvertes(idCategorie, nomArticle);
 				
@@ -163,6 +163,23 @@ List<Article> articles = this.articleDAO.selectAll();
 				
 				return articles;
 			}
+	
+	@Override
+	public List<Article> selectEncheresTerminees(long idCategorie, String nomArticle) {
+		List<Article> articles = this.articleDAO.selectEncheresTerminees(idCategorie, nomArticle);
+				
+
+				if (articles != null) {
+					articles.forEach(a -> {
+						setVendeurByArticle(a);
+						setBestEnchereByArticle(a);
+					});
+				}
+				
+				return articles;
+			}
+	
+	
 	@Override
 	public List<Article> selectMesEncheresRemportees(long idUtilisateur, long idCategorie, String nomArticle) {
 		 List<Article> articles = this.articleDAO.selectEncheresTerminees(idCategorie, nomArticle);
@@ -266,6 +283,7 @@ List<Article> articles = this.articleDAO.selectAll();
 		this.insertEnchere(enchere);
 		
 	}
+	
 
 	
 

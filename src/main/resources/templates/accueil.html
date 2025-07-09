@@ -3,51 +3,66 @@
 <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
 
 <body>
-    <header th:replace="~{fragments/fragment-entete :: entete}"></header>
+<header th:replace="~{fragments/fragment-entete :: entete}"></header>
 
-    <main>
+<main>
 
-        <!-- Bloc d'information de connexion -->
-        <section>
-            <p sec:authorize="isAuthenticated()">
-                ✅ Bonjour 
-                <span th:if="${utilisateur != null}" th:text="${utilisateur.pseudo}">Utilisateur</span>, vous êtes connecté !
-            </p>
-            <p sec:authorize="isAnonymous()">
-                ❌ Vous n'êtes pas connecté.
-            </p>
-        </section>
+    <!-- Bloc d'information de connexion -->
+    <section>
+        <p sec:authorize="isAuthenticated()">
+            ✅ Bonjour 
+            <span th:if="${utilisateur != null}" th:text="${utilisateur.pseudo}">Utilisateur</span>, vous êtes connecté !
+        </p>
+        <p sec:authorize="isAnonymous()">
+            ❌ Vous n'êtes pas connecté.
+        </p>
+    </section>
 
-        <!-- Filtres -->
-        <section class="filtres">
-            <h2>Filtres :</h2>
-            <form method="get" th:action="@{/encheres/filtrer}">
-                <label for="categorie">Catégories</label>
-                <select id="categorie" name="categorie">
-                    <option value="0" th:selected="${categorie == 0}">Toutes</option>
-                    <option th:each="cat : ${categories}" th:value="${cat.idCategorie}"
-                            th:text="${cat.libelle}"
-                            th:selected="${categorie == cat.idCategorie}">Catégorie</option>
-                </select>
-                <input type="text" placeholder="Le nom de l'article contient"
-                       name="nomArticle" th:value="${nomArticle}" />
-                <button type="submit">Rechercher</button>
-            </form>
-        </section>
+    <!-- Filtres -->
+    <section class="filtres">
+        <h2>Filtres :</h2>
+        <form method="get" th:action="@{/encheres/filtrer}">
+            <label for="categorie">Catégories</label>
+            <select id="categorie" name="categorie">
+                <option value="0" th:selected="${categorie == 0}">Toutes</option>
+                <option th:each="cat : ${categories}" th:value="${cat.idCategorie}"
+                        th:text="${cat.libelle}"
+                        th:selected="${categorie == cat.idCategorie}">Catégorie</option>
+            </select>
 
-        <!-- Liste des articles -->
+            <input type="text" placeholder="Le nom de l'article contient"
+                   name="nomArticle" th:value="${nomArticle}" />
+
+            <!-- ✅ Choix exclusif entre enchères ouvertes et terminées -->
+            <div class="filtre-encheres">
+                <label>
+                    <input type="radio" name="etatEnchere" value="ouvertes"
+                           th:checked="${etatEnchere == null || etatEnchere == 'ouvertes'}" />
+                    Enchères ouvertes
+                </label>
+                <label>
+                    <input type="radio" name="etatEnchere" value="terminees"
+                           th:checked="${etatEnchere == 'terminees'}" />
+                    Enchères terminées
+                </label>
+            </div>
+
+            <button type="submit">Rechercher</button>
+        </form>
+    </section>
+
+         <!-- Liste des articles -->
         <section class="articles">
             <article class="card" th:each="article : ${articles}">
                 <div class="image"></div>
                 <div class="details">
                     <p>
-<<<<<<< HEAD
-                        <a th:href="@{/encheres/detail(idArticle=${article.idArticle})}">
-          <strong th:text="${article.nomArticle}">Nom article</strong></a>
-                       
-=======
-                        <strong th:text="${article.nomArticle}">Nom article</strong><br />
->>>>>>> main
+		
+		                     <a th:href="@{/encheres/detail(idArticle=${article.idArticle}, etatEnchere=${etatEnchere})}">
+		  						 <strong th:text="${article.nomArticle}">Nom article</strong>
+							</a>
+                       <br>
+			
                         Prix : <span th:text="${article.prixActuel}">0</span><br />
                         Fin de l'enchère :
                         <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}">00/00/0000</span><br />
