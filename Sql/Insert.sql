@@ -48,7 +48,7 @@ VALUES
 (1, 4, '2025-07-04', 450),
 (3, 5, '2025-07-02', 90);
 
-UPDATE UTILISATEURS SET motDePasse = '$2a$10$f0fFTPEbAigttVzemzjorOmkJctjesIQOpsPFOQh6A/auqhD6e3U6'
+UPDATE UTILISATEURS SET motDePasse = '{bcrypt}$2a$10$.RG8xN3aZtsUHirhscn.4e31gC6wgOhnFNWQn5ApttXaF2Fhh3StK'
 
 SELECT * FROM Utilisateurs;
 
@@ -66,3 +66,6 @@ VALUES
 (10, 'ROLE_USER');
 
 SELECT role FROM Roles WHERE idUtilisateur = 3;
+select * from Articles;
+
+update Articles set dateFinEncheres = '2035-07-07'

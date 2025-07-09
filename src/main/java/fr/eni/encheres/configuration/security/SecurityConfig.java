@@ -12,10 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import fr.eni.encheres.bll.UtilisateurService;
-import fr.eni.encheres.bo.Utilisateur;
 
 @Configuration
 @EnableWebSecurity
@@ -46,8 +42,7 @@ public class SecurityConfig {
                 .failureUrl("/connexion?error")
                 .usernameParameter("identifiant")
                 .passwordParameter("password")
-                .successHandler(loginSuccessHandler(utilisateurService))
-                
+                .successHandler(monCustomLoginSuccessHandler)                
                 .permitAll()
             )
             .logout(logout -> logout
@@ -59,30 +54,10 @@ public class SecurityConfig {
         return http.build();
     }
     
+    
     @Autowired
-    private UtilisateurService utilisateurService;
-
-    @Bean
-    public AuthenticationSuccessHandler loginSuccessHandler(UtilisateurService utilisateurService) {
-        return (request, response, authentication) -> {
-            String pseudo = authentication.getName();
-            System.out.println("pseudo récupéré après login : " + pseudo);
-            Utilisateur utilisateur = utilisateurService.selectByPseudo(pseudo);
-            System.out.println("utilisateur trouvé : " + utilisateur);
-            request.getSession().setAttribute("utilisateur", utilisateur); 
-            response.sendRedirect("/accueil");
-        };
-    }
-
-
-    /*@Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-            .userDetailsService(customUserDetailsService)
-            .passwordEncoder(passwordEncoder)
-            .and()
-            .build();
-    }*/
+    private MonCustomLoginSuccessHandler monCustomLoginSuccessHandler;   
+    
 
     @Bean
     public PasswordEncoder passwordEncoder() {

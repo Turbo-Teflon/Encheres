@@ -97,10 +97,14 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	@Override
 	public void setBestEnchereByArticle(Article article) {
-		Enchere bestEnchere = enchereDAO.selectBestByArticle(article.getIdArticle());
-		article.setPrixActuel(bestEnchere.getMontantEnchere());
-		
+	    Enchere bestEnchere = enchereDAO.selectBestByArticle(article.getIdArticle());
+	    if (bestEnchere != null) {
+	        article.setPrixActuel(bestEnchere.getMontantEnchere());
+	    } else {
+	        article.setPrixActuel(article.getMiseAPrix());
+	    }
 	}
+
 	@Override
 	public List<Article> selectAll() {
 List<Article> articles = this.articleDAO.selectAll();

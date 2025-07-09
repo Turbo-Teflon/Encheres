@@ -68,7 +68,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 	public Article selectById(long id) {
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		mapSqlParameterSource.addValue("id", id);
-		return jdbcTemplate.queryForObject(SELECT_BY_ID, mapSqlParameterSource, new ArticleRowMapper());
+		List<Article> articles = jdbcTemplate.query(SELECT_BY_ID, mapSqlParameterSource, new ArticleRowMapper());
+		return articles.isEmpty() ? null : articles.get(0);
+
 	}
 
 	@Override

@@ -46,42 +46,46 @@ public class EnchereController {
 	}
 
 	@GetMapping("/accueil")
-	
 	public String accueil(HttpSession session, Model model) {
-		System.out.println("=====> TU ES DANS LA METHODE ACCUEIL");
+	    System.out.println("=====> TU ES DANS LA METHODE ACCUEIL");
 	    System.out.println("==== PAGE ACCUEIL ====");
+
 	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+	    if (utilisateur == null) {
+	        utilisateur = new Utilisateur(); // objet vide pour éviter le null
+	    }
+	    model.addAttribute("utilisateur", session.getAttribute("utilisateur")); // même si c’est null
+
+	    System.out.println("Session ID dans accueil : " + session.getId());
 	    System.out.println("Utilisateur dans session : " + utilisateur);
 
 	    try {
 	        List<Categorie> categories = categorieService.selectAll();
-	        System.out.println("Catégories récupérées : " + categories.size());
 	        model.addAttribute("categories", categories);
+	        System.out.println("Catégories récupérées : " + categories.size());
 	    } catch (Exception e) {
 	        System.out.println("Erreur récupération catégories : " + e.getMessage());
 	    }
 
 	    try {
-	        List<Article> articles = articleService.selectAll();
-	        System.out.println("Articles récupérés : " + articles.size());
+	        List<Article> articles = articleService.selectEncheresOuvertes(0, "");
 	        model.addAttribute("articles", articles);
+	        System.out.println("Articles récupérés : " + articles.size());
 	    } catch (Exception e) {
 	        System.out.println("Erreur récupération articles : " + e.getMessage());
 	    }
 
-	    model.addAttribute("utilisateur", utilisateur);
+	    model.addAttribute("utilisateur", utilisateur); // pour afficher son pseudo ou autre dans la page
+
 	    return "accueil";
 	}
+
 	
 	@GetMapping("/creer")
 	public String getMethodName(@RequestParam String param) {
 		return "view-creer-vente";
 	}
 	
-
-
-
-
 	@ModelAttribute("utilisateur")
 	public Utilisateur utilisateurActif(HttpSession session) {
 		Object userInSession = session.getAttribute("utilisateur");
@@ -95,6 +99,9 @@ public class EnchereController {
 	@GetMapping("/encheres/detail")
 	public String voirDetailEnchere(@RequestParam("id") long idArticle, Model model) {
 		Article article = articleService.selectById(idArticle);
+		if (article == null) {
+		    return "redirect:/accueil"; 
+		}
 		List<Enchere> encheres = enchereService.selectByArticle(idArticle);
 
 		model.addAttribute("article", article);
@@ -148,39 +155,6 @@ public class EnchereController {
 		session.invalidate(); // Supprime toutes les données de session
 		return "redirect:/accueil";
 	}
-
-	@PostMapping("/creer-compte")
-	public String creerComptePost(@ModelAttribute UtilisateurFormDto formDto, Model model) {
-		if (!formDto.getMotDePasse().equals(formDto.getConfirmation())) {
-			model.addAttribute("erreur", "Les mots de passe ne correspondent pas.");
-			return "view-creer-compte-enchere";
-		}
-
-		Utilisateur utilisateur = new Utilisateur();
-		utilisateur.setPseudo(formDto.getPseudo());
-		utilisateur.setNom(formDto.getNom());
-		utilisateur.setPrenom(formDto.getPrenom());
-		utilisateur.setEmail(formDto.getEmail());
-		utilisateur.setTelephone(formDto.getTelephone());
-		utilisateur.setRue(formDto.getRue());
-		utilisateur.setCodePostal(formDto.getCodePostal());
-		utilisateur.setVille(formDto.getVille());
-		utilisateur.setCredit(100);
-		utilisateur.setAdministrateur(false);
-		/* Création d'un PasswordEncoder capable de gérer plusieurs types d'encodage de mots de passe.
-		 Cette méthode retourne un "DelegatingPasswordEncoder", c'est-à-dire un encodeur principal qui peut déléguer
-		 à d'autres encodeurs en fonction d'un préfixe dans le mot de passe encodé (ex: {bcrypt}, {noop}, etc.).
-		 Par défaut, il utilise BCrypt (recommandé pour la sécurité), mais peut aussi reconnaître d'autres formats.
-		 Cela permet par exemple de migrer des anciens mots de passe sans casser la compatibilité.*/
-		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); 
-        String password = formDto.getMotDePasse();
-        String hash = encoder.encode(password);
-		utilisateur.setMotDePasse(hash);
-		utilisateurService.insert(utilisateur);
-
-		return "redirect:/connexion";
-	}
-
 	
 	@GetMapping("/encheres/filtrer")
 	public String filtrer(@RequestParam(name = "categorie", defaultValue = "0") long categorie,
@@ -236,5 +210,35 @@ public class EnchereController {
 		model.addAttribute("ventesTerminees", ventesTerminees);
 		return "accueil-utilisateur";
 	}
-	
+	@PostMapping("/creer-compte")
+	public String creerComptePost(@ModelAttribute UtilisateurFormDto formDto, Model model) {
+		if (!formDto.getMotDePasse().equals(formDto.getConfirmation())) {
+			model.addAttribute("erreur", "Les mots de passe ne correspondent pas.");
+			return "view-creer-compte-enchere";
+		}
+
+		Utilisateur utilisateur = new Utilisateur();
+		utilisateur.setPseudo(formDto.getPseudo());
+		utilisateur.setNom(formDto.getNom());
+		utilisateur.setPrenom(formDto.getPrenom());
+		utilisateur.setEmail(formDto.getEmail());
+		utilisateur.setTelephone(formDto.getTelephone());
+		utilisateur.setRue(formDto.getRue());
+		utilisateur.setCodePostal(formDto.getCodePostal());
+		utilisateur.setVille(formDto.getVille());
+		utilisateur.setCredit(100);
+		utilisateur.setAdministrateur(false);
+		/* Création d'un PasswordEncoder capable de gérer plusieurs types d'encodage de mots de passe.
+		 Cette méthode retourne un "DelegatingPasswordEncoder", c'est-à-dire un encodeur principal qui peut déléguer
+		 à d'autres encodeurs en fonction d'un préfixe dans le mot de passe encodé (ex: {bcrypt}, {noop}, etc.).
+		 Par défaut, il utilise BCrypt (recommandé pour la sécurité), mais peut aussi reconnaître d'autres formats.
+		 Cela permet par exemple de migrer des anciens mots de passe sans casser la compatibilité.*/
+		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); 
+        String password = formDto.getMotDePasse();
+        String hash = encoder.encode(password);
+		utilisateur.setMotDePasse(hash);
+		utilisateurService.insert(utilisateur);
+
+		return "redirect:/connexion";
+	}	
 }
