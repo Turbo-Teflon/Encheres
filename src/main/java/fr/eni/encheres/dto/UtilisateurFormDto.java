@@ -1,11 +1,18 @@
 package fr.eni.encheres.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 public class UtilisateurFormDto {
 
     private String pseudo;
     private String nom;
     private String prenom;
+    @Email(message = "Veuillez entrer une adresse email valide.")
+    @NotBlank(message = "L'email est obligatoire.")
     private String email;
+    @Pattern(regexp = "\\d{10}", message = "Le numéro de téléphone doit contenir exactement 10 chiffres.")
     private String telephone;
     private String rue;
     private String codePostal;
@@ -14,6 +21,7 @@ public class UtilisateurFormDto {
 
     private String motDePasse;
     private String confirmation;
+    
 
     /*
      * DTO (Data Transfer Object) est utilisé pour le formulaire de création de compte.
@@ -30,6 +38,8 @@ public class UtilisateurFormDto {
      * puis converti manuellement en `Utilisateur` avant d’être sauvegardé.
      */
 
+    
+    
 
     public String getPseudo() {
         return pseudo;
