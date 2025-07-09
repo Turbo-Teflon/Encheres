@@ -19,7 +19,7 @@ import fr.eni.encheres.bo.Utilisateur;
 public class EnchereDAOImpl implements EnchereDAO {
 
 	private static final String INSERT = "INSERT INTO ENCHERES (idUtilisateur, idArticle, dateEnchere, montantEnchere) " +
-	                                     "VALUES (:idUtilisateur, :idArticle, :dateEnchere, :montant)";
+	                                     "VALUES (:idUtilisateur, :idArticle, :dateEnchere, :montantEnchere)";
 
 	private static final String SELECT_BY_ARTICLE = "SELECT * FROM ENCHERES WHERE idArticle = :idArticle";
 

@@ -14,6 +14,7 @@ public class Article {
     private LocalDateTime dateFinEncheres;
     private int miseAPrix;
     private int prixActuel;
+    private String dernierEncherisseur;
     private int prixVente;
     private String etatVente;
     private Utilisateur utilisateur;
@@ -165,9 +166,17 @@ public class Article {
 	public void setPrixActuel(int prixActuel) {
 		this.prixActuel = prixActuel;
 	}
-	
-	
 
+	public String getDernierEncherisseur() {
+		return dernierEncherisseur;
+	}
+
+	public void setDernierEncherisseur(String dernierEncherisseur) {
+		this.dernierEncherisseur = dernierEncherisseur;
+	}
+	
+	
+	
 
 }
 

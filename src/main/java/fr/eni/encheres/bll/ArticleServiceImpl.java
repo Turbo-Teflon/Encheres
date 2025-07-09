@@ -8,9 +8,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.ArticleDAO;
+import fr.eni.encheres.dal.CategorieDAO;
 import fr.eni.encheres.dal.EnchereDAO;
 import fr.eni.encheres.dal.UtilisateurDAO;
 
@@ -22,11 +24,13 @@ public class ArticleServiceImpl implements ArticleService {
 	private ArticleDAO articleDAO;
 	private UtilisateurDAO utilisateurDAO;
 	private EnchereDAO enchereDAO;
+	private CategorieDAO categorieDAO;
 	
-	public ArticleServiceImpl(ArticleDAO articleDAO, UtilisateurDAO utilisateurDAO, EnchereDAO enchereDAO) {
+	public ArticleServiceImpl(ArticleDAO articleDAO, UtilisateurDAO utilisateurDAO, EnchereDAO enchereDAO, CategorieDAO categorieDAO) {
 		this.articleDAO=articleDAO;
 		this.utilisateurDAO=utilisateurDAO;
 		this.enchereDAO=enchereDAO;
+		this.categorieDAO=categorieDAO;
 	}
 	@Override
 	public void insert(Article article) {
@@ -36,25 +40,14 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public Article selectById(long id) {
-		return articleDAO.selectById(id);
+		 Article article = articleDAO.selectById(id);
+		    Categorie categorie = categorieDAO.selectById(article.getCategorie().getIdCategorie());
+		    article.setCategorie(categorie);
+		    setBestEnchereByArticle(article);
+		    setVendeurByArticle(article);
+		    return article;
 	}
 
-//	@Override
-//	public List<Article> selectAll() {
-//	
-//		List<Article> articles = this.articleDAO.selectAll();
-//		
-//
-//		if (articles != null) {
-//			articles.forEach(a -> {
-//				setVendeurByArticle(a);
-//				setBestEnchereByArticle(a);
-//			});
-//		}
-//		
-//		return articles;
-//	
-//	}
 
 	@Override
 	public List<Article> selectByCategorie(long idCategorie) {
@@ -97,8 +90,10 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public void setBestEnchereByArticle(Article article) {
 		Enchere bestEnchere = enchereDAO.selectBestByArticle(article.getIdArticle());
+		long idUtilisateurEnchere = bestEnchere.getUtilisateur().getIdUtilisateur();
+		Utilisateur utilisateurEnchere = utilisateurDAO.selectById(idUtilisateurEnchere);
 		article.setPrixActuel(bestEnchere.getMontantEnchere());
-		
+		article.setDernierEncherisseur(utilisateurEnchere.getPseudo());
 	}
 	@Override
 	public List<Article> selectAll() {

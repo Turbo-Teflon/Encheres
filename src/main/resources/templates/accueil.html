@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
+
+<body>
+    <header th:replace="~{fragments/fragment-entete :: entete}"></header>
+
+    <main>
+
+        <!-- Bloc d'information de connexion -->
+        <section>
+            <p sec:authorize="isAuthenticated()">
+                ✅ Bonjour 
+                <span th:if="${utilisateur != null}" th:text="${utilisateur.pseudo}">Utilisateur</span>, vous êtes connecté !
+            </p>
+            <p sec:authorize="isAnonymous()">
+                ❌ Vous n'êtes pas connecté.
+            </p>
+        </section>
+
+        <!-- Filtres -->
+        <section class="filtres">
+            <h2>Filtres :</h2>
+            <form method="get" th:action="@{/encheres/filtrer}">
+                <label for="categorie">Catégories</label>
+                <select id="categorie" name="categorie">
+                    <option value="0" th:selected="${categorie == 0}">Toutes</option>
+                    <option th:each="cat : ${categories}" th:value="${cat.idCategorie}"
+                            th:text="${cat.libelle}"
+                            th:selected="${categorie == cat.idCategorie}">Catégorie</option>
+                </select>
+                <input type="text" placeholder="Le nom de l'article contient"
+                       name="nomArticle" th:value="${nomArticle}" />
+                <button type="submit">Rechercher</button>
+            </form>
+        </section>
+
+        <!-- Liste des articles -->
+        <section class="articles">
+            <article class="card" th:each="article : ${articles}">
+                <div class="image"></div>
+                <div class="details">
+                    <p>
+                        <a th:href="@{/encheres/detail(idArticle=${article.idArticle})}">
+          <strong th:text="${article.nomArticle}">Nom article</strong></a>
+                       
+                        Prix : <span th:text="${article.prixActuel}">0</span><br />
+                        Fin de l'enchère :
+                        <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}">00/00/0000</span><br />
+                        Vendeur :
+                        <span th:if="${article.utilisateur != null}" th:text="${article.utilisateur.pseudo}">Vendeur</span>
+                        <span th:if="${article.utilisateur == null}">Anonyme</span>
+                    </p>
+                </div>
+            </article>
+        </section>
+
+    </main>
+</body>
+</html>

@@ -3,34 +3,49 @@
   <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
   <body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
 
-  <!-- Ajoute dynamiquement la classe "terminee" si l'enchère est finie -->
   <div class="container terminee">
-    <h1 class="titre">Ma vente en cours</h1>
+    <h1 class="titre">Détail vente</h1>
 
     <div class="article">
       <div class="image"></div>
 
       <div class="infos">
-        <p><strong>Article :</strong> PC Gamer pour travailler</p>
-        <p><strong>Description :</strong> Très bon PC avec RAM 32 Go, SSD 1To</p>
-        <p><strong>Catégorie :</strong> Informatique</p>
-        <p><strong>Date début :</strong> 01/08/2018</p>
-        <p><strong>Date fin :</strong> 10/08/2018</p>
+        <p><strong>Article :</strong> <span th:text="${article.nomArticle}"></span></p>
+        <p><strong>Description :</strong></p>
+        <p th:text="${article.description}"></p>
+        <p><strong>Catégorie :</strong> <span th:text="${article.categorie.libelle}"></span></p>
+        <p><strong>Date fin enchère :</strong> <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}"></span></p>
+        <p><strong>Mise à prix :</strong> <span th:text="${article.miseAPrix}"></span></p>
+        <p><strong>Meilleure offre :</strong> <span th:text="${article.prixActuel}"></span></p>
+        <p><strong>Dernier enchérisseur :</strong> <span th:text="${article.dernierEncherisseur}"></span></p>
+        <p><strong>Vendeur :</strong> <span th:text="${article.utilisateur.pseudo}"></span></p>
 
-        <!-- Cette ligne change selon l'état -->
-        <p class="prix"><strong>Meilleure offre :</strong> 210 points</p>
-        <!-- Ou bien -->
-        <!-- <p class="prix"><strong>Prix final :</strong> 210 points</p> -->
+        <p>
+          <strong>Retrait :</strong> 
+          <span th:text="${article.utilisateur.rue + ', ' + article.utilisateur.codePostal + ' ' + article.utilisateur.ville}"></span>
+        </p>
 
-        <p><strong>Acheteur actuel :</strong> NineJea</p>
-        <!-- Ou bien -->
-        <!-- <p><strong>Acheteur :</strong> NineJea</p> -->
+        <!-- Formulaire d'enchère -->
+        <form th:action="@{/encheres/detail/proposerEnchere}" method="post">
+          <input type="hidden" name="idArticle" th:value="${article.idArticle}" />
+		
+		<br>
+		
+      <label for="montantEnchere"><strong>Ma proposition :</strong></label>
+		<input type="number" name="montantEnchere" id="montantEnchere"
+       th:min="${article.prixActuel + 1}" step="1"
+       th:value="${article.prixActuel + 1}" required />
+      
 
-        <p><strong>Retrait :</strong> 10 allée des Alouettes<br>44800 Saint-Herblain</p>
+          <button type="submit">Enchérir</button>
+        </form>
+        <!-- Fin du formulaire -->
+
       </div>
     </div>
 
-    <a href="view-vente-enchere.html" class="btn-retour">Retour à mes ventes</a>
+  
   </div>
 </body>
 </html>
+
