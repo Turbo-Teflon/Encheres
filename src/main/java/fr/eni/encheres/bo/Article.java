@@ -2,6 +2,7 @@ package fr.eni.encheres.bo;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Article {
@@ -23,6 +24,8 @@ public class Article {
     
     
 	public Article() {
+		retrait = new Retrait();
+		encheres = new ArrayList<Enchere>();
 	}
 	
 	public Article(long id, String nom, String desc, int miseAPrix, int prixActuel, LocalDateTime debut, LocalDateTime fin) {
