@@ -19,6 +19,7 @@ public class CategorieDAOImpl implements CategorieDAO {
 	
 	private static final String SELECT_ALL = "SELECT * FROM CATEGORIES";
 	private static final String SELECT_BY_ID = "SELECT * FROM CATEGORIES WHERE idCategorie = :idCategorie";
+	private static final String COUNT_CAT = "SELECT count(*) FROM CATEGORIES idCategorie = :idCategorie";
 
 
 	@Autowired
@@ -50,6 +51,16 @@ public class CategorieDAOImpl implements CategorieDAO {
 	        c.setLibelle(rs.getString("libelle"));
 	        return c;
 	    }
+	}
+
+
+
+	@Override
+	public boolean hasCategorie(long id) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+	    map.addValue("idCategorie", id);
+	    int nbCat = jdbcTemplate.queryForObject(COUNT_CAT, map, Integer.class);
+		return nbCat != 0;
 	}
 
 }

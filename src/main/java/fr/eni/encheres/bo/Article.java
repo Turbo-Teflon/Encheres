@@ -5,11 +5,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class Article {
 
 
     private long idArticle;
+    @NotBlank
     private String nomArticle;
+    @NotBlank
     private String description;
     private LocalDateTime dateDebutEncheres;
     private LocalDateTime dateFinEncheres;

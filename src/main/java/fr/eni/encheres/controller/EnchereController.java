@@ -24,6 +24,7 @@ import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dto.UtilisateurFormDto;
+import fr.eni.encheres.exception.BuisnessException;
 import jakarta.servlet.http.HttpSession;
 
 import jakarta.validation.Valid;
@@ -92,10 +93,18 @@ public class EnchereController {
 	}
 	
 	@PostMapping("/vendre")
-	public String postCreerAnnonce(HttpSession session, @ModelAttribute Article article) {
-		
-		article.setUtilisateur((Utilisateur) session.getAttribute("utilisateur"));
-		this.articleService.insert(article);
+	public String postCreerAnnonce(HttpSession session, @Valid @ModelAttribute Article article, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			return "redirect:/creer";
+		} else {
+			try {
+				article.setUtilisateur((Utilisateur) session.getAttribute("utilisateur"));
+				this.articleService.insert(article);
+				
+			} catch (BuisnessException e) {
+				// TODO: handle exception
+			}
+		}
 		return "redirect:/accueil";
 	}
 
