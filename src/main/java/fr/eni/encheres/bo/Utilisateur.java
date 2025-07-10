@@ -60,26 +60,6 @@ public class Utilisateur {
 	}
 
 
-
-	public Utilisateur(long idUtilisateur, String pseudo, String nom, String prenom, String email, String telephone,
-			String rue, String codePostal, String ville, String motDePasse, Integer credit, boolean administrateur,
-			boolean main) {
-
-		this.idUtilisateur = idUtilisateur;
-		this.pseudo = pseudo;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.email = email;
-		this.telephone = telephone;
-		this.rue = rue;
-		this.codePostal = codePostal;
-		this.ville = ville;
-		this.motDePasse = motDePasse;
-		this.credit = credit;
-		this.administrateur = administrateur;
-		this.droitier = main;
-	}
-
 	public long getIdUtilisateur() {
 		return idUtilisateur;
 	}

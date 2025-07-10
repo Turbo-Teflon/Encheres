@@ -8,7 +8,6 @@ import java.util.List;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public class Article implements Serializable {
 
