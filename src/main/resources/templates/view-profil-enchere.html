@@ -23,7 +23,11 @@
 
     <div class="buttons">
       <a th:href="@{/modifier-profil}" class="btn">Modifier</a>
-      <a th:href="@{/accueil}" class="btn secondary">Retour</a>
+      <a th:href="@{/accueil}" class="btn secondary">Retour</a><br>
+	      <form th:action="@{/desactiver-compte}" method="post" style="display:inline;">
+		  <button type="submit" class="btn secondary">Supprimer mon compte</button>
+		  </form>
+      
       <a th:href="@{/deconnexion}">Déconnexion</a>
     </div>
   </div>

@@ -1,19 +1,26 @@
 @charset "UTF-8";
 
-/* RESET + BASE */
+/* -----------------------------------------
+   Réinitialisation de base
+------------------------------------------ */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* -----------------------------------------
+   Style global du body
+------------------------------------------ */
 body {
   font-family: sans-serif;
   background-color: #f5f5f5;
   padding: 1rem;
 }
 
-/* CONTAINERS ET TITRES */
+/* -----------------------------------------
+   Conteneur principal centré avec ombre
+------------------------------------------ */
 .container {
   max-width: 500px;
   margin: 2rem auto;
@@ -23,13 +30,18 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* -----------------------------------------
+   Titres principaux
+------------------------------------------ */
 h1, h2 {
   text-align: center;
   margin-bottom: 1.5rem;
   color: #333;
 }
 
-/* IMAGES */
+/* -----------------------------------------
+   Image de présentation (placeholder)
+------------------------------------------ */
 .image {
   width: 100%;
   height: 150px;
@@ -37,7 +49,9 @@ h1, h2 {
   border-radius: 4px;
 }
 
-/* BOUTONS */
+/* -----------------------------------------
+   Boutons principaux
+------------------------------------------ */
 .btn,
 .btn-retour {
   display: block;
@@ -51,23 +65,29 @@ h1, h2 {
   margin-top: 1rem;
 }
 
+/* Variante secondaire des boutons */
 .btn.secondary {
   background-color: #ccc;
   color: #000;
 }
 
-/* ALIGNEMENT MAIN DOMINANTE */
+/* -----------------------------------------
+   Alignement des boutons du formulaire
+------------------------------------------ */
 .buttons {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end; /* Par défaut droitier */
+  justify-content: flex-end; 
 }
 
+/* Pour les utilisateurs gauchers : alignement à gauche */
 body.gaucher .buttons {
   justify-content: flex-start;
 }
 
-/* NAVIGATION EN HAUT À DROITE */
+/* -----------------------------------------
+   Barre de navigation en haut à droite
+------------------------------------------ */
 nav.top-right-nav {
   position: absolute;
   top: 10px;
@@ -88,28 +108,38 @@ nav.top-right-nav a {
 nav.top-right-nav span {
   font-weight: bold;
 }
-/* general.css */
+
+/* -----------------------------------------
+   Boutons spécifiques de la navigation
+------------------------------------------ */
 .bouton-nav {
-    background-color: #4CAF50;  /* vert */
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    margin: 0 5px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+  background-color: #4CAF50;  /* vert */
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  margin: 0 5px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
 }
 
 .bouton-nav:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
+/* -----------------------------------------
+   Groupes de champs de formulaire
+------------------------------------------ */
 .form-group {
   position: relative;
 }
+
+/* -----------------------------------------
+   Champ mot de passe avec œil de visibilité
+------------------------------------------ */
 .password-wrapper {
   position: relative;
   display: flex;
@@ -126,14 +156,27 @@ nav.top-right-nav span {
   right: 10px;
   cursor: pointer;
   user-select: none;
-}
-
-.toggle-password {
   font-size: 1.2rem;
   color: #666;
 }
+
 .toggle-password:hover {
   color: #000;
 }
 
+/* -----------------------------------------
+   Lien styled comme un bouton neutre
+------------------------------------------ */
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #ccc;
+  color: black;
+  text-decoration: none;
+  border-radius: 4px;
+  border: 1px solid #999;
+}
 
+.btn:hover {
+  background-color: #bbb;
+}

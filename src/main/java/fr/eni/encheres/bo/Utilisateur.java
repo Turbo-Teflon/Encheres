@@ -19,6 +19,8 @@ public class Utilisateur {
     private List<Article> articles;
     private List<Enchere> encheres;
     private boolean droitier; // "droitier" ou "gaucher"
+    private boolean actif = true;
+
     
 	public Utilisateur() {
 	
@@ -28,8 +30,8 @@ public class Utilisateur {
 
 	public Utilisateur(long idUtilisateur, String pseudo, String nom, String prenom, String email, String telephone,
 			String rue, String codePostal, String ville, String motDePasse, Integer credit, boolean administrateur,
-			boolean main) {
-		super();
+			boolean main, boolean actif) {
+		
 		this.idUtilisateur = idUtilisateur;
 		this.pseudo = pseudo;
 		this.nom = nom;
@@ -43,10 +45,9 @@ public class Utilisateur {
 		this.credit = credit;
 		this.administrateur = administrateur;
 		this.droitier = main;
+		this.actif = actif;
 	}
-
-
-
+	
 	public long getIdUtilisateur() {
 		return idUtilisateur;
 	}
@@ -157,28 +158,32 @@ public class Utilisateur {
 
 	public void setEncheres(List<Enchere> encheres) {
 		this.encheres = encheres;
-	}
-	
+	}	
 
 	public boolean isMain() {
 		return droitier;
 	}
 
-
-
 	public void setMain(boolean main) {
 		this.droitier = main;
+	}	
+
+	public boolean isActif() {
+		return actif;
 	}
 
+	public void setActif(boolean actif) {
+		this.actif = actif;
+	}
 
 
 
 	@Override
 	public String toString() {
 		return String.format(
-				"Utilisateur [idUtilisateur=%s, pseudo=%s, nom=%s, prenom=%s, email=%s, telephone=%s, rue=%s, codePostal=%s, ville=%s, motDePasse=%s, credit=%s, administrateur=%s, articles=%s, encheres=%s, main=%s]",
+				"Utilisateur [idUtilisateur=%s, pseudo=%s, nom=%s, prenom=%s, email=%s, telephone=%s, rue=%s, codePostal=%s, ville=%s, motDePasse=%s, credit=%s, administrateur=%s, articles=%s, encheres=%s, main=%s, actif=%s]",
 				idUtilisateur, pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse, credit,
-				administrateur, articles, encheres, droitier);
+				administrateur, articles, encheres, droitier, actif);
 	}	 
     
 }

@@ -1,65 +1,66 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="~{fragments/fragment-head :: head('Connexion - ENI-Enchères')}"></head>
+  <head th:replace="~{fragments/fragment-head :: head('Modifier mon profil - ENI-Enchères')}"></head>
   <body th:classappend="${utilisateur.main} ? 'droitier' : 'gaucher'">
 
   <div class="container">
     <h1>Modifier mon profil</h1>
 
-    <form action="/modifier-profil" method="post">
+    <form th:action="@{/modifier-profil}" th:object="${utilisateurForm}" method="post">
+      
       <div class="form-group">
         <label for="pseudo">Pseudo :</label>
-        <input type="text" id="pseudo" name="pseudo" required />
+        <input type="text" id="pseudo" th:field="*{pseudo}" required />
       </div>
 
       <div class="form-group">
         <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" required />
+        <input type="text" id="nom" th:field="*{nom}" required />
       </div>
 
       <div class="form-group">
         <label for="prenom">Prénom :</label>
-        <input type="text" id="prenom" name="prenom" required />
+        <input type="text" id="prenom" th:field="*{prenom}" required />
       </div>
 
       <div class="form-group">
         <label for="email">Email :</label>
-        <input type="email" id="email" name="email" required />
+        <input type="email" id="email" th:field="*{email}" required />
       </div>
 
       <div class="form-group">
         <label for="telephone">Téléphone :</label>
-        <input type="tel" id="telephone" name="telephone" />
+        <input type="tel" id="telephone" th:field="*{telephone}" />
       </div>
 
       <div class="form-group">
         <label for="rue">Rue :</label>
-        <input type="text" id="rue" name="rue" />
+        <input type="text" id="rue" th:field="*{rue}" />
       </div>
 
       <div class="form-group">
         <label for="codePostal">Code postal :</label>
-        <input type="text" id="codePostal" name="codePostal" />
+        <input type="text" id="codePostal" th:field="*{codePostal}" />
       </div>
 
       <div class="form-group">
         <label for="ville">Ville :</label>
-        <input type="text" id="ville" name="ville" />
+        <input type="text" id="ville" th:field="*{ville}" />
       </div>
 
       <div class="form-group">
         <label for="motDePasse">Mot de passe actuel :</label>
-        <input type="password" id="motDePasse" name="motDePasse" required />
+        <input type="password" id="motDePasse" th:field="*{motDePasse}" required />
       </div>
 
       <div class="form-group">
         <label for="nouveauMotDePasse">Nouveau mot de passe :</label>
-        <input type="password" id="nouveauMotDePasse" name="nouveauMotDePasse" />
+        <input type="password" id="nouveauMotDePasse" th:field="*{nouveauMotDePasse}" />
       </div>
 
       <div class="form-group">
         <label for="confirmation">Confirmation :</label>
-        <input type="password" id="confirmation" name="confirmation" />
+        <input type="password" id="confirmation" th:field="*{confirmation}" />
       </div>
 
       <div class="buttons">
