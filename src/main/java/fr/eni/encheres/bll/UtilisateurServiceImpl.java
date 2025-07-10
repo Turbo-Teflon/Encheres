@@ -25,13 +25,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    Utilisateur utilisateur = utilisateurDAO.selectByPseudo(pseudo);
 
 	    if (utilisateur == null) {
-	    	System.out.println("Utilisateur introuvable");
 	        throw new RuntimeException("Identifiant incorrect.");
 	    }
 
 	    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	    if (!encoder.matches(motDePasse, utilisateur.getMotDePasse())) {
-	    	System.out.println("Mot de passe incorrect");
 	        throw new RuntimeException("Mot de passe incorrect.");
 	    }
 

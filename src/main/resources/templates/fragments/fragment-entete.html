@@ -1,32 +1,32 @@
 <!-- templates/fragments/fragment-entete.html -->
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <header th:fragment="entete">
-  <div class="entete-container">
-    <h1><a th:href="@{/accueil}" class="logo">ENI-Enchères</a></h1>
+	<div class="entete-container">
+		<h1><a th:href="@{/accueil}" class="logo">ENI-Enchères</a></h1>
 
-    <nav class="entete-nav">
-      
-      <!-- ✅ Si connecté ET actif -->
-      <span th:if="${utilisateur != null}">
-        <p>Bonjour <strong th:text="${utilisateur.pseudo}">Utilisateur</strong></p>
-        <a th:href="@{/profil}" class="bouton-nav">Profil</a>
-        <a th:href="@{/creer}" class="bouton-nav">Nouvelle Annonce</a>
-        <form th:action="@{/deconnexion}" method="get" style="display:inline;">
-          <button type="submit" class="bouton-nav">Déconnexion</button>
-        </form>
-      </span>
+		<nav class="entete-nav">
+			
+			<!-- ✅ Si connecté -->
+			<span sec:authorize="isAuthenticated()">
+				<p> Bonjour <strong th:text="${utilisateur.pseudo}">Utilisateur</strong></p>
+				<a th:href="@{/profil}" class="bouton-nav">Profil</a>
+				<a th:href="@{/creer}" class="bouton-nav">Nouvelle Annonce</a>
+				<form th:action="@{/deconnexion}" method="post" style="display:inline;">
+					<button type="submit" class="bouton-nav">Déconnexion</button>
+				</form>
+			</span>
 
-      <!-- ❌ Si NON connecté ou inactif -->
-      <span th:if="${utilisateur == null}">
-        <form th:action="@{/connexion}" method="get" style="display:inline;">
-          <button type="submit" class="bouton-nav">Se connecter</button>
-        </form>
-        <form th:action="@{/creer-compte}" method="get" style="display:inline;">
-          <button type="submit" class="bouton-nav">S'inscrire</button>
-        </form>
-      </span>
+			<!-- ❌ Si NON connecté -->
+			<span sec:authorize="isAnonymous()">
+				<form th:action="@{/connexion}" method="get" style="display:inline;">
+					<button type="submit" class="bouton-nav">Se connecter</button>
+				</form>
+				<form th:action="@{/creer-compte}" method="get" style="display:inline;">
+					<button type="submit" class="bouton-nav">S'inscrire</button>
+				</form>
+			</span>
 
-    </nav>
-  </div>
+		</nav>
+	</div>
 </header>

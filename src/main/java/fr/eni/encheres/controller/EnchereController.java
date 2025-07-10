@@ -79,8 +79,9 @@ public class EnchereController {
 		} else {
 		    session.removeAttribute("utilisateur"); // pour être sûr de vider un inactif
 		    model.addAttribute("utilisateur", null);
-		}
 
+		}
+		model.addAttribute("utilisateur", utilisateur);
 
 		System.out.println("Session ID dans accueil : " + session.getId());
 		System.out.println("Utilisateur dans session : " + utilisateur);
@@ -144,19 +145,15 @@ public class EnchereController {
 
 	@GetMapping("/profil")
 	public String profil(HttpSession session, Model model) {
-	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-	    System.out.println("Utilisateur en session : " + utilisateur);
-	    if (utilisateur == null) {
 
-	        session.invalidate(); // Déconnecte si l'utilisateur est inactif
-	        model.addAttribute("erreur", "Votre compte est désactivé.");
-	        return "redirect:/connexion";
-	    }
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+		if (utilisateur == null) {
+			return "redirect:/connexion";
+		}
+		model.addAttribute("utilisateur", utilisateur);
+		return "view-profil-enchere";
 
-	    model.addAttribute("utilisateur", utilisateur);
-	    return "view-profil-enchere";
 	}
-
 	@GetMapping("/modifier-profil")
 	public String modifierProfilForm(Model model, HttpSession session) {
 	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
@@ -301,19 +298,15 @@ public class EnchereController {
 	                        Model model) {
 	    try {
 	        Utilisateur utilisateur = utilisateurService.login(pseudo, motDePasse);
-
 	        session.setAttribute("utilisateur", utilisateur);
 	        System.out.println("Connexion réussie pour : " + utilisateur.getPseudo());
 
 	        return "redirect:/accueil";
-
 	    } catch (RuntimeException e) {
-	        System.out.println("Erreur dans /connexion : " + e.getMessage());
 	        model.addAttribute("erreur", e.getMessage());
 	        return "view-connexion-enchere";
 	    }
 	}
-
 
 	@PostMapping("/supprimer-compte")
 	public String supprimerCompte(
@@ -322,12 +315,9 @@ public class EnchereController {
 	    HttpSession session,
 	    Model model) {
 
-	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 
-	    if (utilisateur == null || !utilisateur.getPseudo().equals(pseudo)) {
-	        model.addAttribute("erreur", "Identifiants invalides.");
-	        return "view-modifier-profil-enchere";
-	    }
+	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur"); 
+
 
 	    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	    if (!encoder.matches(motDePasse, utilisateur.getMotDePasse())) {
@@ -386,7 +376,7 @@ public class EnchereController {
 	    utilisateurService.update(utilisateur);
 	    session.setAttribute("utilisateur", utilisateur); // Remet à jour en session
 
-	    return "redirect:/profil";
+	    return "redirect:/accueil";
 	}
 
 
