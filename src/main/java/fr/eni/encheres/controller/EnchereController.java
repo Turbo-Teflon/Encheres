@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,10 +72,14 @@ public class EnchereController {
 		System.out.println("==== PAGE ACCUEIL ====");
 
 		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-		if (utilisateur == null) {
-			utilisateur = new Utilisateur();
+
+		if (utilisateur != null && utilisateur.isActif()) {
+		    model.addAttribute("utilisateur", utilisateur);
+		} else {
+		    session.removeAttribute("utilisateur"); // pour être sûr de vider un inactif
+		    model.addAttribute("utilisateur", null);
 		}
-		model.addAttribute("utilisateur", utilisateur);
+
 
 		System.out.println("Session ID dans accueil : " + session.getId());
 		System.out.println("Utilisateur dans session : " + utilisateur);
@@ -138,13 +143,18 @@ public class EnchereController {
 
 	@GetMapping("/profil")
 	public String profil(HttpSession session, Model model) {
-		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-		if (utilisateur == null) {
-			return "redirect:/connexion";
-		}
-		model.addAttribute("utilisateur", utilisateur);
-		return "view-profil-enchere";
+	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+	    System.out.println("Utilisateur actif ? " + utilisateur.isActif());
+	    if (utilisateur == null || !utilisateur.isActif()) {
+	        session.invalidate(); // Déconnecte si l'utilisateur est inactif
+	        model.addAttribute("erreur", "Votre compte est désactivé.");
+	        return "redirect:/connexion";
+	    }
+
+	    model.addAttribute("utilisateur", utilisateur);
+	    return "view-profil-enchere";
 	}
+
 	@GetMapping("/modifier-profil")
 	public String modifierProfilForm(Model model, HttpSession session) {
 	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
@@ -289,13 +299,22 @@ public class EnchereController {
 	                        Model model) {
 	    try {
 	        Utilisateur utilisateur = utilisateurService.login(pseudo, motDePasse);
+
+	        if (!utilisateur.isActif()) {
+	            model.addAttribute("erreur", "Ce compte a été désactivé.");
+	            return "view-connexion-enchere";
+	        }
+
 	        session.setAttribute("utilisateur", utilisateur);
 	        return "redirect:/accueil";
+
 	    } catch (RuntimeException e) {
+	    	 System.out.println("Erreur dans /connexion : " + e.getMessage());
 	        model.addAttribute("erreur", e.getMessage());
 	        return "view-connexion-enchere";
 	    }
 	}
+
 	@PostMapping("/desactiver-compte")
 	public String desactiverCompte(
 	    @RequestParam("pseudo") String pseudo,
@@ -321,6 +340,11 @@ public class EnchereController {
 	    session.invalidate();
 
 	    return "redirect:/accueil";
+	}
+	@ExceptionHandler(Exception.class)
+	public String handleException(Exception e, Model model) {
+	    model.addAttribute("erreur", e.getMessage());
+	    return "view-connexion-enchere"; // page de repli
 	}
 
 

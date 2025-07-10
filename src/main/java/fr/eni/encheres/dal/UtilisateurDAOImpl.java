@@ -174,6 +174,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			u.setMotDePasse(rs.getString("motDePasse"));
 			u.setCredit(rs.getInt("credit"));
 			u.setAdministrateur(rs.getBoolean("administrateur"));
+			u.setActif(rs.getBoolean("actif"));
 			return u;
 		}
 	}
