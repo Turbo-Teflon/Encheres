@@ -28,7 +28,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private static final String SELECT_BY_EMAIL = "SELECT * FROM UTILISATEURS WHERE email = :email";
 
 	private static final String SELECT_ALL = "SELECT * FROM UTILISATEURS";
-	private static final String UPDATE = "UPDATE UTILISATEURS SET pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email, telephone = :telephone, rue = :rue, codePostal = :codePostal, ville = :ville, motDePasse = :motDePasse, credit = :credit, administrateur = :administrateur WHERE idUtilisateur = :id";
+	private static final String UPDATE = "UPDATE UTILISATEURS SET pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email, telephone = :telephone, rue = :rue, codePostal = :codePostal, ville = :ville, motDePasse = :motDePasse, credit = :credit, administrateur = :administrateur, actif = :actif WHERE idUtilisateur = :id";
+
 	private static final String DELETE = "DELETE FROM UTILISATEURS WHERE idUtilisateur = :id";
 	private static final String SELECT_BY_PSEUDO = "SELECT * FROM UTILISATEURS WHERE pseudo = :pseudo";
 	private static final String SELECT_ROLE = "SELECT role FROM ROLES WHERE idUtilisateur = :id";
@@ -114,6 +115,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		map.addValue("motDePasse", utilisateur.getMotDePasse());
 		map.addValue("credit", utilisateur.getCredit());
 		map.addValue("administrateur", utilisateur.isAdministrateur());
+		map.addValue("actif", utilisateur.isActif());
+
 
 		jdbcTemplate.update(UPDATE, map);
 		

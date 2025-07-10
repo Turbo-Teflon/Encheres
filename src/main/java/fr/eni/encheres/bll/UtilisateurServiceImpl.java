@@ -3,6 +3,8 @@ package fr.eni.encheres.bll;
 import java.util.List;
 
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import fr.eni.encheres.bo.Utilisateur;
@@ -19,6 +21,25 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    this.utilisateurDAO = utilisateurDAO;
 	    
 	}
+	public Utilisateur login(String pseudo, String motDePasse) {
+	    Utilisateur utilisateur = utilisateurDAO.selectByPseudo(pseudo);
+
+	    if (utilisateur == null) {
+	        throw new RuntimeException("Identifiant incorrect.");
+	    }
+
+	    if (!utilisateur.isActif()) {
+	        throw new RuntimeException("Ce compte est désactivé.");
+	    }
+
+	    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	    if (!encoder.matches(motDePasse, utilisateur.getMotDePasse())) {
+	        throw new RuntimeException("Mot de passe incorrect.");
+	    }
+
+	    return utilisateur;
+	}
+
 	
 	@Override
 	public void insert(Utilisateur utilisateur) {

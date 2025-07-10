@@ -21,6 +21,8 @@ public interface UtilisateurService {
 	void update(Utilisateur utilisateur);
 
 	void delete(long id);
+	
+	Utilisateur login(String pseudo, String motDePasse);
 
 	
 }
