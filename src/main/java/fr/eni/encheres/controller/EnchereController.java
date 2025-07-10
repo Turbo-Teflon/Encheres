@@ -139,37 +139,18 @@ public class EnchereController {
 
 	}
 	
-	@PostMapping("/vendre")
-	public String postCreerAnnonce(HttpSession session, @ModelAttribute Article article) {
-		
-		article.setUtilisateur((Utilisateur) session.getAttribute("utilisateur"));
-		this.articleService.insert(article);
-		return "redirect:/accueil";
-	}
-
-
-	@ModelAttribute("utilisateur")
-	public Utilisateur utilisateurActif(HttpSession session) {
-		Object userInSession = session.getAttribute("utilisateurConnecte");
-		if (userInSession instanceof Utilisateur) {
-			return (Utilisateur) userInSession;
-		}
-		return null;
-	}
 	
-	@ModelAttribute("categories")
-	public List<Categorie> categories(){
-		System.out.println("Mise en session des catégories");
-		return this.categorieService.selectAll();
-	}
 
-	}	
+
+
+	
+	
+	
 
 
 	
 
 	@GetMapping("/encheres/detail")
-
 	public String voirDetailEnchere(@RequestParam("idArticle") long idArticle,
 			@RequestParam(name = "etatEnchere", required = false, defaultValue = "ouvertes") String etatEnchere,
 			Model model) {
@@ -349,7 +330,7 @@ public class EnchereController {
 			return "view-creer-compte-enchere";
 		}
 
-}}
+
 
 	}
 	@PostMapping("/vendre")
