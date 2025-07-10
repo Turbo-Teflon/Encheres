@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,8 +74,14 @@ public class EnchereController {
 		System.out.println("==== PAGE ACCUEIL ====");
 
 		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-		if (utilisateur == null) {
-			utilisateur = new Utilisateur();
+
+		if (utilisateur != null) {
+
+		    model.addAttribute("utilisateur", utilisateur);
+		} else {
+		    session.removeAttribute("utilisateur"); // pour être sûr de vider un inactif
+		    model.addAttribute("utilisateur", null);
+
 		}
 		model.addAttribute("utilisateur", utilisateur);
 
@@ -161,19 +168,21 @@ public class EnchereController {
 
 	@GetMapping("/profil")
 	public String profil(HttpSession session, Model model) {
+
 		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 		if (utilisateur == null) {
 			return "redirect:/connexion";
 		}
 		model.addAttribute("utilisateur", utilisateur);
 		return "view-profil-enchere";
+
 	}
 	
 	@GetMapping("/modifier-profil")
 	public String modifierProfilForm(Model model, HttpSession session) {
 	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 	    if (utilisateur == null) {
-	        return "redirect:/profil";
+	        return "redirect:/accueil";
 	    }
 	    
 	    UtilisateurFormDto dto = new UtilisateurFormDto();
@@ -309,23 +318,85 @@ public class EnchereController {
 	    try {
 	        Utilisateur utilisateur = utilisateurService.login(pseudo, motDePasse);
 	        session.setAttribute("utilisateur", utilisateur);
+	        System.out.println("Connexion réussie pour : " + utilisateur.getPseudo());
+
 	        return "redirect:/accueil";
 	    } catch (RuntimeException e) {
 	        model.addAttribute("erreur", e.getMessage());
 	        return "view-connexion-enchere";
 	    }
 	}
-	@PostMapping("/desactiver-compte")
-	public String desactiverCompte(HttpSession session) {
-	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 
-	    if (utilisateur != null) {
-	        utilisateur.setActif(false);  // désactive
-	        utilisateurService.update(utilisateur); // met à jour en BDD
-	        session.invalidate(); // déconnexion immédiate
+	@PostMapping("/supprimer-compte")
+	public String supprimerCompte(
+	    @RequestParam("pseudo") String pseudo,
+	    @RequestParam("motDePasse") String motDePasse,
+	    HttpSession session,
+	    Model model) {
+
+
+	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur"); 
+
+
+	    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	    if (!encoder.matches(motDePasse, utilisateur.getMotDePasse())) {
+	        model.addAttribute("erreur", "Mot de passe incorrect.");
+	        return "view-modifier-profil-enchere";
 	    }
+
+	    utilisateurService.delete(utilisateur.getIdUtilisateur());
+	    session.invalidate();
 
 	    return "redirect:/accueil";
 	}
+
+	@ExceptionHandler(Exception.class)
+	public String handleException(Exception e, Model model) {
+	    model.addAttribute("erreur", e.getMessage());
+	    return "view-connexion-enchere";
+	}
+	@PostMapping("/modifier-profil")
+	public String modifierProfilSubmit(@Valid @ModelAttribute("utilisateurForm") UtilisateurFormDto formDto, BindingResult result, HttpSession session, Model model) {
+
+	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+	    if (utilisateur == null) {
+	        return "redirect:/connexion";
+	    }
+
+	    if (result.hasErrors()) {
+	        return "view-modifier-profil-enchere";
+	    }
+
+	    if (formDto.getNouveauMotDePasse() != null && !formDto.getNouveauMotDePasse().isBlank()) {
+	        if (!formDto.getNouveauMotDePasse().equals(formDto.getConfirmation())) {
+	            model.addAttribute("erreur", "Les mots de passe ne correspondent pas.");
+	            return "view-modifier-profil-enchere";
+	        }
+	        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	        utilisateur.setMotDePasse(encoder.encode(formDto.getNouveauMotDePasse()));
+	    }
+
+
+	    utilisateur.setNom(formDto.getNom());
+	    utilisateur.setPrenom(formDto.getPrenom());
+	    utilisateur.setEmail(formDto.getEmail());
+	    utilisateur.setTelephone(formDto.getTelephone());
+	    utilisateur.setRue(formDto.getRue());
+	    utilisateur.setCodePostal(formDto.getCodePostal());
+	    utilisateur.setVille(formDto.getVille());
+	    utilisateur.setMain(formDto.isMain());
+
+	    if (formDto.getNouveauMotDePasse() != null && !formDto.getNouveauMotDePasse().isBlank()) {
+	        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	        utilisateur.setMotDePasse(encoder.encode(formDto.getNouveauMotDePasse()));
+	    }
+
+
+	    utilisateurService.update(utilisateur);
+	    session.setAttribute("utilisateur", utilisateur); // Remet à jour en session
+
+	    return "redirect:/accueil";
+	}
+
 
 }

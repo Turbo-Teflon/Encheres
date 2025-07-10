@@ -110,7 +110,7 @@ public class UtilisateurFormDto {
         this.ville = ville;
     }
 
-    public boolean getMain() {
+    public boolean isMain() {
         return main;
     }
 
