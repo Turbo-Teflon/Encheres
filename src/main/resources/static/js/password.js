@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const fields = [
-    { inputId: "motDePasse", iconId: "eye-icon1" },
-    { inputId: "confirmation", iconId: "eye-icon2" }
-  ];
+	const fields = [
+	  { inputId: "motDePasse", iconId: "eye-icon1" },
+	  { inputId: "nouveauMotDePasse", iconId: "eye-icon2" },
+	  { inputId: "confirmation", iconId: "eye-icon3" }
+	];
 
   fields.forEach(field => {
     const input = document.getElementById(field.inputId);
