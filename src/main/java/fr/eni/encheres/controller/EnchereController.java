@@ -26,7 +26,6 @@ import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dto.UtilisateurFormDto;
 import fr.eni.encheres.exception.BuisnessException;
 import jakarta.servlet.http.HttpSession;
-
 import jakarta.validation.Valid;
 
 
@@ -45,6 +44,21 @@ public class EnchereController {
 		this.articleService = articleService;
 		this.categorieService = categorieService;
 		this.utilisateurService = utilisateurService;
+	}
+	
+	@ModelAttribute("utilisateur")
+	public Utilisateur utilisateurActif(HttpSession session) {
+		Object userInSession = session.getAttribute("utilisateur");
+		if (userInSession instanceof Utilisateur) {
+			return (Utilisateur) userInSession;
+		}
+		return null;
+	}
+	
+	@ModelAttribute("categories")
+	public List<Categorie> categories(){
+		System.out.println("Mise en session des catégories");
+		return this.categorieService.selectAll();
 	}
 
 	@GetMapping("/")
@@ -107,23 +121,8 @@ public class EnchereController {
 		}
 		return "redirect:/accueil";
 	}
-
-
-	@ModelAttribute("utilisateur")
-	public Utilisateur utilisateurActif(HttpSession session) {
-		Object userInSession = session.getAttribute("utilisateur");
-		if (userInSession instanceof Utilisateur) {
-			return (Utilisateur) userInSession;
-		}
-		return null;
-	}
 	
-	@ModelAttribute("categories")
-	public List<Categorie> categories(){
-		System.out.println("Mise en session des catégories");
-		return this.categorieService.selectAll();
-	}
-
+	
 	@GetMapping("/encheres/detail")
 	public String voirDetailEnchere(@RequestParam("id") long idArticle, Model model) {
 		Article article = articleService.selectById(idArticle);
@@ -163,6 +162,28 @@ public class EnchereController {
 		}
 		model.addAttribute("utilisateur", utilisateur);
 		return "view-profil-enchere";
+	}
+	
+	@GetMapping("/modifier-profil")
+	public String modifierProfilForm(Model model, HttpSession session) {
+	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+	    if (utilisateur == null) {
+	        return "redirect:/profil";
+	    }
+	    
+	    UtilisateurFormDto dto = new UtilisateurFormDto();
+	    dto.setPseudo(utilisateur.getPseudo());
+	    dto.setNom(utilisateur.getNom());
+	    dto.setPrenom(utilisateur.getPrenom());
+	    dto.setEmail(utilisateur.getEmail());
+	    dto.setTelephone(utilisateur.getTelephone());
+	    dto.setRue(utilisateur.getRue());
+	    dto.setCodePostal(utilisateur.getCodePostal());
+	    dto.setVille(utilisateur.getVille());
+	    dto.setMain(utilisateur.isMain()); 
+
+	    model.addAttribute("utilisateurForm", dto);
+	    return "view-modifier-profil-enchere";
 	}
 
 	@GetMapping("/encherir")
@@ -273,4 +294,38 @@ public class EnchereController {
 			return "view-creer-compte-enchere";
 		}
 	}
+	@PostMapping("/vendre")
+	public String postCreerAnnonce(HttpSession session, @ModelAttribute Article article) {
+		
+		article.setUtilisateur((Utilisateur) session.getAttribute("utilisateur"));
+		this.articleService.insert(article);
+		return "redirect:/accueil";
+	}
+	@PostMapping("/connexion")
+	public String connexion(@RequestParam String pseudo,
+	                        @RequestParam String motDePasse,
+	                        HttpSession session,
+	                        Model model) {
+	    try {
+	        Utilisateur utilisateur = utilisateurService.login(pseudo, motDePasse);
+	        session.setAttribute("utilisateur", utilisateur);
+	        return "redirect:/accueil";
+	    } catch (RuntimeException e) {
+	        model.addAttribute("erreur", e.getMessage());
+	        return "view-connexion-enchere";
+	    }
+	}
+	@PostMapping("/desactiver-compte")
+	public String desactiverCompte(HttpSession session) {
+	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+
+	    if (utilisateur != null) {
+	        utilisateur.setActif(false);  // désactive
+	        utilisateurService.update(utilisateur); // met à jour en BDD
+	        session.invalidate(); // déconnexion immédiate
+	    }
+
+	    return "redirect:/accueil";
+	}
+
 }
