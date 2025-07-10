@@ -161,7 +161,7 @@ public class EnchereController {
 	public String modifierProfilForm(Model model, HttpSession session) {
 	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 	    if (utilisateur == null) {
-	        return "redirect:/profil";
+	        return "redirect:/accueil";
 	    }
 	    
 	    UtilisateurFormDto dto = new UtilisateurFormDto();
