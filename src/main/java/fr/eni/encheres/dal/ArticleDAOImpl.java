@@ -29,7 +29,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private static final String SELECT_BY_UTILISATEUR ="SELECT * FROM ARTICLES WHERE idUtilisateur = :idUtilisateur";
 	private static final String SELECT_ALL = "SELECT * FROM ARTICLES";
 
-	private static final String SELECT_ENCHERES_OUVERTES= "SELECT * FROM ARTICLES WHERE dateFinEncheres > GETDATE() AND dateDebutEncheres < GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
+	private static final String SELECT_ENCHERES_OUVERTES= "SELECT * FROM ARTICLES WHERE dateFinEncheres > GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
 	private static final String SELECT_ENCHERES_TERMINEES= "SELECT * FROM ARTICLES WHERE dateFinEncheres < GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
 	private static final String SELECT_ENCHERES_NON_DEBUTEES= "SELECT * FROM ARTICLES WHERE dateDebutEncheres > GETDATE() AND (:idCategorie = 0 OR idCategorie = :idCategorie) AND nomArticle LIKE :nomArticle";
 

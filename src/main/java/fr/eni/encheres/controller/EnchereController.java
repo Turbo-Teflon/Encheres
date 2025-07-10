@@ -96,6 +96,7 @@ public class EnchereController {
 			List<Article> articles = articleService.selectEncheresOuvertes(0, "");
 			model.addAttribute("articles", articles);
 			System.out.println("Articles récupérés : " + articles.size());
+			
 		} catch (Exception e) {
 			System.out.println("Erreur récupération articles : " + e.getMessage());
 		}
@@ -184,9 +185,9 @@ public class EnchereController {
 		enchere.setArticle(article);
 
 		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-		if (utilisateur == null) {
-			utilisateur = new Utilisateur(); // objet vide pour éviter le null
-		}
+//		if (utilisateur == null) {
+//			utilisateur = new Utilisateur(); // objet vide pour éviter le null
+//		}
 		model.addAttribute("utilisateur", utilisateur);
 
 		enchere.setUtilisateur(utilisateur);

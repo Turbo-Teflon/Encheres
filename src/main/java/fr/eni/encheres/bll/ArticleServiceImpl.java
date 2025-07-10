@@ -97,13 +97,15 @@ public class ArticleServiceImpl implements ArticleService {
 		Enchere bestEnchere = enchereDAO.selectBestByArticle(article.getIdArticle());
 		if (bestEnchere != null) {
 		    article.setPrixActuel(bestEnchere.getMontantEnchere());
+		    long idUtilisateurEnchere = bestEnchere.getUtilisateur().getIdUtilisateur();
+			Utilisateur utilisateurEnchere = utilisateurDAO.selectById(idUtilisateurEnchere);
+			article.setPrixActuel(bestEnchere.getMontantEnchere());
+			article.setDernierEncherisseur(utilisateurEnchere.getPseudo());
 		} else {
 		    article.setPrixActuel(article.getMiseAPrix());
+		    article.setDernierEncherisseur("Pas encore d'enchère");
 }
-		long idUtilisateurEnchere = bestEnchere.getUtilisateur().getIdUtilisateur();
-		Utilisateur utilisateurEnchere = utilisateurDAO.selectById(idUtilisateurEnchere);
-		article.setPrixActuel(bestEnchere.getMontantEnchere());
-		article.setDernierEncherisseur(utilisateurEnchere.getPseudo());
+	
 
 	}
 
