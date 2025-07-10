@@ -17,10 +17,15 @@ public class UtilisateurFormDto {
     private String rue;
     private String codePostal;
     private String ville;
-    private String main; 
+    private boolean main; 
 
     private String motDePasse;
-    private String confirmation;
+    private String confirmation; 
+    private String nouveauMotDePasse;
+    
+
+    // + leurs getters et setters
+
     
 
     /*
@@ -105,11 +110,11 @@ public class UtilisateurFormDto {
         this.ville = ville;
     }
 
-    public String getMain() {
+    public boolean getMain() {
         return main;
     }
 
-    public void setMain(String main) {
+    public void setMain(boolean main) {
         this.main = main;
     }
 
@@ -128,4 +133,13 @@ public class UtilisateurFormDto {
     public void setConfirmation(String confirmation) {
         this.confirmation = confirmation;
     }
+    
+    public String getNouveauMotDePasse() {
+        return nouveauMotDePasse;
+    }
+
+    public void setNouveauMotDePasse(String nouveauMotDePasse) {
+        this.nouveauMotDePasse = nouveauMotDePasse;
+    }
+
 }

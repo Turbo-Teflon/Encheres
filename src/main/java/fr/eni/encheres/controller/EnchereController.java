@@ -25,7 +25,6 @@ import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dto.UtilisateurFormDto;
 import jakarta.servlet.http.HttpSession;
-
 import jakarta.validation.Valid;
 
 
@@ -154,6 +153,28 @@ public class EnchereController {
 		}
 		model.addAttribute("utilisateur", utilisateur);
 		return "view-profil-enchere";
+	}
+	@GetMapping("/modifier-profil")
+	public String modifierProfilForm(Model model, HttpSession session) {
+	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+	    if (utilisateur == null) {
+	        return "redirect:/profil";
+	    }
+
+	    
+	    UtilisateurFormDto dto = new UtilisateurFormDto();
+	    dto.setPseudo(utilisateur.getPseudo());
+	    dto.setNom(utilisateur.getNom());
+	    dto.setPrenom(utilisateur.getPrenom());
+	    dto.setEmail(utilisateur.getEmail());
+	    dto.setTelephone(utilisateur.getTelephone());
+	    dto.setRue(utilisateur.getRue());
+	    dto.setCodePostal(utilisateur.getCodePostal());
+	    dto.setVille(utilisateur.getVille());
+	    dto.setMain(utilisateur.isMain()); 
+
+	    model.addAttribute("utilisateurForm", dto);
+	    return "view-modifier-profil-enchere";
 	}
 
 	@GetMapping("/encherir")
