@@ -60,7 +60,7 @@ CREATE TABLE Encheres (
     idArticle INT,
     dateEnchere DATETIME NOT NULL,
     montantEnchere INT NOT NULL,
-    PRIMARY KEY (idUtilisateur, idArticle),
+    PRIMARY KEY (idUtilisateur, idArticle, dateEnchere),
     FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs(idUtilisateur),
     FOREIGN KEY (idArticle) REFERENCES Articles(idArticle)
 );
@@ -68,5 +68,4 @@ select * from Encheres;
 select * from Articles;
 
 EXEC sp_help Utilisateurs;
-
 
