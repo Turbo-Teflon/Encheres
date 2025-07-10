@@ -29,11 +29,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	        throw new RuntimeException("Identifiant incorrect.");
 	    }
 
-	    if (!utilisateur.isActif()) {
-	    	System.out.println("Actif ? " + utilisateur.isActif());	    	
-	        throw new RuntimeException("Ce compte est désactivé.");
-	    }
-
 	    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	    if (!encoder.matches(motDePasse, utilisateur.getMotDePasse())) {
 	    	System.out.println("Mot de passe incorrect");
@@ -73,8 +68,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	@Override
 	public void update(Utilisateur utilisateur) {
-		// TODO : penser à hasher ici si le mot de passe a changé
-		utilisateurDAO.update(utilisateur);
+	    System.out.println("Mot de passe dans service update : " + utilisateur.getMotDePasse());
+	    utilisateurDAO.update(utilisateur);
 	}
 
 	@Override

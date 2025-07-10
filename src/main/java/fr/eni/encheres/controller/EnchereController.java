@@ -344,7 +344,49 @@ public class EnchereController {
 	@ExceptionHandler(Exception.class)
 	public String handleException(Exception e, Model model) {
 	    model.addAttribute("erreur", e.getMessage());
-	    return "view-connexion-enchere"; // page de repli
+	    return "view-connexion-enchere";
+	}
+	@PostMapping("/modifier-profil")
+	public String modifierProfilSubmit(@Valid @ModelAttribute("utilisateurForm") UtilisateurFormDto formDto, BindingResult result, HttpSession session, Model model) {
+
+	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+	    if (utilisateur == null) {
+	        return "redirect:/connexion";
+	    }
+
+	    if (result.hasErrors()) {
+	        return "view-modifier-profil-enchere";
+	    }
+
+	    if (formDto.getNouveauMotDePasse() != null && !formDto.getNouveauMotDePasse().isBlank()) {
+	        if (!formDto.getNouveauMotDePasse().equals(formDto.getConfirmation())) {
+	            model.addAttribute("erreur", "Les mots de passe ne correspondent pas.");
+	            return "view-modifier-profil-enchere";
+	        }
+	        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	        utilisateur.setMotDePasse(encoder.encode(formDto.getNouveauMotDePasse()));
+	    }
+
+
+	    utilisateur.setNom(formDto.getNom());
+	    utilisateur.setPrenom(formDto.getPrenom());
+	    utilisateur.setEmail(formDto.getEmail());
+	    utilisateur.setTelephone(formDto.getTelephone());
+	    utilisateur.setRue(formDto.getRue());
+	    utilisateur.setCodePostal(formDto.getCodePostal());
+	    utilisateur.setVille(formDto.getVille());
+	    utilisateur.setMain(formDto.isMain());
+
+	    if (formDto.getNouveauMotDePasse() != null && !formDto.getNouveauMotDePasse().isBlank()) {
+	        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	        utilisateur.setMotDePasse(encoder.encode(formDto.getNouveauMotDePasse()));
+	    }
+
+
+	    utilisateurService.update(utilisateur);
+	    session.setAttribute("utilisateur", utilisateur); // Remet à jour en session
+
+	    return "redirect:/profil";
 	}
 
 
