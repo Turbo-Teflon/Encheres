@@ -297,31 +297,16 @@ public class EnchereController {
 	    }
 	}
 	@PostMapping("/desactiver-compte")
-	public String desactiverCompte(
-	    @RequestParam("pseudo") String pseudo,
-	    @RequestParam("motDePasse") String motDePasse,
-	    HttpSession session,
-	    Model model) {
-
+	public String desactiverCompte(HttpSession session) {
 	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 
-	    if (utilisateur == null || !utilisateur.getPseudo().equals(pseudo)) {
-	        model.addAttribute("erreur", "Identifiants invalides.");
-	        return "view-modifier-profil-enchere";
+	    if (utilisateur != null) {
+	        utilisateur.setActif(false);  // désactive
+	        utilisateurService.update(utilisateur); // met à jour en BDD
+	        session.invalidate(); // déconnexion immédiate
 	    }
-
-	    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	    if (!encoder.matches(motDePasse, utilisateur.getMotDePasse())) {
-	        model.addAttribute("erreur", "Mot de passe incorrect.");
-	        return "view-modifier-profil-enchere";
-	    }
-
-	    utilisateur.setActif(false);
-	    utilisateurService.update(utilisateur);
-	    session.invalidate();
 
 	    return "redirect:/accueil";
 	}
-
 
 }
