@@ -19,7 +19,7 @@ public class CategorieDAOImpl implements CategorieDAO {
 	
 	private static final String SELECT_ALL = "SELECT * FROM CATEGORIES";
 	private static final String SELECT_BY_ID = "SELECT * FROM CATEGORIES WHERE idCategorie = :idCategorie";
-	private static final String COUNT_CAT = "SELECT count(*) FROM CATEGORIES idCategorie = :idCategorie";
+	private static final String COUNT_CAT = "SELECT count(*) FROM CATEGORIES WHERE idCategorie = :idCategorie";
 
 
 	@Autowired

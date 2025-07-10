@@ -1,6 +1,5 @@
 package fr.eni.encheres.bll;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
@@ -54,12 +53,14 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	@Transactional(rollbackFor = BuisnessException.class)
 	public void insert(Article article) throws BuisnessException{
+		
+		article.setDateDebutEncheres(LocalDateTime.now());
+		article.setEtatVente("O");
 		BuisnessException be = new BuisnessException();
 		boolean isValid = isCategorieValid(article.getCategorie(), be);
+		isValid &= isDateValid(article, be);
 		if (isValid) {
 			try {
-				article.setEtatVente("O");
-				article.setDateDebutEncheres(LocalDateTime.now());
 				articleDAO.insert(article);
 				
 			} catch (DataAccessException e) {
@@ -67,6 +68,8 @@ public class ArticleServiceImpl implements ArticleService {
 				be.add("Erreur d'acces à la base");
 				throw be;
 			}
+		}else {
+			throw be;
 		}
 	
 	}
@@ -74,6 +77,12 @@ public class ArticleServiceImpl implements ArticleService {
 	private boolean isCategorieValid(Categorie cat, BuisnessException be) {
 		if(this.categorieDAO.hasCategorie(cat.getIdCategorie())) return true;
 		be.add("La Catégorie n'éxiste pas");
+		return false;
+	}
+	
+	private boolean isDateValid(Article a, BuisnessException be) {
+		if(a.getDateFinEncheres().isAfter(a.getDateDebutEncheres())) return true;
+		be.add("Durée d'Enchère trop courte !");
 		return false;
 	}
 
