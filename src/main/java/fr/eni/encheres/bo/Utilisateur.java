@@ -4,34 +4,30 @@ import java.util.List;
 
 public class Utilisateur {
 
-    private long idUtilisateur;
-    private String pseudo;
-    private String nom;
-    private String prenom;
-    private String email;
-    private String telephone;
-    private String rue;
-    private String codePostal;
-    private String ville;
-    private String motDePasse;
-    private Integer credit;
-    private boolean administrateur;
-    private List<Article> articles;
-    private List<Enchere> encheres;
-    private boolean droitier; // "droitier" ou "gaucher"
-    private boolean actif = true;
+	private long idUtilisateur;
+	private String pseudo;
+	private String nom;
+	private String prenom;
+	private String email;
+	private String telephone;
+	private String rue;
+	private String codePostal;
+	private String ville;
+	private String motDePasse;
+	private Integer credit;
+	private boolean administrateur;
+	private List<Article> articles;
+	private List<Enchere> encheres;
+	private boolean droitier; // "droitier" ou "gaucher"
 
-    
 	public Utilisateur() {
-	
+
 	}
-	
-	
 
 	public Utilisateur(long idUtilisateur, String pseudo, String nom, String prenom, String email, String telephone,
 			String rue, String codePostal, String ville, String motDePasse, Integer credit, boolean administrateur,
-			boolean main, boolean actif) {
-		
+			boolean main) {
+
 		this.idUtilisateur = idUtilisateur;
 		this.pseudo = pseudo;
 		this.nom = nom;
@@ -45,9 +41,8 @@ public class Utilisateur {
 		this.credit = credit;
 		this.administrateur = administrateur;
 		this.droitier = main;
-		this.actif = actif;
 	}
-	
+
 	public long getIdUtilisateur() {
 		return idUtilisateur;
 	}
@@ -158,7 +153,7 @@ public class Utilisateur {
 
 	public void setEncheres(List<Enchere> encheres) {
 		this.encheres = encheres;
-	}	
+	}
 
 	public boolean isMain() {
 		return droitier;
@@ -166,25 +161,14 @@ public class Utilisateur {
 
 	public void setMain(boolean main) {
 		this.droitier = main;
-	}	
-
-	public boolean isActif() {
-		return actif;
 	}
-
-	public void setActif(boolean actif) {
-		this.actif = actif;
-	}
-
-
 
 	@Override
 	public String toString() {
 		return String.format(
-				"Utilisateur [idUtilisateur=%s, pseudo=%s, nom=%s, prenom=%s, email=%s, telephone=%s, rue=%s, codePostal=%s, ville=%s, motDePasse=%s, credit=%s, administrateur=%s, articles=%s, encheres=%s, main=%s, actif=%s]",
+				"Utilisateur [idUtilisateur=%s, pseudo=%s, nom=%s, prenom=%s, email=%s, telephone=%s, rue=%s, codePostal=%s, ville=%s, motDePasse=%s, credit=%s, administrateur=%s, articles=%s, encheres=%s, main=%s]",
 				idUtilisateur, pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse, credit,
-				administrateur, articles, encheres, droitier, actif);
-	}	 
-    
-}
+				administrateur, articles, encheres, droitier);
+	}
 
+}
