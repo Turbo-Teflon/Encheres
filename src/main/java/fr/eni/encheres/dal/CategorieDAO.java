@@ -9,4 +9,6 @@ public interface CategorieDAO {
 	List<Categorie> selectAll();
 
 	Categorie selectById(long id);
+	
+	boolean hasCategorie(long id);
 }

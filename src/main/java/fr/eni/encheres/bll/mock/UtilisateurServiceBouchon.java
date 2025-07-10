@@ -17,11 +17,9 @@ public class UtilisateurServiceBouchon implements UtilisateurService {
 
 	public UtilisateurServiceBouchon() {
 		// Données fictives pour tests
-		utilisateurs.add(new Utilisateur(1, "Jdoe", "Doe", "John", "Jdoe@email.com", "0623456789",
-				"1 rue A", "75001", "Paris", "mdp123", 100, false, true));
+		utilisateurs.add(new Utilisateur(1, "Jdoe", "Doe", "John", "Jdoe@email.com", "0623456789", "1 rue A", "75001", "Paris", "mdp123", 100, false, true));
 
-		utilisateurs.add(new Utilisateur(2, "GI-Joe", "GI", "Joe", "GI-Joe@email.com", "0687654321",
-				"2 rue B", "29200", "Brest", "azerty", 200, false, false));
+		utilisateurs.add(new Utilisateur(2, "GI-Joe", "GI", "Joe", "GI-Joe@email.com", "0687654321", "2 rue B", "29200", "Brest", "azerty", 200, false, false));
 	}
 
 	@Override
@@ -68,6 +66,12 @@ public class UtilisateurServiceBouchon implements UtilisateurService {
 	@Override
 	public void delete(long id) {
 		utilisateurs.removeIf(u -> u.getIdUtilisateur() == id);
+	}
+
+	@Override
+	public Utilisateur login(String pseudo, String motDePasse) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/*@Override

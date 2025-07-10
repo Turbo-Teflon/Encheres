@@ -24,10 +24,26 @@ public class Utilisateur {
 
 	}
 
+	/**
+	 * @param idUtilisateur
+	 * @param pseudo
+	 * @param nom
+	 * @param prenom
+	 * @param email
+	 * @param telephone
+	 * @param rue
+	 * @param codePostal
+	 * @param ville
+	 * @param motDePasse
+	 * @param credit
+	 * @param administrateur
+	 * @param articles
+	 * @param encheres
+	 * @param droitier
+	 */
 	public Utilisateur(long idUtilisateur, String pseudo, String nom, String prenom, String email, String telephone,
-			String rue, String codePostal, String ville, String motDePasse, Integer credit, boolean administrateur,
-			boolean main) {
-
+			String rue, String codePostal, String ville, String motDePasse, Integer credit, boolean administrateur, boolean droitier) {
+		super();
 		this.idUtilisateur = idUtilisateur;
 		this.pseudo = pseudo;
 		this.nom = nom;
@@ -40,8 +56,9 @@ public class Utilisateur {
 		this.motDePasse = motDePasse;
 		this.credit = credit;
 		this.administrateur = administrateur;
-		this.droitier = main;
+		this.droitier = droitier;
 	}
+
 
 	public long getIdUtilisateur() {
 		return idUtilisateur;

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,6 +26,7 @@ import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dto.UtilisateurFormDto;
+import fr.eni.encheres.exception.BuisnessException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -110,8 +112,29 @@ public class EnchereController {
 		Article a = new Article();
 		model.addAttribute("article", a);
 		return "view-creer-vente";
-	}	
-
+	}
+	
+	@PostMapping("/vendre")
+	public String postCreerAnnonce(HttpSession session, @Valid @ModelAttribute Article article, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			return "view-creer-vente";
+		} else {
+			try {
+				article.setUtilisateur((Utilisateur) session.getAttribute("utilisateur"));
+				this.articleService.insert(article);
+				
+			} catch (BuisnessException e) {
+				e.getMessages().forEach(m -> {
+					ObjectError error = new ObjectError("globalError", m);
+					bindingResult.addError(error);
+				});
+				return "view-creer-vente";
+			}
+			return "redirect:/accueil";
+		}
+	}
+	
+	
 	@GetMapping("/encheres/detail")
 	public String voirDetailEnchere(@RequestParam("id") long idArticle, Model model) {
 		Article article = articleService.selectById(idArticle);
@@ -154,6 +177,7 @@ public class EnchereController {
 		return "view-profil-enchere";
 
 	}
+	
 	@GetMapping("/modifier-profil")
 	public String modifierProfilForm(Model model, HttpSession session) {
 	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
@@ -202,6 +226,7 @@ public class EnchereController {
 			@RequestParam(name = "ventesEnCours") boolean ventesEnCours,
 			@RequestParam(name = "ventesNonDebutees") boolean ventesNonDebutees,
 			@RequestParam(name = "ventesTerminees") boolean ventesTerminees, Model model, HttpSession session) {
+		
 		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 		if (utilisateur == null) {
 			return "redirect:/connexion";
@@ -285,13 +310,7 @@ public class EnchereController {
 			return "view-creer-compte-enchere";
 		}
 	}
-	@PostMapping("/vendre")
-	public String postCreerAnnonce(HttpSession session, @ModelAttribute Article article) {
-		
-		article.setUtilisateur((Utilisateur) session.getAttribute("utilisateur"));
-		this.articleService.insert(article);
-		return "redirect:/accueil";
-	}
+	
 	@PostMapping("/connexion")
 	public String connexion(@RequestParam String pseudo,
 	                        @RequestParam String motDePasse,
