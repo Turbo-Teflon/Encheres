@@ -4,9 +4,10 @@ import java.util.List;
 
 import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Enchere;
+import fr.eni.encheres.exception.BuisnessException;
 
 public interface ArticleService {
-	void insert(Article article);
+	void insert(Article article) throws BuisnessException;
 
 	Article selectById(long id);
 

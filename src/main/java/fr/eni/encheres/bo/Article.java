@@ -1,18 +1,30 @@
 package fr.eni.encheres.bo;
 
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Article {
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
+public class Article implements Serializable {
 
 
-    private long idArticle;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1572052415321189850L;
+	
+	private long idArticle;
+    @NotBlank
     private String nomArticle;
+    @NotBlank
     private String description;
     private LocalDateTime dateDebutEncheres;
     private LocalDateTime dateFinEncheres;
+    @Min(0)
     private int miseAPrix;
     private int prixActuel;
     private String dernierEncherisseur;
@@ -30,7 +42,8 @@ public class Article {
 	}
 	
 	public Article(long id, String nom, String desc, int miseAPrix, int prixActuel, LocalDateTime debut, LocalDateTime fin) {
-	    this.idArticle = id;
+	    this();
+		this.idArticle = id;
 	    this.nomArticle = nom;
 	    this.description = desc;
 	    this.miseAPrix = miseAPrix;
@@ -169,6 +182,71 @@ public class Article {
 	public void setPrixActuel(int prixActuel) {
 		this.prixActuel = prixActuel;
 	}
+
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Article [idArticle=");
+		builder.append(idArticle);
+		builder.append(", ");
+		if (nomArticle != null) {
+			builder.append("nomArticle=");
+			builder.append(nomArticle);
+			builder.append(", ");
+		}
+		if (description != null) {
+			builder.append("description=");
+			builder.append(description);
+			builder.append(", ");
+		}
+		if (dateDebutEncheres != null) {
+			builder.append("dateDebutEncheres=");
+			builder.append(dateDebutEncheres);
+			builder.append(", ");
+		}
+		if (dateFinEncheres != null) {
+			builder.append("dateFinEncheres=");
+			builder.append(dateFinEncheres);
+			builder.append(", ");
+		}
+		builder.append("miseAPrix=");
+		builder.append(miseAPrix);
+		builder.append(", prixActuel=");
+		builder.append(prixActuel);
+		builder.append(", prixVente=");
+		builder.append(prixVente);
+		builder.append(", ");
+		if (etatVente != null) {
+			builder.append("etatVente=");
+			builder.append(etatVente);
+			builder.append(", ");
+		}
+		if (utilisateur != null) {
+			builder.append("utilisateur=");
+			builder.append(utilisateur);
+			builder.append(", ");
+		}
+		if (categorie != null) {
+			builder.append("categorie=");
+			builder.append(categorie);
+			builder.append(", ");
+		}
+		if (retrait != null) {
+			builder.append("retrait=");
+			builder.append(retrait);
+			builder.append(", ");
+		}
+		if (encheres != null) {
+			builder.append("encheres=");
+			builder.append(encheres);
+		}
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	
+
 
 	public String getDernierEncherisseur() {
 		return dernierEncherisseur;

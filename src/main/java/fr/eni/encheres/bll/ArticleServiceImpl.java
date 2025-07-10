@@ -1,13 +1,17 @@
 package fr.eni.encheres.bll;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Profile;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import fr.eni.encheres.exception.BuisnessException;
 import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Enchere;
@@ -27,19 +31,64 @@ public class ArticleServiceImpl implements ArticleService {
 	private UtilisateurDAO utilisateurDAO;
 	private EnchereDAO enchereDAO;
 	private CategorieDAO categorieDAO;
+
 	
-	public ArticleServiceImpl(ArticleDAO articleDAO, UtilisateurDAO utilisateurDAO, EnchereDAO enchereDAO, CategorieDAO categorieDAO) {
-		this.articleDAO=articleDAO;
-		this.utilisateurDAO=utilisateurDAO;
-		this.enchereDAO=enchereDAO;
-		this.categorieDAO=categorieDAO;
+
+
+	private final Log logger = LogFactory.getLog(getClass());
+	
+
+	
+	/**
+	 * @param articleDAO
+	 * @param utilisateurDAO
+	 * @param enchereDAO
+	 * @param categorieDAO
+	 */
+	public ArticleServiceImpl(ArticleDAO articleDAO, UtilisateurDAO utilisateurDAO, EnchereDAO enchereDAO,
+			CategorieDAO categorieDAO) {
+		super();
+		this.articleDAO = articleDAO;
+		this.utilisateurDAO = utilisateurDAO;
+		this.enchereDAO = enchereDAO;
+		this.categorieDAO = categorieDAO;
+
 	}
+
 	@Override
-	public void insert(Article article) {
-		article.setEtatVente("O");
+	@Transactional(rollbackFor = BuisnessException.class)
+	public void insert(Article article) throws BuisnessException{
+		
 		article.setDateDebutEncheres(LocalDateTime.now());
-		articleDAO.insert(article);
+		article.setEtatVente("O");
+		BuisnessException be = new BuisnessException();
+		boolean isValid = isCategorieValid(article.getCategorie(), be);
+		isValid &= isDateValid(article, be);
+		if (isValid) {
+			try {
+				articleDAO.insert(article);
+				
+			} catch (DataAccessException e) {
+				logger.error(e);
+				be.add("Erreur d'acces à la base");
+				throw be;
+			}
+		}else {
+			throw be;
+		}
 	
+	}
+	
+	private boolean isCategorieValid(Categorie cat, BuisnessException be) {
+		if(this.categorieDAO.hasCategorie(cat.getIdCategorie())) return true;
+		be.add("La Catégorie n'éxiste pas");
+		return false;
+	}
+	
+	private boolean isDateValid(Article a, BuisnessException be) {
+		if(a.getDateFinEncheres().isAfter(a.getDateDebutEncheres())) return true;
+		be.add("Durée d'Enchère trop courte !");
+		return false;
 	}
 
 	@Override
