@@ -28,31 +28,36 @@
 
   <button type="button" class="btn secondary" onclick="openConfirmationModal()">Supprimer mon compte</button>
 
-  <div id="confirmationModal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <h2>Confirmer la suppression</h2>
-      <p>Veuillez saisir votre pseudo et mot de passe pour confirmer.</p>
-      <form th:action="@{/supprimer-compte}" method="post">
-        <input type="text" name="pseudo" placeholder="Votre pseudo" th:value="${utilisateur.pseudo}" required />
-
-        <!-- Mot de passe avec œil -->
-        <div class="password-container">
-          <input type="password" id="popupPassword" name="motDePasse" placeholder="Mot de passe" required />
-          <span class="toggle-password" id="popup-eye">🙈</span>
-        </div>
-
-        <div class="buttons">
-          <button type="submit" class="btn">Confirmer</button>
-          <button type="button" class="btn secondary" onclick="closeConfirmationModal()">Annuler</button>
-        </div>
-      </form>
-    </div>
-  </div>
+  
 
   <a th:href="@{/deconnexion}">Déconnexion</a>
 </div>
 
   </div>
+  
+  
+<div id="confirmationModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <h2>Confirmer la suppression</h2>
+    <p>Veuillez saisir votre pseudo et mot de passe pour confirmer.</p>
+    <form th:action="@{/supprimer-compte}" method="post">
+      <input type="text" name="pseudo" placeholder="Votre pseudo" th:value="${utilisateur.pseudo}" required>
+
+      <div class="password-wrapper">
+		  <input type="password" id="popupPassword" name="motDePasse" placeholder="Mot de passe" required />
+		  
+	  </div>
+
+
+      <div class="modal-buttons">
+        <button type="submit" class="btn">Confirmer</button>
+        <button type="button" class="btn secondary" onclick="closeConfirmationModal()">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
 <script th:src="@{/js/popUp.js}"></script>
 
 </body>

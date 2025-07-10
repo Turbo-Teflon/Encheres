@@ -261,6 +261,7 @@ public class EnchereController {
 		utilisateur.setVille(formDto.getVille());
 		utilisateur.setCredit(100);
 		utilisateur.setAdministrateur(false);
+		utilisateur.setMain(formDto.isMain());
 		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		String password = formDto.getMotDePasse();
 		String hash = encoder.encode(password);
@@ -330,12 +331,6 @@ public class EnchereController {
 
 	    return "redirect:/accueil";
 	}
-
-	@ExceptionHandler(Exception.class)
-	public String handleException(Exception e, Model model) {
-	    model.addAttribute("erreur", e.getMessage());
-	    return "view-connexion-enchere";
-	}
 	@PostMapping("/modifier-profil")
 	public String modifierProfilSubmit(@Valid @ModelAttribute("utilisateurForm") UtilisateurFormDto formDto, BindingResult result, HttpSession session, Model model) {
 
@@ -379,5 +374,11 @@ public class EnchereController {
 	    return "redirect:/accueil";
 	}
 
+	@ExceptionHandler(Exception.class)
+	public String handleException(Exception e, Model model) {
+	    model.addAttribute("erreur", e.getMessage());
+	    return "view-connexion-enchere";
+	}
+	
 
 }

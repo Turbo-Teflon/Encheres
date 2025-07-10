@@ -2,7 +2,10 @@ document.addEventListener("DOMContentLoaded", function () {
 	const fields = [
 	  { inputId: "motDePasse", iconId: "eye-icon1" },
 	  { inputId: "nouveauMotDePasse", iconId: "eye-icon2" },
-	  { inputId: "confirmation", iconId: "eye-icon3" }
+	  { inputId: "confirmation", iconId: "eye-icon3" },
+	  { inputId: "popupPassword", iconId: "eye-icon4" }
+
+	  
 	];
 
   fields.forEach(field => {
