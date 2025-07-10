@@ -17,14 +17,16 @@
             ❌ Vous n'êtes pas connecté.
         </p>
     </section>
-
+	<br>
+	<br>
+	<br>
     <!-- Filtres -->
     <section class="filtres">
-        <h2>Filtres :</h2>
+      
         <form method="get" th:action="@{/encheres/filtrer}">
-            <label for="categorie">Catégories</label>
+          
             <select id="categorie" name="categorie">
-                <option value="0" th:selected="${categorie == 0}">Toutes</option>
+                <option value="0" th:selected="${categorie == 0}">Toutes catégories</option>
                 <option th:each="cat : ${categories}" th:value="${cat.idCategorie}"
                         th:text="${cat.libelle}"
                         th:selected="${categorie == cat.idCategorie}">Catégorie</option>
@@ -45,6 +47,11 @@
                            th:checked="${etatEnchere == 'terminees'}" />
                     Enchères terminées
                 </label>
+                 <label>
+                    <input type="radio" name="etatEnchere" value="remportees"
+                           th:checked="${etatEnchere == 'remportees'}" />
+                    Enchères remportées
+                </label>
             </div>
 
             <button type="submit">Rechercher</button>
@@ -63,7 +70,8 @@
 							</a>
                        <br>
 			
-                        Prix : <span th:text="${article.prixActuel}">0</span><br />
+                        Prix : <span th:text="${article.prixActuel + ' crédits'}">0 crédits</span><br />
+                        
                         Fin de l'enchère :
                         <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}">00/00/0000</span><br />
                         Vendeur :

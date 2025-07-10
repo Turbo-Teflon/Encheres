@@ -16,8 +16,8 @@
         <p th:text="${article.description}"></p>
         <p><strong>Catégorie :</strong> <span th:text="${article.categorie.libelle}"></span></p>
         <p><strong>Date fin enchère :</strong> <span th:text="${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}"></span></p>
-        <p><strong>Mise à prix :</strong> <span th:text="${article.miseAPrix}"></span></p>
-        <p><strong>Meilleure offre :</strong> <span th:text="${article.prixActuel}"></span></p>
+        <p><strong>Mise à prix :</strong> <span th:text="${article.miseAPrix + ' crédits'}"></span></p>
+        <p><strong>Meilleure offre :</strong> <span th:text="${article.prixActuel + ' crédits'}"></span></p>
         <p><strong>Dernier enchérisseur :</strong> <span th:text="${article.dernierEncherisseur}"></span></p>
         <p><strong>Vendeur :</strong> <span th:text="${article.utilisateur.pseudo}"></span></p>
 

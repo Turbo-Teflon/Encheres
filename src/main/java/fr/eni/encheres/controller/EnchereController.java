@@ -91,7 +91,7 @@ public class EnchereController {
 
 		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 		if (utilisateur == null) {
-			utilisateur = new Utilisateur(); // objet vide
+			utilisateur = new Utilisateur(); 
 		}
 		model.addAttribute("utilisateur", utilisateur);
 
@@ -99,10 +99,13 @@ public class EnchereController {
 
 		// Appel de méthode selon filtre choisi
 		if ("terminees".equals(etatEnchere)) {
-			articles = articleService.selectEncheresTerminees(idCategorie, nomArticle);
+		    articles = articleService.selectEncheresTerminees(idCategorie, nomArticle);
+		} else if ("remportees".equals(etatEnchere)) {
+		    articles = articleService.selectMesEncheresRemportees(utilisateur.getIdUtilisateur(), idCategorie, nomArticle);
 		} else {
-			articles = articleService.selectEncheresOuvertes(idCategorie, nomArticle);
+		    articles = articleService.selectEncheresOuvertes(idCategorie, nomArticle);
 		}
+
 
 		List<Categorie> categories = categorieService.selectAll();
 		model.addAttribute("categories", categories);
@@ -156,10 +159,13 @@ public class EnchereController {
 		model.addAttribute("article", article);
 
 		if ("terminees".equals(etatEnchere)) {
-			return "view-vente-detail-enchereTerminees";
+		    return "view-vente-detail-enchereTerminees";
+		} else if ("remportees".equals(etatEnchere)) {
+		    return "view-vente-detail-enchereRemportees";
 		} else {
-			return "view-vente-detail-enchereOuvertes";
+		    return "view-vente-detail-enchereOuvertes";
 		}
+
 	}
 
 	@PostMapping("/encheres/detail/proposerEnchere")
@@ -185,6 +191,31 @@ public class EnchereController {
 
 		return "redirect:/accueil";
 	}
+	
+	
+	@PostMapping("/encheres/retrait")
+	public String effectuerRetrait(
+	        @RequestParam("idArticle") long idArticle, HttpSession session) {
+
+	    Article article = articleService.selectById(idArticle);
+	    Utilisateur acheteur = (Utilisateur) session.getAttribute("utilisateur");
+
+	    Utilisateur vendeur = article.getUtilisateur();
+
+	    int prixFinal = article.getPrixActuel();
+
+	    // Mise à jour des crédits
+	    acheteur.setCredit(acheteur.getCredit() - prixFinal);
+	    vendeur.setCredit(vendeur.getCredit() + prixFinal);
+
+	    utilisateurService.update(acheteur);
+	    utilisateurService.update(vendeur);
+
+	   
+	    return "redirect:/accueil";
+	}
+
+	
 
 	@GetMapping("/encheres/gagnees")
 	public String voirEncheresGagnees(Model model) {
@@ -209,7 +240,7 @@ public class EnchereController {
 
 	@GetMapping("/profil")
 	public String profil(HttpSession session, Model model) {
-		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateurConnecte");
+		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 		if (utilisateur == null) {
 			return "redirect:/connexion";
 		}
