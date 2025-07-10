@@ -115,7 +115,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		map.addValue("motDePasse", utilisateur.getMotDePasse());
 		map.addValue("credit", utilisateur.getCredit());
 		map.addValue("administrateur", utilisateur.isAdministrateur());
-		map.addValue("actif", utilisateur.isActif());
+		
 
 
 		jdbcTemplate.update(UPDATE, map);
@@ -174,7 +174,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			u.setMotDePasse(rs.getString("motDePasse"));
 			u.setCredit(rs.getInt("credit"));
 			u.setAdministrateur(rs.getBoolean("administrateur"));
-			u.setActif(rs.getBoolean("actif"));
+			
 			return u;
 		}
 	}

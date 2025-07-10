@@ -73,7 +73,8 @@ public class EnchereController {
 
 		Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
 
-		if (utilisateur != null && utilisateur.isActif()) {
+		if (utilisateur != null) {
+
 		    model.addAttribute("utilisateur", utilisateur);
 		} else {
 		    session.removeAttribute("utilisateur"); // pour être sûr de vider un inactif
@@ -144,8 +145,9 @@ public class EnchereController {
 	@GetMapping("/profil")
 	public String profil(HttpSession session, Model model) {
 	    Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-	    System.out.println("Utilisateur actif ? " + utilisateur.isActif());
-	    if (utilisateur == null || !utilisateur.isActif()) {
+	    System.out.println("Utilisateur en session : " + utilisateur);
+	    if (utilisateur == null) {
+
 	        session.invalidate(); // Déconnecte si l'utilisateur est inactif
 	        model.addAttribute("erreur", "Votre compte est désactivé.");
 	        return "redirect:/connexion";
@@ -300,23 +302,21 @@ public class EnchereController {
 	    try {
 	        Utilisateur utilisateur = utilisateurService.login(pseudo, motDePasse);
 
-	        if (!utilisateur.isActif()) {
-	            model.addAttribute("erreur", "Ce compte a été désactivé.");
-	            return "view-connexion-enchere";
-	        }
-
 	        session.setAttribute("utilisateur", utilisateur);
+	        System.out.println("Connexion réussie pour : " + utilisateur.getPseudo());
+
 	        return "redirect:/accueil";
 
 	    } catch (RuntimeException e) {
-	    	 System.out.println("Erreur dans /connexion : " + e.getMessage());
+	        System.out.println("Erreur dans /connexion : " + e.getMessage());
 	        model.addAttribute("erreur", e.getMessage());
 	        return "view-connexion-enchere";
 	    }
 	}
 
-	@PostMapping("/desactiver-compte")
-	public String desactiverCompte(
+
+	@PostMapping("/supprimer-compte")
+	public String supprimerCompte(
 	    @RequestParam("pseudo") String pseudo,
 	    @RequestParam("motDePasse") String motDePasse,
 	    HttpSession session,
@@ -335,12 +335,12 @@ public class EnchereController {
 	        return "view-modifier-profil-enchere";
 	    }
 
-	    utilisateur.setActif(false);
-	    utilisateurService.update(utilisateur);
+	    utilisateurService.delete(utilisateur.getIdUtilisateur());
 	    session.invalidate();
 
 	    return "redirect:/accueil";
 	}
+
 	@ExceptionHandler(Exception.class)
 	public String handleException(Exception e, Model model) {
 	    model.addAttribute("erreur", e.getMessage());

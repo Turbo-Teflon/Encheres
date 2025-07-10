@@ -1,5 +1,5 @@
 function openConfirmationModal() {
-  document.getElementById("confirmationModal").style.display = "block";
+  document.getElementById("confirmationModal").style.display = "flex";
 }
 
 function closeConfirmationModal() {
