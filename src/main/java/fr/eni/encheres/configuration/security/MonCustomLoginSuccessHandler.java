@@ -32,9 +32,7 @@ public class MonCustomLoginSuccessHandler implements AuthenticationSuccessHandle
         System.out.println("pseudo récupéré après login : " + pseudo);
 
         Utilisateur utilisateur = utilisateurService.selectByPseudo(pseudo);
-        System.out.println("utilisateur trouvé : " + utilisateur);
-
-        // Optionnel : forcer l'auth dans Spring Security avec ton propre objet
+        System.out.println("utilisateur trouvé : " + utilisateur);        
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         HttpSession session = request.getSession();

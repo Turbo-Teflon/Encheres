@@ -21,12 +21,7 @@ public class UtilisateurFormDto {
 
     private String motDePasse;
     private String confirmation; 
-    private String nouveauMotDePasse;
-    
-
-    // + leurs getters et setters
-
-    
+    private String nouveauMotDePasse;   
 
     /*
      * DTO (Data Transfer Object) est utilisé pour le formulaire de création de compte.
